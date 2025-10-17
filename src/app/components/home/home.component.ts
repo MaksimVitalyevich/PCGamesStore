@@ -72,4 +72,60 @@ export class HomeComponent {
       localization: [game.localization]
     });
   }
+
+  /** Добавление игры  */
+  addNewGame() {
+    if (!this.userService.isAuthenticated()) return alert('Требуется войти в систему!');
+    this.isEditing = true;
+    this.selectedGame = null;
+    this.showModal = true;
+
+    this.gameForm = this.fb.group({
+      title: ['', Validators.required],
+      genre: ['', Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      systemRequirements: [''],
+      developer: [''],
+      companyName: [''],
+      localization: ['']
+    });
+  }
+
+  /** Сохранение изменении */
+  saveChanges() {
+    if (this.gameForm.invalid) return;
+
+    if (this.selectedGame) {
+      // Редактируем существующее
+      const idx = this.games.findIndex(g => g.id === this.selectedGame!.id);
+      this.games[idx] = { ...this.games[idx], ...this.gameForm.value };
+    } else {
+      // Добавляем новую
+      const newGame: Game = {
+        id: this.games.length + 1,
+        ...this.gameForm.value
+      };
+      this.games.push(newGame);
+    }
+
+    this.closeModal();
+  }
+
+  /** Добавить игру в корзину */
+  buyGame(game: Game) {
+    if (!this.userService.isAuthenticated()) {
+      alert('Только авторизованные пользователи могут покупать игры!');
+      return;
+    }
+
+    this.cartService.addToCart(game);
+    alert(`Игра "${game.title}" добавлена в вашу корзину!`);
+  }
+
+  /** закрытие модального окна */
+  closeModal() {
+    this.showModal = false;
+    this.isEditing = false;
+    this.selectedGame = null;
+  }
 }

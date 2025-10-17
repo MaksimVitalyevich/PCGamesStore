@@ -1,1 +1,42 @@
+<div class="homeContainer">
+    <h2 class="homeTitle">Каталог ПК игр</h2>
 
+    <div class="gamesGrid">
+        <div *ngFor="let game of games" class="gameCard">
+            <img [src]="game.image" [alt]="game.title" class="gameImage">
+
+            <div class="gameInfo">
+                <h3>{{ game.title }}</h3>
+                <p class="genreText">{{ game.genre }}</p>
+                <p class="priceText">{{ game.price }}</p>
+            </div>
+
+            <div class="actions">
+                <button class="btnDetails" (click)="openModal(game)">Подробнее</button>
+                <button class="btnBuy" (click)="buyGame(game)">Купить</button>
+                <button class="btnEdit" (click)="editGame(game)">Редактировать</button>
+            </div>
+        </div>
+
+        <div class="addGameCard" (click)="addNewGame()">
+            <span class="addSign">+</span>
+            <p>Добавить игру</p>
+        </div>
+    </div>
+
+    <div *ngIf="showModal" class="modalOverlay">
+        <div class="modalContent">
+            <button class="closeBtn" (click)="closeModal()">Х</button>
+
+            <div *ngIf="!isEditing && selectedGame" class="viewSection">
+                <h2>{{ selectedGame.title }}</h2>
+                <p><b>Жанр:</b> {{ selectedGame.genre }}</p>
+                <p><b>Цена:</b> {{ selectedGame.price }} ₽</p>
+                <p><b>Разработчик:</b> {{ selectedGame.developer }}</p>
+                <p><b>Компания:</b> {{ selectedGame.companyName }}</p>
+                <p><b>Системные требования:</b> {{ selectedGame.systemRequirements }}</p>
+                <p><b>Локализация:</b> {{ selectedGame.localization }}</p>
+            </div>
+        </div>
+    </div>
+</div>
