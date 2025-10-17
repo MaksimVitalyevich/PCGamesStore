@@ -1,0 +1,22 @@
+<div class="cartField">
+    <h2 class="cartTitle">Корзина</h2>
+
+    <div *ngIf="cart.length === 0" class="emptyCartText">Корзина пуста</div>
+
+    <div *ngIf="cart.length > 0" class="ownedGamesField">
+        <div *ngFor="let game of cart" class="ownedGamesCard">
+            <div>
+                <div class="gameTitle">{{ game.title }}</div>
+                <div class="gamePriceText">
+                    {{ game.price }} ₽ × {{ game.quantity ?? 1 }}
+                </div>
+            </div>
+            <button (click)="remove(game.id)" class="gameDeletionText">Удалить</button>
+        </div>
+
+        <div class="cartBalanceField">
+            <div class="balanceText">Итого: {{ total }} ₽</div>
+            <button class="btnPaymentLink">Перейти к оплате</button>
+        </div>
+    </div>
+</div>
