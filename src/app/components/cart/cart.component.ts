@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 import { Game } from '../../models/game.model';
-import { NgIf, NgFor } from "../../../../node_modules/@angular/common/index";
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [NgIf, NgFor],
+  imports: [CommonModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })

@@ -45,7 +45,7 @@
                 </span>
             </label>
 
-            <div *ngIf="form.get('agreement')?.invalid && form.get('agreement')?.touched" class="redWarningText">
+            <div *ngIf="authForm.get('agreement')?.invalid && authForm.get('agreement')?.touched" class="redWarningText">
                 Для продолжения, необходимо подтвердить согласие!
             </div>
         </div>

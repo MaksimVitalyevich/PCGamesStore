@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgIf, NgFor, DecimalPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Theme } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
@@ -9,7 +9,7 @@ import { Game } from '../../models/game.model';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [NgIf, NgFor, DecimalPipe, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
@@ -49,7 +49,7 @@ export class ProfileComponent {
       return;
     }
 
-    const { email, phone, password } = this.profileForm.value;
+    const { email, phone, password } = this.profileForm.getRawValue();
     const updatedData: any = { email, phone };
 
     if (password) updatedData.password = password;
