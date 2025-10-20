@@ -1,0 +1,58 @@
+<div class="paymentField">
+    <h2 class="paymentTitle">Оплата заказа</h2>
+
+    <p class="totalSumText">
+        Итоговая сумма заказа: <b>{{ totalAmount }} ₽</b><br>
+        <span *ngIf="discount > 0" class="discountText">
+            Применена скидка {{ discount }}% -> <b>{{ finalAmount.toFixed(2) }} ₽</b>
+        </span>
+    </p>
+
+    <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" class="paymentMethodForm">
+
+        <div>
+            <label class="cardOptionMark">
+                <input type="radio" formControlName="method" value="card"> Банковская (Дебетовая) карта
+            </label>
+            <label class="promoOptionMark">
+                <input type="radio" formControlName="method" value="promo"> Промокод
+            </label>
+        </div>
+
+        <div *ngIf="paymentForm.get('method')?.value === 'card'" class="creditCardCredentials">
+            <input formControlName="cardNumber" placeholder="0000 0000 0000 0000">
+            <div class="cardValidationData">
+                <input formControlName="expiry" placeholder="MM/YY">
+                <input formControlName="cvc" placeholder="CVC">
+            </div>
+        </div>
+
+        <div class="promoCodeCredentials">
+            <label>Промокод</label>
+            <input formControlName="promoCode" maxLength="10" placeholder="Введите промокод...">
+        </div>
+
+        <div>
+            <label class="agreementTitle">
+                <input type="checkbox" formControlName="agreement">
+                <span class="disclaimerText">
+                    Я подтверждаю, что данная форма является симуляцией.
+                    Все реальные способы оплаты НЕ совершаются.
+                </span>
+            </label>
+            <div *ngIf="paymentForm.get('agreement')?.invalid && paymentForm.get('agreement')?.touched" class="redWarningText">
+                Подтвердите согласие перед оплатой!
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="isLoading" class="subPay">
+            {{ isLoading ? 'Обработка...' : 'Провести оплату' }}
+        </button>
+
+        <div *ngIf="message" class="messageNotifier" 
+        [class.text-green-600]="message.includes('успешно') || message.includes('применён')"
+        [class.text-red-600]="message.includes('Ошибка') || message.includes('недействителен')">
+        {{ message }}
+        </div>
+    </form>
+</div>

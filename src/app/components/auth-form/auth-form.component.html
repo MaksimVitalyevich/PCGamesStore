@@ -1,0 +1,62 @@
+<div class="authFormField">
+    <h2 class="loginTitleVar" *ngIf="mode === 'login'">Вход</h2>
+    <h2 class="registerTitleVar" *ngIf="mode === 'register'">Регистрация</h2>
+
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="reactiveAuth">
+        <div>
+            <label class="usernameMark">Имя Пользователя *</label>
+            <input formControlName="username">
+        </div>
+
+        <div *ngIf="mode === 'register'">
+            <label class="datebirthMark">Дата рождения</label>
+            <input type="date" formControlName="birthdate">
+        </div>
+
+        <div *ngIf="mode === 'register'">
+            <label class="usernamecredentialsMark">ФИО</label>
+            <input formControlName="usercredentials">
+        </div>
+
+        <div>
+            <label class="passwordMark">Пароль *</label>
+            <input type="password" formControlName="password">
+        </div>
+
+        <div *ngIf="mode === 'register'">
+            <label class="emailMark">Электронная почта *</label>
+            <input formControlName="email">
+        </div>
+
+        <div *ngIf="mode === 'register'">
+            <label class="phoneMark">Тел. номер *</label>
+            <input formControlName="phone" placeholder="+7 (XXX) XXX XX XX">
+        </div>
+
+        <div *ngIf="mode === 'register'">
+            <label class="inlineAgreementMark">
+                <input type="checkbox" formControlName="agreement">
+                <span class="disclaimerText">
+                    Я подтверждаю, что все введённые данные используются исключительно в демонстрационных целях.<br>
+                    Данный проект является учебным и НЕ обрабатывает/передаёт реальные персональные данные.<br>
+                    Автор НЕ несёт никакой ответственности за:<br>
+                    - Хищение данных сторонним 3-им лицам (при учете подделки);<br>
+                    - Если пользователь действительно указал реальные данные;
+                </span>
+            </label>
+
+            <div *ngIf="authForm.get('agreement')?.invalid && authForm.get('agreement')?.touched" class="redWarningText">
+                Для продолжения, необходимо подтвердить согласие!
+            </div>
+        </div>
+
+        <div *ngIf="errMessage" class="errorText">{{ errMessage }}</div>
+
+        <div class="btnsField">
+            <button type="submit" class="subEnter">{{ mode === 'login' ? 'Войти' : 'Создать аккаунт' }}</button>
+            <button type="button" class="firstEnter" (click)="toggleMode()">
+                {{ mode === 'register' ? 'У меня есть аккаунт!' : 'Регистрация' }}
+            </button>
+        </div>
+    </form>
+</div>

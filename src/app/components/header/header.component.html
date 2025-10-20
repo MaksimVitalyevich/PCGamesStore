@@ -1,0 +1,40 @@
+<header>
+    <div class="logo" routerLink="/">
+        <figure>
+            <img src="assets/logo.png" alt="Logo">
+        </figure>
+        <h1>ParoVoz - Аналог НАШЕГО Steam!</h1>
+    </div>
+
+    <div class="searcharea">
+        <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" 
+        placeholder="Поиск игр по названию...">
+        <button (click)="onSearch()">Найти</button>
+    </div>
+
+    <nav>
+        <a routerLink="/" routerLinkActive="active">Главная</a>
+        <a routerLink="/cart" routerLinkActive="active" (click)="goToCart()">
+            Корзина <span *ngIf="cartCount > 0" class="cart">({{ cartCount }})</span>
+            <img src="assets/cart-icon.png" alt="Cart">
+        </a>
+        <ng-container *ngIf="!user">
+            <a (click)="goToAuth()">Войти</a>
+        </ng-container>
+
+        <ng-container *ngIf="user">
+            <a (click)="goToProfile()">Личный Кабинет</a>
+            <button (click)="logout()">Выйти</button>
+        </ng-container>
+    </nav>
+</header>
+
+<aside>
+    <h3>Топ игр текущей недели</h3>
+    <ul>
+        <li *ngFor="let game of topGames">
+            <span>{{ game.title }}</span>
+            <span class="topprice">{{ game.price }} ₽</span>
+        </li>
+    </ul>
+</aside>
