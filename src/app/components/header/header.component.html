@@ -19,11 +19,11 @@
             <img src="assets/cart-icon.png" alt="Cart">
         </a>
         <ng-container *ngIf="!user">
-            <a (click)="goToAuth()">Войти</a>
+            <a (click)="goToAuth()" class="userStatus">Войти</a>
         </ng-container>
 
         <ng-container *ngIf="user">
-            <a (click)="goToProfile()">Личный Кабинет</a>
+            <a (click)="goToProfile()" class="userStatus">Личный Кабинет</a>
             <button (click)="logout()">Выйти</button>
         </ng-container>
     </nav>

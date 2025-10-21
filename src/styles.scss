@@ -139,6 +139,10 @@ nav a:hover {
     text-shadow: 0 0 6px $color-accent2-hover;
 }
 
+.userStatus {
+    cursor: pointer;
+}
+
 .active {
     color: #ff8080;
     text-decoration: underline;
@@ -225,6 +229,15 @@ footer p {
 .footerlink:hover {
     text-decoration: underline;
 }
+.copyrightBanner {
+    background: #8e2727;
+    color: #c2911e;
+    padding: 10px 16px;
+    border-radius: 10px;
+    width: 90%;
+    margin: 0 auto;
+    line-height: 1.5;
+}
 
 /* ========================== Мелкие утилиты и анимации ================================== */
 .btn {
@@ -240,6 +253,21 @@ footer p {
 }
 .btn:hover {
     background: $color-hover;
+}
+
+button.hovered {
+    transform: scale(1.05);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+  
+body.light {
+    background-color: #fdfdfd;
+    color: #222;
+}
+  
+body.dark {
+    background-color: #222;
+    color: #fdfdfd;
 }
 
 .shadowed {

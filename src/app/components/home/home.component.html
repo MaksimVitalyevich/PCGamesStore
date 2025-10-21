@@ -30,6 +30,7 @@
 
             <div *ngIf="!isEditing && selectedGame" class="viewSection">
                 <h2>{{ selectedGame.title }}</h2>
+                <p><b>Год выхода:</b> {{ selectedGame.published_at }}</p>
                 <p><b>Жанр:</b> {{ selectedGame.genre }}</p>
                 <p><b>Цена:</b> {{ selectedGame.price }} ₽</p>
                 <p><b>Разработчик:</b> {{ selectedGame.developer }}</p>
@@ -41,6 +42,9 @@
             <form *ngIf="isEditing" [formGroup]="gameForm" (ngSubmit)="saveChanges()" class="gameFormEdit">
                 <label>Название</label>
                 <input formControlName="title">
+
+                <label>Год выхода</label>
+                <input formControlName="published_at">
 
                 <label>Жанр</label>
                 <input formControlName="genre">
