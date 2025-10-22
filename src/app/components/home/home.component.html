@@ -3,7 +3,8 @@
 
     <div class="gamesGrid">
         <div *ngFor="let game of games" class="gameCard">
-            <img [src]="game.image" [alt]="game.title" class="gameImage">
+            <img [src]="game.image || 'assets/games/no-cover.png'" [alt]="game.title || 'Без обложки'" 
+            loading="lazy" class="gameImage">
 
             <div class="gameInfo">
                 <h3>{{ game.title }}</h3>
