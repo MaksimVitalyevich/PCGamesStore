@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentService } from '../../services/payment.service';
 import { CartService } from '../../services/cart.service';
-import { PayMethod, UserService } from '../../services/user.service';
+import { BalanceService } from '../../services/balance.service';
+import { PayMethod } from '../../models/enumerators.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -27,7 +28,7 @@ export class PaymentComponent {
     private fb: FormBuilder, 
     private paymentService: PaymentService, 
     private cartService: CartService,
-    private userService: UserService, 
+    private balanceService: BalanceService, 
     private router: Router
   ) { }
 
@@ -46,7 +47,7 @@ export class PaymentComponent {
       this.updateFinalAmount();
     });
 
-    this.userService.balance$.subscribe(b => this.balance = b);
+    this.balanceService.balance$.subscribe(b => this.balance === b)
 
     this.paymentForm.get('promoCode')?.valueChanges.subscribe(code => {
       if (code && code.length >= 4) this.applyPromo(code);
@@ -85,7 +86,7 @@ export class PaymentComponent {
       return;
     }
 
-    if (!this.userService.canAfford(this.finalAmount)) {
+    if (this.balanceService.balance < this.finalAmount) {
       this.message = "У вас недостаточно средств на счету!";
       return;
     }
@@ -95,7 +96,7 @@ export class PaymentComponent {
     this.paymentService.simulatePayment(this.paymentForm.value, this.totalAmount).subscribe(result => {
       this.isLoading = false;
       if (result.success) {
-        this.userService.updateBalance(this.finalAmount);
+        this.balanceService.decrease(this.finalAmount);
         this.cartService.clearCart();
         this.message = `Оплата прошла успешно! С вашего счета списано ${this.finalAmount.toFixed(2)} ₽`;
         setTimeout(() => this.router.navigate(['/profile']), 2500);

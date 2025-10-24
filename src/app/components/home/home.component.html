@@ -14,8 +14,9 @@
 
             <div class="actions">
                 <button class="btnDetails" (click)="openModal(game)">Подробнее</button>
-                <button class="btnBuy" (click)="buyGame(game)">Купить</button>
-                <button class="btnEdit" (click)="editGame(game)">Редактировать</button>
+                <button *ngIf="isUser()" class="btnBuy" (click)="buyGame(game)">Купить</button>
+                <button *ngIf="isModerator()" class="btnEdit" (click)="editGame(game)">Редактировать</button>
+                <button *ngIf="isModerator()" class="btnDelete">Удалить</button>
             </div>
         </div>
 

@@ -1,6 +1,7 @@
 <div class="authFormField">
-    <h2 class="loginTitleVar" *ngIf="mode === 'login'">Вход</h2>
-    <h2 class="registerTitleVar" *ngIf="mode === 'register'">Регистрация</h2>
+    <h2 class="loginTitleVar" *ngIf="mode === LoginMethod.Login">Вход</h2>
+    <h2 class="registerTitleVar" *ngIf="mode === LoginMethod.Register">Регистрация</h2>
+    <h2 class="quickLoginTitleVar" *ngIf="mode === LoginMethod.QuickLogin">Быстрый вход</h2>
 
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="reactiveAuth">
         <div>
@@ -8,12 +9,12 @@
             <input formControlName="username">
         </div>
 
-        <div *ngIf="mode === 'register'">
+        <div *ngIf="mode === LoginMethod.Register">
             <label class="datebirthMark">Дата рождения</label>
             <input type="date" formControlName="birthdate">
         </div>
 
-        <div *ngIf="mode === 'register'">
+        <div *ngIf="mode === LoginMethod.Register">
             <label class="usernamecredentialsMark">ФИО</label>
             <input formControlName="usercredentials">
         </div>
@@ -23,17 +24,17 @@
             <input type="password" formControlName="password">
         </div>
 
-        <div *ngIf="mode === 'register'">
+        <div *ngIf="mode === LoginMethod.Register">
             <label class="emailMark">Электронная почта *</label>
             <input formControlName="email">
         </div>
 
-        <div *ngIf="mode === 'register'">
+        <div *ngIf="mode === LoginMethod.Register">
             <label class="phoneMark">Тел. номер *</label>
             <input formControlName="phone" placeholder="+7 (XXX) XXX XX XX">
         </div>
 
-        <div *ngIf="mode === 'register'">
+        <div *ngIf="mode === LoginMethod.Register">
             <label class="inlineAgreementMark">
                 <input type="checkbox" formControlName="agreement">
                 <span class="disclaimerText">
@@ -50,13 +51,27 @@
             </div>
         </div>
 
+        <div *ngIf="mode === LoginMethod.QuickLogin">
+            <select [(ngModel)]="selectedQuickUser">
+                <option value="">Выберите пользователя ниже...</option>
+                <option *ngFor="let u of quickUsers" [ngValue]="u.username">{{ u.username }} ({{ u.role }})</option>
+            </select>
+        </div>
+
         <div *ngIf="errMessage" class="errorText">{{ errMessage }}</div>
 
         <div class="btnsField">
-            <button type="submit" class="subEnter">{{ mode === 'login' ? 'Войти' : 'Создать аккаунт' }}</button>
-            <button type="button" class="firstEnter" (click)="toggleMode()">
-                {{ mode === 'register' ? 'У меня есть аккаунт!' : 'Регистрация' }}
+            <button *ngIf="mode !== LoginMethod.QuickLogin" type="submit" class="subEnter">
+                {{ mode === LoginMethod.Login ? 'Войти' : 'Создать аккаунт' }}
             </button>
+            <button *ngIf="mode === LoginMethod.QuickLogin" type="button" class="quickEnter" (click)="onQuickLogin()">
+                Использовать этот аккаунт</button>
+            <button type="button" class="firstEnter" (click)="toggleMode(LoginMethod.Login)" 
+            *ngIf="mode !== LoginMethod.Login">Обычный вход</button>
+            <button type="button" class="firstEnter" (click)="toggleMode(LoginMethod.Register)"
+            *ngIf="mode !== LoginMethod.Register">Регистрация</button>
+            <button type="button" class="firstEnter" (click)="toggleMode(LoginMethod.QuickLogin)"
+            *ngIf="mode !== LoginMethod.QuickLogin">Быстрый вход</button>
         </div>
     </form>
 </div>

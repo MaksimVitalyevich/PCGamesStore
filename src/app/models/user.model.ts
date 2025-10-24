@@ -1,9 +1,5 @@
 import { Game } from "./game.model";
-
-export enum Theme {
-    Light = 'light',
-    Dark = 'dark'
-}
+import { Theme, UserRole } from "./enumerators.model";
 
 export interface User {
     id: number;
@@ -17,5 +13,6 @@ export interface User {
     purchases?: Game[];
     theme?: Theme;
     avatarURL?: string;
+    role: UserRole;
     created_at: Date;
 }

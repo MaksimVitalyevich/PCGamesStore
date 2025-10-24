@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of} from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { User, Theme } from '../models/user.model';
+import { Theme, UserRole } from '../models/enumerators.model';
+import { User } from '../models/user.model';
 import { Game } from '../models/game.model';
-
-export enum PayMethod { Card = 'card', Promo = 'promo' }
+import { BalanceService } from './balance.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,7 @@ export class UserService {
   private userSource = new BehaviorSubject<User | null>(null);
   user$ = this.userSource.asObservable();
 
-  private balanceSource = new BehaviorSubject<number>(0);
-  balance$ = this.balanceSource.asObservable();
+  private usersCache: User[] = [];
 
   private purchasesSource = new BehaviorSubject<Game[]>([]);
   purchases$ = this.purchasesSource.asObservable();
@@ -27,16 +26,32 @@ export class UserService {
   private readonly API_URL = 'http://localhost/PHPApp/api/users.php';
   private readonly MOCK_MODE = true;
 
-  constructor(private http: HttpClient) {
-    // Загрузка пользователя (если уже имеется)
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      const user = JSON.parse(savedUser) as User;
-      this.userSource.next(user);
-      this.balanceSource.next(user.balance ?? 2500);
-      this.purchasesSource.next(user.purchases ?? []);
-      this.themeSource.next(user.theme ?? Theme.Light);
-    }
+  constructor(private http: HttpClient, private balanceService: BalanceService) { }
+
+  /** Загрузка списка пользователей из savedRoles.json */
+  loadUsersFromFile(): Observable<User[]> {
+    return this.http.get<any>('data/savedRoles.json').pipe(map(data => {
+      const all: User[] = [];
+
+      const parse = (group: any) => Object.values(group).map((u: any) => ({
+        id: Number(u.id),
+        username: u.username,
+        password: u.password,
+        email: u.email,
+        phone: Number(u.phone),
+        balance: Number(u.balance),
+        created_at: new Date(u.created_at),
+        role: u.role
+      }));
+
+      all.push(...parse(data.moderators));
+      all.push(...parse(data.users));
+      all.push(...parse(data.premium));
+
+      this.usersCache = all;
+      localStorage.setItem('users', JSON.stringify(all));
+      return all;
+    }), tap(() => console.log('Пользователи загружены из файла savedRoles.json!')));
   }
 
   /** Возврат текущего пользователя (если вошел) */
@@ -45,44 +60,14 @@ export class UserService {
   /** Проверка на авторизацию пользователя */
   isAuthenticated(): boolean { return !!this.user; }
 
-  /** Получение баланса пользователя */
-  getBalance(): number { return this.balanceSource.value; }
-
-  /** Проверка на достаточность средств */
-  canAfford(amount: number): boolean { return this.getBalance() >= amount; }
-
-  /** Обновление баланса */
-  updateBalance(amount: number): void {
-    const current = this.getBalance();
-    const newBalance = Math.max(0, current - amount);
-
-    this.balanceSource.next(newBalance);
-
-    const user = this.user
-    if (user) {
-      user.balance = newBalance;
-      localStorage.setItem('user', JSON.stringify(user));
-      this.userSource.next(user);
-    }
-  }
-
   /** Сохранение с обновлением настроек профиля */
   updateProfile(profileData: Partial<User>): void {
     const user = this.user;
     if (!user) return;
 
-    const updatedUser = {...user, ...profileData};
-
-    localStorage.setItem('user', JSON.stringify(user));
-
+    const updatedUser = { ...user, ...profileData };
+    localStorage.setItem('user', JSON.stringify(updatedUser));
     this.userSource.next(updatedUser);
-
-    if (updatedUser.balance !== undefined) {
-      this.balanceSource.next(updatedUser.balance);
-    }
-    if (updatedUser.theme) {
-      this.themeSource.next(updatedUser.theme);
-    }
   }
 
   /** Настройка темы профиля */
@@ -91,13 +76,8 @@ export class UserService {
   /** Нормализация тел. номера: +7 (XXX) XXX XX XX -> 8XXXXXXXXXX */
   private normalizePhone(input: string): number {
     if (!input) return 0;
-
     let digits = input.replace(/\D/g, '');
-
-    if (digits.startsWith('7')) {
-      digits = '8' + digits.slice(1);
-    }
-
+    if (digits.startsWith('7')) digits = '8' + digits.slice(1);
     return Number(digits);
   }
 
@@ -111,7 +91,7 @@ export class UserService {
         const user = JSON.parse(savedTestUser) as User;
         if (user.username === username && user.password === password) {
           this.userSource.next(user);
-          this.balanceSource.next(user.balance);
+          this.balanceService.setBalance(user.balance);
           return of(user);
         }
       }
@@ -119,13 +99,25 @@ export class UserService {
       return this.http.post<User | null>(`${this.API_URL}?action=login`, { username, password}).pipe(tap(user => {
         if (user) {
           this.userSource.next(user);
-          this.balanceSource.next(user.balance ?? 2500);
+          this.balanceService.setBalance(user.balance ?? 2000);
           localStorage.setItem('user', JSON.stringify(user));
         }
       }), catchError(err => {
         console.error('Ошибка входа:', err);
         return of(null);
       }));
+    }
+    return of(null);
+  }
+
+  /** Быстрый логин (выполняется по имени пользователя) */
+  quickLogin(username: string): Observable<User | null> {
+    const user = this.usersCache.find(u => u.username === username);
+    if (user) {
+      this.userSource.next(user);
+      this.balanceService.setBalance(user.balance);
+      localStorage.setItem('user', JSON.stringify(user));
+      return of(user);
     }
     return of(null);
   }
@@ -142,19 +134,20 @@ export class UserService {
         password,
         email,
         phone: normalizedPhone,
-        balance: 2500,
+        balance: 2000,
+        role: UserRole.User,
         created_at: new Date()
       };
 
       localStorage.setItem('user', JSON.stringify(testUser));
       this.userSource.next(testUser);
-      this.balanceSource.next(testUser.balance);
+      this.balanceService.setBalance(testUser.balance);
       return of(testUser);
     } else {
       return this.http.post<User | null>(`${this.API_URL}?action=register`, rebuildData).pipe(tap(user => {
         if (user) {
           this.userSource.next(user);
-          this.balanceSource.next(user.balance ?? 2500);
+          this.balanceService.setBalance(user.balance ?? 2000);
           localStorage.setItem('user', JSON.stringify(user));
         }
       }), catchError(err => {
@@ -168,5 +161,6 @@ export class UserService {
   logout(): void {
     this.userSource.next(null);
     localStorage.removeItem('user');
+    this.balanceService.setBalance(0);
   }
 }

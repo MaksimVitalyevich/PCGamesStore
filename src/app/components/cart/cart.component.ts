@@ -14,27 +14,23 @@ import { Router } from '@angular/router';
 export class CartComponent {
   cart: Game[] = [];
   total = 0;
-  isPaymentTransition = false;
 
   constructor(private cartService: CartService, private router: Router) { }
 
   ngOnInit() {
-    this.cartService.cart$.subscribe(items => {
-      this.cart = items;
-      this.total = this.cartService.getTotal();
-    });
+    this.cartService.cart$.subscribe(items => this.cart = items);
+    this.cartService.totalAmount$.subscribe(total => this.total = total);
   }
 
-  remove(gameID: number) { this.cartService.removeFromCart(gameID); }
+  remove(gameID: number) { this.cartService.removeItem(gameID); }
   clear() { this.cartService.clearCart(); }
 
   /** Переход к форме оплаты */
   gotoPayment() {
     if (this.cart.length === 0) {
-      alert('Корзина пустая! Добавьте хотя бы одну игру перед оплатой.');
+      alert('Ваша корзина пустая!');
       return;
     }
-    this.isPaymentTransition = true;
     setTimeout(() => this.router.navigate(['/payment']), 400);
   }
 }

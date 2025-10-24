@@ -1,0 +1,38 @@
+{
+    "moderators": { 
+        "1": {
+            "id": "1",
+            "username": "MaksimVitalyevich",
+            "password": "Vt31m12",
+            "email": "Maksim@ya.ru",
+            "phone": "89005552842",
+            "balance": "300000",
+            "created_at": "05.10.2025",
+            "role": "Moderator"
+        }
+    },
+    "users": { 
+        "1": {
+            "id": "1234",
+            "username": "test-user",
+            "password": "222999",
+            "email": "user@gamehub.ru",
+            "phone": "81116601515",
+            "balance": "2000",
+            "created_at": "20.10.2025",
+            "role": "User"
+        }
+    },
+    "premium": {
+        "1": {
+            "id": "4444",
+            "username": "premium-user",
+            "password": "282828",
+            "email": "premVIP@gamehub.ru",
+            "phone": "89092281647",
+            "balance": "8000",
+            "created_at": "20.10.2025",
+            "role": "Premium"
+        }
+    }
+}

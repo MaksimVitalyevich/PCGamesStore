@@ -1,62 +1,51 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Game } from '../models/game.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private cartItems: Game[] = [];
-  private cartSubject = new BehaviorSubject<Game[]>([]);
-  cart$ = this.cartSubject.asObservable();
+  private itemsSource = new BehaviorSubject<Game[]>([]);
+  cart$ = this.itemsSource.asObservable();
 
-  private totalAmountSubject = new BehaviorSubject<number>(0);
-  totalAmount$ = this.totalAmountSubject.asObservable();
+  private totalSource= new BehaviorSubject<number>(0);
+  totalAmount$ = this.totalSource.asObservable();
 
   constructor() {
     const saved = localStorage.getItem('cart'); // Локальное состояние корзины
     if (saved) {
-      this.cartItems = JSON.parse(saved);
-      this.updateCart();
+      const parsed: Game[] = JSON.parse(saved);
+      this.itemsSource.next(parsed);
+      this.updateTotal(parsed);
     }
-   }
-
-   /** Вернет текущее состояние корзины */
-  getCart(): Game[] { return [...this.cartItems]; }
+  }
 
   /** Добавит игру в корзину */
-  addToCart(game: Game): void {
-    if (!this.cartItems.find(g => g.id === game.id)) {
-      this.cartItems.push(game);
-      this.updateCart();
-    }
+  addItem(game: Game): void {
+    const updated = [...this.itemsSource.value, game];
+    this.updateCart(updated);
   }
 
   /** Удаляет игру по ID */
-  removeFromCart(gameID: number): void {
-    this.cartItems = this.cartItems.filter(g => g.id !== gameID);
-    this.updateCart();
+  removeItem(id: number): void {
+    const updated = this.itemsSource.value.filter(g => g.id === id);
+    this.updateCart(updated);
   }
 
   /** Очистка корзины */
-  clearCart(): void {
-    this.cartItems = [];
-    this.updateCart();
+  clearCart(): void { this.updateCart([]); }
+
+  private updateCart(games: Game[]): void {
+    this.itemsSource.next(games);
+    localStorage.setItem('cart', JSON.stringify(games));
+    this.updateTotal(games);
   }
 
-  /** Подсчет итоговой суммы (однократно) */
-  getTotal(): number { return this.totalAmountSubject.value; }
-
-  /** Пересчет суммы + сохранение корзины */
-  private updateCart(): void {
-    const total = this.cartItems.reduce((sum, game) => sum + (game.price || 0), 0);
-    this.totalAmountSubject.next(total);
-    this.cartSubject.next([...this.cartItems]);
-    localStorage.setItem('cart', JSON.stringify(this.cartItems));
+  private updateTotal(games: Game[]): void {
+    const total = games.reduce((acc, g) => acc + g.price, 0);
+    this.totalSource.next(total);
   }
-
-  //checkout(): Observable<PaymentResponse>;
-  //loadCartFromServer(userID: number): Observable<Game[]>;
 
   /** Синхронизация с сервером PHP */
   syncWithServer(): void {
