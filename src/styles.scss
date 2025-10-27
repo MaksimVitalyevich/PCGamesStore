@@ -3,21 +3,24 @@
    ============================================================================ */
 
 /* ======================== Основная Палитра сайта ============================ */
-$color-bg-dark: #0d0d0d;
-$color-bg-light: #1b1b22;
-$color-accent: #00ff88;
-$color-accent-two: #a64dff;
-$color-accent2-hover: #c77dff;
-$color-text: #e8e8e8;
-$color-muted: #999;
-$color-border: #2e2e36;
-$color-hover: #ff5757;
-$color-example: #ffe100;
-
 /* ======================== Шрифты ============================================= */
-$font-main: 'Segoe UI', 'Roboto', sans-serif;
-$font-accent: 'Orbitron', sans-serif;
+:root {
+    --color-bg-dark: #0d0d0d;
+    --color-bg-light: #f0f0f7;
+    --accent-turquoise: #00e6e6;
+    --accent-red: #ff3b3b;
+    --accent-green: #00ff85;
+    --border-tab: #084d3a;
+    --accent-purple: #8a00ff;
+    --accent-purple-hover: #c77dff;
+    --text-main: #648fe0;
+    --text-dark: #101010;
+    --muted-text: #999;
+    --color-shadow: #00000085;
 
+    --font-main: 'Segoe UI', 'Roboto', sans-serif;
+    --font-accent: 'Orbitron', sans-serif;
+}
 
 /* ======================== Глобальный сброс =================================== */
 * {
@@ -28,9 +31,9 @@ $font-accent: 'Orbitron', sans-serif;
 
 /* ======================== Базовые элементы =================================== */
 body {
-    background-color: $color-bg-dark;
-    color: $color-text;
-    font-family: $font-main;
+    background-color: var(--color-bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-main);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding: 1rem 2rem;
     display: flex;
@@ -40,7 +43,7 @@ body {
 }
 
 header {
-    background-color: $color-bg-light;
+    background-color: var(--color-bg-light);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding: 1rem 2rem;
     display: flex;
@@ -50,12 +53,12 @@ header {
 
 /* ========================= Логотип сайта ======================================= */
 .logo {
-    color: $color-accent;
+    color: var(--accent-green);
     display: flex;
     align-items: center;
     font-size: 1.6rem;
     font-weight: 700;
-    text-shadow: 0 0 10px $color-accent;
+    text-shadow: 0 0 10px var(--accent-green);
     cursor: pointer;
 }
 .logo figure {
@@ -72,7 +75,7 @@ header {
 .logo h1 {
     font-size: 1.4rem;
     font-weight: 600;
-    color: $color-bg-dark;
+    color: var(--color-bg-dark);
 }
 
 .searcharea {
@@ -98,7 +101,7 @@ header {
 }
 
 button {
-    background: linear-gradient(135deg, $color-accent, $color-accent-two);
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-purple));
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -119,14 +122,14 @@ nav {
     gap: 1rem;
 }
 nav a {
-    color: $color-accent2-hover;
+    color: var(--accent-purple-hover);
     font-weight: 600;
     text-decoration: none;
     transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 nav button {
     background-color: #ff5f5f;
-    color: $color-text;
+    color: var(--text-main);
     border: none;
     border-radius: 6px;
     padding: 0.3rem 0.8rem;
@@ -136,8 +139,8 @@ nav button:hover {
     background-color: #ff3b3b;
 }
 nav a:hover {
-    color: $color-accent2-hover;
-    text-shadow: 0 0 6px $color-accent2-hover;
+    color: var(--accent-purple-hover);
+    text-shadow: 0 0 6px var(--accent-purple-hover);
 }
 
 .userStatus {
@@ -167,8 +170,8 @@ aside {
     right: 0;
     top: 80px;
     width: 220px;
-    background: $color-bg-light;
-    color: $color-text;
+    background: var(--color-bg-light);
+    color: var(--text-main);
     border-left: 2px solid #ff5f5f;
     padding: 1rem;
     height: calc(100vh - 80px);
@@ -190,7 +193,7 @@ aside li {
     justify-content: space-between;
     margin: 0.4rem 0;
     padding: 0.3rem 0.4rem;
-    border-bottom: 1px solid $color-border;
+    border-bottom: 1px solid var(--border-tab);
     font-size: 0.9rem;
 }
 .topprice {
@@ -202,21 +205,21 @@ aside li {
 main {
     padding: 2rem;
     min-height: calc(100vh - 160px); // footer НЕ будет налезать
-    background-color: $color-bg-dark;
+    background-color: var(--color-bg-dark);
 }
 
 /* ========================== Подвал сайта =============================================== */
 footer {
-    background-color: $color-bg-light;
-    color: $color-muted;
-    border-top: 1px solid $color-border;
+    background-color: var(--color-bg-light);
+    color: var(--muted-text);
+    border-top: 1px solid var(--border-tab);
     padding: 1.2rem;
     font-size: 0.9rem;
     text-align: center;
     line-height: 1.6;
 }
 footer a {
-    color: $color-accent;
+    color: var(--accent-green);
     font-weight: 600;
 }
 footer p {
@@ -238,48 +241,4 @@ footer p {
     width: 90%;
     margin: 0 auto;
     line-height: 1.5;
-}
-
-/* ========================== Мелкие утилиты и анимации ================================== */
-.btn {
-    display: inline-block;
-    padding: 0.6rem 1.2rem;
-    background: $color-accent;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: bold;
-    transition: background 0.2s ease-in-out;
-}
-.btn:hover {
-    background: $color-hover;
-}
-
-button.hovered {
-    transform: scale(1.05);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-  
-body.light {
-    background-color: #fdfdfd;
-    color: #222;
-}
-  
-body.dark {
-    background-color: #222;
-    color: #fdfdfd;
-}
-
-.shadowed {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-.fade-in {
-    animation: fadeIn 0.5s ease forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
 }

@@ -47,7 +47,7 @@ export const gameCardAnim = trigger('gameCardAnim', [
     transition(':leave', [
         animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(30px)' }))
     ]),
-    state('hover', style({ filter: 'brightness(0.75)' })),
+    state('hover', style({ filter: 'brightness(0.9)' })),
     state('normal', style({ filter: 'brightness(1)' }))
 ]);
 

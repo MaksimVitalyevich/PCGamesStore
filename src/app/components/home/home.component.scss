@@ -1,99 +1,174 @@
-:root {
-  --color-bg: #ffffff;
-  --color-border-tab: #0d3f2d;
-  --color-accent-purple: #7d00ff;
-  --color-accent-green: #00ff85;
-  --color-text-main: #00d9d9;
-  --color-text-accent: #ff3b3b;
-  --color-text-dark: #101010;
-}
-
+@use '../../../styles.scss' as *;
 
 .homeContainer {
-    padding: 1rem 2rem;
-  }
-  
+  background-color: var(--color-bg-light);
+  color: var(--text-dark);
+  padding: 2rem;
+
   .homeTitle {
-    font-size: 1.6rem;
+    color: var(--accent-turquoise);
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 0 0 6px rgba(0, 230, 230, 0.6);
+    letter-spacing: 0.5px;
     margin-bottom: 1.5rem;
   }
-  
+
   .gamesGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1rem;
+    gap: 1.5rem;
+    justify-items: center;
   }
-  
+
   .gameCard {
-    background: #f8f8f8;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 800px;
+    background: linear-gradient(145deg, rgba(70, 0, 90, 0.95), rgba(0, 130, 70, 0.9));
+    color: var(--text-main);
+    border: 3px solid var(--border-tab);
+    border-radius: 16px;
+    box-shadow: 0 2px 15px var(--color-shadow);
     overflow: hidden;
-    padding: 0.5rem;
+    padding: 1rem;
     text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 255, 100, 0.7);
+    }
   }
-  
+
   .gameImage {
     width: 100%;
     height: 180px;
     aspect-ratio: 16/9;
     object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    margin-bottom: 0.8rem;
   }
-  
+
+  .gameInfo {
+    text-align: center;
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-turquoise);
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 6px var(--color-shadow);
+    }
+    h3.hot {
+      color: var(--accent-red);
+      text-shadow: 0 0 5px rgba(255, 59, 59, 0.7), 0 0 10px rgba(0, 230, 230, 0.8);
+    }
+    .genreText {
+      font-size: 0.9rem;
+      color: var(--accent-turquoise);
+    }
+    .priceText {
+      font-weight: bold;
+      color: var(--accent-red);
+      text-shadow: 0 0 4px rgba(255, 0, 0, 0.4);
+    }
+  }
+
   .actions {
     display: flex;
-    justify-content: space-around;
-    margin-top: 0.6rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+
+    button {
+      background: linear-gradient(135deg, var(--accent-turquoise), var(--accent-red));
+      color: #fff;
+      padding: 10px 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.25s, transform 0.25s;
+
+      &.hover {
+        box-shadow: 0 0 12px rgba(255, 59, 59, 0.6), 0 0 18px rgba(0, 230, 230, 0.5);
+      }
+
+      &.btnDetails {
+        background-color: var(--accent-turquoise);
+        color: #000;
+      }
+      &.btnEdit {
+        background-color: var(--accent-purple);
+        color: #fff;
+      }
+      &.btnBuy {
+        background-color: mediumspringgreen;
+        color: #000;
+      }
+      &.btnDelete {
+        background-color: crimson;
+        color: #fff;
+      }
+    }
   }
-  
-  button {
-    padding: 0.4rem 0.8rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-  }
-  
-  .btnBuy { background-color: #5cb85c; color: white; }
-  .btnEdit { background-color: #f0ad4e; color: white; }
-  .btnDetails { background-color: #0275d8; color: white; }
-  
+
   .addGameCard {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #ececec;
-    border-radius: 12px;
+    background: repeating-linear-gradient(45deg, rgba(0, 255, 120, 0.1), rgba(180, 0, 255, 0.1));
+    border: 2px dashed darkgreen;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 280px;
+    color: darkgreen;
     cursor: pointer;
     height: 220px;
-    transition: background 0.2s;
+    transition: 0.3s;
+
+    &hover {
+      background: rgba(0, 255, 120, 0.2);
+      transform: scale(1.03);
+    }
+
+    .addSign {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
   }
-  
-  .addGameCard:hover { background: #d8d8d8; }
-  .addSign { font-size: 3rem; color: #555; }
-  
+
   /* Модалка */
   .modalOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.6);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(25, 0, 35, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(6px);
+    animation: fadeIn 0.3s ease forwards;
   }
-  
+
   .modalContent {
-    background: white;
+    background: var(--color-bg-light);
     padding: 1.5rem;
-    border-radius: 10px;
-    width: 500px;
-    max-height: 80vh;
+    border: 2px solid var(--accent-green);
+    border-radius: 16px;
+    box-shadow: 0 0 10px var(--accent-purple), 0 0 25px rgba(0, 255, 100, 0.4);
+    width: 520px;
+    max-height: 90%;
+    color: var(--text-dark);
     overflow-y: auto;
     position: relative;
+    animation: slideUp 0.35s ease forwards;
   }
+}
   
   .closeBtn {
     position: absolute;
