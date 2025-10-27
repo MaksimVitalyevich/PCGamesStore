@@ -1,0 +1,85 @@
+<div class="homeContainer">
+    <div *ngIf="purchased.length > 0" class="purchasedList" [@purchaseFieldAnim]>
+        <h4>История ваших покупок:</h4>
+        <ul>
+            <li *ngFor="let game of purchased">{{ game.title }} - {{ game.purchaseDate | date:'medium' }}</li>
+        </ul>
+    </div>
+
+    <h2 class="homeTitle">Каталог ПК игр</h2>
+
+    <div class="gamesGrid">
+        <div *ngFor="let game of games" class="gameCard" [@gameCardAnim]="hoveredCard === game ? 'hover' : 'normal'" (mouseenter)="hoveredCard = game" (mouseleave)="hoveredCard = null">
+            <img [src]="game.image || 'assets/games/no-cover.png'" [alt]="game.title || 'Без обложки'" 
+            loading="lazy" class="gameImage">
+
+            <div class="gameInfo">
+                <h3>{{ game.title }}</h3>
+                <p class="genreText">{{ game.genre }}</p>
+                <p class="priceText">{{ game.price | currency:'RUB':'symbol-narrow' }}</p>
+            </div>
+
+            <div class="actions">
+                <button class="btnDetails" (click)="openModal(game)">Подробнее</button>
+                <button class="btnBuy" [disabled]="isPurchasedAlready(game.id)" (click)="buyGame(game)" *ngIf="role === UserRole.User || role === UserRole.PremiumUser || role === UserRole.Moderator">
+                    {{ isPurchasedAlready(game.id) ? 'Уже приобретено' : 'Купить эту игру' }}
+                </button>
+                <button *ngIf="role === UserRole.Moderator" class="btnEdit" (click)="editGame(game)">Редактировать</button>
+                <button *ngIf="role === UserRole.Moderator" class="btnDelete" (click)="deleteGame(game.id)">Удалить</button>
+            </div>
+        </div>
+
+        <div *ngIf="role === UserRole.Moderator" class="addGameCard" (click)="addNewGame()">
+            <span class="addSign">+</span>
+            <p>Добавить игру</p>
+        </div>
+    </div>
+
+    <div *ngIf="showModal" @modalAnims (click)="closeModal()" class="modalOverlay">
+        <div class="modalContent" (click)="$event.stopPropagation()">
+            <button class="closeBtn" (click)="closeModal()">Х</button>
+
+            <div *ngIf="!isEditing && selectedGame" class="viewSection">
+                <h2>{{ selectedGame.title }}</h2>
+                <p><b>Год выхода:</b> {{ selectedGame.published_at }}</p>
+                <p><b>Жанр:</b> {{ selectedGame.genre }}</p>
+                <p><b>Цена:</b> {{ selectedGame.price }} ₽</p>
+                <p><b>Разработчик:</b> {{ selectedGame.developer }}</p>
+                <p><b>Компания:</b> {{ selectedGame.companyName }}</p>
+                <p><b>Системные требования:</b> {{ selectedGame.systemRequirements }}</p>
+                <p><b>Локализация:</b> {{ selectedGame.localization }}</p>
+            </div>
+
+            <form *ngIf="isEditing" [formGroup]="gameForm" (ngSubmit)="saveChanges()" class="gameFormEdit" @gameEditAnim>
+                <label>Название</label>
+                <input formControlName="title">
+
+                <label>Год выхода</label>
+                <input type="date" formControlName="published_at">
+
+                <label>Жанр</label>
+                <input formControlName="genre">
+
+                <label>Цена (₽)</label>
+                <input type="number" formControlName="price">
+
+                <label>Системные требования</label>
+                <input formControlName="systemRequirements">
+
+                <label>Разработчик</label>
+                <input formControlName="developer">
+
+                <label>Компания</label>
+                <input formControlName="companyName">
+
+                <label>Локализация</label>
+                <input formControlName="localization">
+
+                <div class="modalActions">
+                    <button type="submit" class="btnSave">Сохранить игру</button>
+                    <button type="button" class="btnCancel" (click)="closeModal()">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

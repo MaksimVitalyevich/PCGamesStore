@@ -1,0 +1,38 @@
+.profileField {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+  
+.avatar-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+  
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-color, #7c4dff);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+  
+.uploadBtn {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    background-color: var(--accent-color, #7c4dff);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+  
+.uploadBtn:hover {
+    background-color: #5e35b1;
+}

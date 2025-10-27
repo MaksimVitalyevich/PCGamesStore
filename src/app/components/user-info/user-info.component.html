@@ -1,0 +1,5 @@
+<div class="userInfoPanel" *ngIf="currentRole" [@userInfoAnims]="hover ? 'hover' : 'normal'" (mouseenter)="hover = true" (mouseleave)="hover = false">
+    <p class="roleDisplay">Вы вошли как: <b>{{ currentRole | titlecase }}</b></p>
+
+    <p class="balanceDisplay">Текущий баланс: <b>{{ balance | number:'1.0-0' }}</b></p>
+</div>

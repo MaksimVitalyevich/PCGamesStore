@@ -1,0 +1,80 @@
+<div class="profileField">
+
+    <h2 class="profileTitle">Личный Кабинет</h2>
+    <p class="profileHint">
+        Управление данными профиля, балансом и настройками вашего аккаунта.
+    </p>
+
+    <div class="avatar-wrapper">
+        <img [src]="user.avatarURL || 'avatars/default.png'" alt="User avatar" class="avatar">
+        <label class="uploadBtn" for="avatarInput">Изменить фото</label>
+        <input type="file" id="avatarInput" accept=".png, .jpg, .jpeg, .webp, .svg" (change)="onAvatarSelected($event)" hidden>
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="saveChanges()" class="ProfileForm">
+        <div>
+            <label>Имя пользователя</label>
+            <input formControlName="username" >
+        </div>
+
+        <div>
+            <label>Электронная почта</label>
+            <input formControlName="email">
+        </div>
+
+        <div>
+            <label>Тел. номер</label>
+            <input formControlName="phone" placeholder="8XXXXXXXXXX">
+        </div>
+
+        <div>
+            <label>Пароль (доступен при смене)</label>
+            <input type="password" formControlName="password">
+        </div>
+
+        <button type="submit" class="btnAdjustChanges">
+            Сохранить изменения
+        </button>
+    </form>
+
+    <div class="balanceField">
+        <div class="balanceCardInfo">
+            <p>Баланс: <span class="text-green-700">{{ profileBalanceCheck() | number:'1.0-0' }} ₽</span></p>
+            <button (click)="addFunds()" class="FunderApplier">+ Пополнить на 500 ₽</button>
+        </div>
+    </div>
+
+    <div class="purchasesField" [@purchaseFieldAnim]>
+        <h3 class="purchaseTitle">История покупок</h3>
+
+        <div *ngIf="usergames.length === 0" class="emptyMessage">Нет совершённых покупок.</div>
+
+        <div *ngFor="let game of usergames" class="purchaseCollections" [@gameCardAnim]="hoveredCard === game ? 'hover' : 'normal'" (mouseenter)="hoveredCard = game" (mouseleave)="hoveredCard = null">
+            <img [src]="game.image" alt="{{ game.title }}" class="gamePreview">
+            <div class="gameDetails">
+                <p>{{ game.title }}</p>
+                <p>{{ game.price }} ₽</p>
+            </div> 
+        </div>
+    </div>
+
+    <div class="themeField" [@themeColorAnim]="currentTheme">
+        <h3 class="themeTitle">Настройки темы</h3>
+        <div class="themeButtons">
+            <button (click)="switchTheme(Theme.Light)" 
+            [class.bg-blue-100]="currentTheme === Theme.Light" 
+            class="lightThemeBtn">
+            Светлая тема
+            </button>
+            <button (click)="switchTheme(Theme.Dark)"
+            [class.bg-gray-800]="currentTheme === Theme.Dark"
+            class="darkThemeBtn">
+            Тёмная тема
+            </button>
+        </div>
+    </div>
+
+    <div class="logoutField">
+        <button (click)="logout()" class="logoutBtn">Выйти из аккаунта</button>
+    </div>
+</div>

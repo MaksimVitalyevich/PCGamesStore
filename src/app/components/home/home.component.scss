@@ -1,0 +1,130 @@
+:root {
+  --color-bg: #ffffff;
+  --color-border-tab: #0d3f2d;
+  --color-accent-purple: #7d00ff;
+  --color-accent-green: #00ff85;
+  --color-text-main: #00d9d9;
+  --color-text-accent: #ff3b3b;
+  --color-text-dark: #101010;
+}
+
+
+.homeContainer {
+    padding: 1rem 2rem;
+  }
+  
+  .homeTitle {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .gamesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  
+  .gameCard {
+    background: #f8f8f8;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    overflow: hidden;
+    padding: 0.5rem;
+    text-align: center;
+  }
+  
+  .gameImage {
+    width: 100%;
+    height: 180px;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 0.6rem;
+  }
+  
+  button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .btnBuy { background-color: #5cb85c; color: white; }
+  .btnEdit { background-color: #f0ad4e; color: white; }
+  .btnDetails { background-color: #0275d8; color: white; }
+  
+  .addGameCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #ececec;
+    border-radius: 12px;
+    cursor: pointer;
+    height: 220px;
+    transition: background 0.2s;
+  }
+  
+  .addGameCard:hover { background: #d8d8d8; }
+  .addSign { font-size: 3rem; color: #555; }
+  
+  /* Модалка */
+  .modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modalContent {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+  }
+  
+  .editForm label {
+    display: block;
+    margin-top: 0.4rem;
+    font-weight: 600;
+  }
+  
+  .editForm input {
+    width: 100%;
+    padding: 0.4rem;
+    margin-top: 0.2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .modalActions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+  
+  .btnSave { background: #28a745; color: white; }
+  .btnCancel { background: #6c757d; color: white; }
