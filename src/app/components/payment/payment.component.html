@@ -1,20 +1,19 @@
 <div class="paymentField">
-    <h2 class="paymentTitle">Оплата заказа</h2>
-
-    <p class="totalSumText">
-        Итоговая сумма заказа: <b>{{ totalAmount }} ₽</b><br>
-        <span *ngIf="discount > 0" class="discountText">
-            Применена скидка {{ discount }}% -> <b>{{ finalAmount.toFixed(2) }} ₽</b>
-        </span>
-    </p>
-
     <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" class="paymentMethodForm">
+        <h2 class="paymentTitle">Оплата заказа</h2>
+
+        <p class="totalSumText">
+            Итоговая сумма заказа: <b>{{ totalAmount }} ₽</b><br>
+            <span *ngIf="discount > 0" class="discountText">
+                Применена скидка {{ discount }}% -> <b>{{ finalAmount.toFixed(2) }} ₽</b>
+            </span>
+        </p>
 
         <div>
-            <label class="cardOptionMark">
+            <label>
                 <input type="radio" formControlName="method" value="card"> Банковская (Дебетовая) карта
             </label>
-            <label class="promoOptionMark">
+            <label>
                 <input type="radio" formControlName="method" value="promo"> Промокод
             </label>
         </div>
@@ -41,13 +40,16 @@
                 </span>
             </label>
             <div *ngIf="paymentForm.get('agreement')?.invalid && paymentForm.get('agreement')?.touched" class="redWarningText">
-                Подтвердите согласие перед оплатой!
+                * Подтвердите согласие перед оплатой!
             </div>
         </div>
 
-        <button type="submit" [disabled]="isLoading" class="subPay">
-            {{ isLoading ? 'Обработка...' : 'Провести оплату' }}
-        </button>
+        <div class="paymentActions">
+            <button type="submit" [disabled]="isLoading" class="subPay">
+                {{ isLoading ? 'Обработка...' : 'Провести оплату' }}
+            </button>
+            <button type="button" class="cancelPay" (click)="cancelPayment()">Прервать операцию</button>
+        </div>
 
         <div *ngIf="message" class="messageNotifier" 
         [class.text-green-600]="message.includes('успешно') || message.includes('применён')"

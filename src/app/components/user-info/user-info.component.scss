@@ -1,30 +1,38 @@
+@use '../../../styles.scss' as user-info;
+
 .userInfoPanel {
-    position: fixed;
-    bottom: 15px;
-    right: 20px;
-    background: rgba(25, 25, 25, 0.8);
-    color: var(--accent-turquoise);
-    border: 1px solid #006b50;
-    border-radius: 12px;
-    padding: 10px 14px;
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-    z-index: 1000;
-    backdrop-filter: blur(6px);
-    transition: all 0.35 ease-in-out;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  background-color: var(--color-bg-dark);
+  color: var(--accent-turquoise);
+  border: 3px double var(--border-tab);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: var(--font-accent-extra);
+  font-size: 1rem;
+  box-shadow: 0 2px 8px var(--color-shadow);
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+  transition: 0.35s;
 
-    &.hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px var(--color-shadow);
-    }
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--color-shadow);
+  }
 
-    .roleDisplay, .balanceDisplay {
-        margin: 2px 0;
-    }
+  .roleDisplay, .balanceDisplay {
+    margin: 2px 0;
 
-    .highlight {
-        color: var(--accent-red);
-        font-weight: 600;
+    .roleHighlight {
+      text-shadow: 0 0 8px var(--accent-turquoise);
+      font-weight: 400;
     }
+  }
+
+  .balanceHighlight {
+    color: var(--accent-red);
+    text-shadow: 0 0 8px var(--accent-light-red);
+    font-weight: 600;
+  }
 }

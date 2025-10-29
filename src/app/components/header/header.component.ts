@@ -12,6 +12,7 @@ import { brightnessAnim, textColorAnim, headerSlideIn, sidebarSlideIn } from '..
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './header.component.html',
+  styleUrl: '../../framing.style.scss',
   animations: [brightnessAnim, textColorAnim, headerSlideIn, sidebarSlideIn]
 })
 export class HeaderComponent {

@@ -1,244 +1,54 @@
-/* ============================================================================
-    Глобальные стили Онлайн-Магазина ПК игр
-   ============================================================================ */
-
 /* ======================== Основная Палитра сайта ============================ */
 /* ======================== Шрифты ============================================= */
 :root {
-    --color-bg-dark: #0d0d0d;
-    --color-bg-light: #f0f0f7;
-    --accent-turquoise: #00e6e6;
-    --accent-red: #ff3b3b;
-    --accent-green: #00ff85;
-    --border-tab: #084d3a;
-    --accent-purple: #8a00ff;
-    --accent-purple-hover: #c77dff;
-    --text-main: #648fe0;
-    --text-dark: #101010;
-    --muted-text: #999;
-    --color-shadow: #00000085;
+  --color-bg-dark: #0d0d0d;
+  --color-bg-light: #f0f0f7;
+  --accent-formal-dark: #1b1b1b;
+  --accent-formal-light: #f5f6fa;
+  --accent-turquoise: #00e6e6;
+  --accent-light-red: #ff3b3b;
+  --accent-red: #d00505;
+  --accent-orange: #e69000;
+  --accent-lime: #2ee600;
+  --accent-green: #00ff85;
+  --accent-darkalice: #1a77d4;
+  --accent-blue: #0044cc;
+  --accent-light-purple: #701efe;
+  --border-tab: #084d3a;
+  --border-section: #602a04;
+  --accent-purple: #8a00ff;
+  --accent-purple-hover: #b354fc;
+  --text-main: #648fe0;
+  --text-dark: #101010;
+  --muted-text: #999;
+  --color-shadow: #00000040;
 
-    --font-main: 'Segoe UI', 'Roboto', sans-serif;
-    --font-accent: 'Orbitron', sans-serif;
+  --font-main: 'Roboto', sans-serif;
+  --font-accent: 'Orbitron', 'Roboto', sans-serif;
+  --font-accent-extra: 'Verdana', monospace;
+  --font-formal-main: 'Microsoft YaHei', monospace;
+  --font-formal-accent: 'Constantia', sans-serif;
 }
 
-/* ======================== Глобальный сброс =================================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* ======================== Базовые элементы =================================== */
+/* ======================== Body (глобальный) =================================== */
 body {
-    background-color: var(--color-bg-dark);
-    color: var(--text-main);
-    font-family: var(--font-main);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    scroll-behavior: smooth;
+  margin-top: 80px;
+  margin-right: 240px;
+  background-color: var(--color-bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  scroll-behavior: smooth;
+}
+img {
+  width: 100%;
+  display: block;
 }
 
-header {
-    background-color: var(--color-bg-light);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-
-/* ========================= Логотип сайта ======================================= */
-.logo {
-    color: var(--accent-green);
-    display: flex;
-    align-items: center;
-    font-size: 1.6rem;
-    font-weight: 700;
-    text-shadow: 0 0 10px var(--accent-green);
-    cursor: pointer;
-}
-.logo figure {
-    margin: 0;
-    padding: 0;
-}
-.logo img {
-    width: 48px;
-    height: 48px;
-    margin-right: 0.6rem;
-    border-radius: 8px;
-}
-
-.logo h1 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: var(--color-bg-dark);
-}
-
-.searcharea {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-}
-.searcharea input {
-    padding: 0.4rem 0.6rem;
-    border-radius: 4px;
-    border: none;
-    width: 200px;
-    font-size: 0.95rem;
-}
-.searcharea button {
-    background-color: #ff5f5f;
-    border: none;
-    color: white;
-    border-radius: 4px;
-    padding: 0.4rem 0.7rem;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-button {
-    background: linear-gradient(135deg, var(--accent-green), var(--accent-purple));
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    font-weight: bold;
-    padding: 0.7rem 1.4rem;
-    cursor: pointer;
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
-    transition: all 0.3s ease;
-}
-button:hover {
-    box-shadow: 0 0 20px rgba(166, 77, 255, 0.6);
-    transform: scale(1.04);
-}
-
-nav {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-nav a {
-    color: var(--accent-purple-hover);
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.2s ease, text-shadow 0.2s ease;
-}
-nav button {
-    background-color: #ff5f5f;
-    color: var(--text-main);
-    border: none;
-    border-radius: 6px;
-    padding: 0.3rem 0.8rem;
-    cursor: pointer;
-}
-nav button:hover {
-    background-color: #ff3b3b;
-}
-nav a:hover {
-    color: var(--accent-purple-hover);
-    text-shadow: 0 0 6px var(--accent-purple-hover);
-}
-
-.userStatus {
-    cursor: pointer;
-}
-
-.active {
-    color: #ff8080;
-    text-decoration: underline;
-}
-
-.cart {
-    position: absolute;
-    top: -6px;
-    right: -10px;
-    color: #ffbaba;
-    font-weight: 600;
-    font-size: 0.75rem;
-}
-.cart img {
-    position: relative;
-    cursor: pointer;
-}
-
-aside {
-    position: fixed;
-    right: 0;
-    top: 80px;
-    width: 220px;
-    background: var(--color-bg-light);
-    color: var(--text-main);
-    border-left: 2px solid #ff5f5f;
-    padding: 1rem;
-    height: calc(100vh - 80px);
-    overflow-y: auto;
-}
-aside h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.8rem;
-    text-align: center;
-    color: #ff9e9e;
-}
-aside ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-aside li {
-    display: flex;
-    justify-content: space-between;
-    margin: 0.4rem 0;
-    padding: 0.3rem 0.4rem;
-    border-bottom: 1px solid var(--border-tab);
-    font-size: 0.9rem;
-}
-.topprice {
-    color: #ffbaba;
-    font-weight: 500;
-}
-
-/* ========================== Основная область сайта ===================================== */
-main {
-    padding: 2rem;
-    min-height: calc(100vh - 160px); // footer НЕ будет налезать
-    background-color: var(--color-bg-dark);
-}
-
-/* ========================== Подвал сайта =============================================== */
-footer {
-    background-color: var(--color-bg-light);
-    color: var(--muted-text);
-    border-top: 1px solid var(--border-tab);
-    padding: 1.2rem;
-    font-size: 0.9rem;
-    text-align: center;
-    line-height: 1.6;
-}
-footer a {
-    color: var(--accent-green);
-    font-weight: 600;
-}
-footer p {
-    margin: 0.4rem 0;
-}
-
-.footerlink {
-    color: #007bff;
-    text-decoration: none;
-}
-.footerlink:hover {
-    text-decoration: underline;
-}
-.copyrightBanner {
-    background: #8e2727;
-    color: #c2911e;
-    padding: 10px 16px;
-    border-radius: 10px;
-    width: 90%;
-    margin: 0 auto;
-    line-height: 1.5;
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

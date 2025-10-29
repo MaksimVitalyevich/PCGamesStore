@@ -65,6 +65,11 @@ export class PaymentComponent {
     });
   }
 
+  cancelPayment() {
+    this.isLoading = false;
+    this.router.navigate(['/cart']);
+  }
+
   applyPromo(code: string) {
     const result = this.paymentService.applyPromoCode(code);
     this.discount = result.success ? result.discount! : 0;

@@ -1,0 +1,166 @@
+@use '../../services.style.scss' as service;
+
+.authFormField {
+    @extend %servicePage; // наследует структуру служебной страницы
+
+    .reactiveAuth {
+        @extend %formContainer; // наследует структуру формы
+
+        width: 800px;
+        max-width: calc(100% - 50px);
+        padding: 1.6rem 1.8rem;
+        display: flex;
+        font-family: var(--font-formal-accent);
+        flex-direction: column;
+        gap: 0.85rem;
+        align-items: stretch;
+
+        .loginTitleVar, .registerTitleVar, .quickLoginTitleVar {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 0.9rem;
+        
+            &.loginTitleVar {
+                color: var(--accent-blue);
+            }
+            &.registerTitleVar {
+                color: var(--accent-formal-dark);
+            }
+            &.quickLoginTitleVar {
+                color: var(--accent-light-purple);
+            }
+        }
+
+        div {
+            display: block;
+            width: 100%;
+        }
+
+        label {
+            @extend %label;
+            display: block;
+            margin-bottom: 0.28rem;
+        }
+
+        input, select {
+            @extend %input;
+            @extend %select;
+            background-color: #fafafa;
+            width: 50%;
+        }
+
+        .hint {
+            display: inline-block;
+            margin-top: 0.6rem;
+            margin-left: 0.6rem;
+            font-size: 0.88rem;
+            color: #555;
+            line-height: 1.1;
+
+            &.warning {
+                @extend %warningText;
+            }
+        }
+
+        .inlineAgreementMark {
+            display: flex;
+            align-items: flex-start;
+            padding-right: 300px;
+            gap: 0.6rem;
+
+            input[type="checkbox"] {
+                margin-top: 0.2rem;
+                cursor: pointer;
+            }
+
+            .disclaimerText {
+                text-align: left;
+                font-size: 0.88rem;
+                color: #444;
+            }
+        }
+
+        .redWarningText {
+            @extend %warningText;
+            color: var(--accent-red);
+            margin-top: 0.6rem;
+            margin-left: 0.6rem;
+            line-height: 1.1;
+        }
+
+        .quickUsersField {
+            padding: 0.5rem;
+
+            select {
+                @extend %select;
+                border: 1.8px solid var(--accent-purple);
+
+                &:focus {
+                    border-color: var(--accent-light-purple);
+                    box-shadow: 0 0 8px rgba(129, 53, 252, 0.5);
+                }
+            }
+
+            label {
+                font-weight: 600;
+                color: #444;
+                margin-bottom: 0.4rem;
+            }
+        }
+
+        .errorText {
+            color: var(--accent-red);
+            font-weight: 800;
+            text-align: center;
+            margin-top: 0.2rem;
+            font-size: 1.15rem;
+        }
+
+        .btnsField {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 0.9rem;
+
+            .subEnter {
+                @include service.btnPrimary;
+                min-width: 150px;
+                transition: 0.25s;
+
+                &:hover {
+                    background-color: #3235e9;
+                    transform: scale(1.03);
+                }
+            }
+
+            .quickEnter {
+                @include service.btnSecondary;
+                min-width: 150px;
+                background-color: var(--accent-light-purple);
+                color: white;
+
+                &:hover {
+                    background-color: #8a3fff;
+                    transform: scale(1.03);
+                    box-shadow: 0 0 10px rgba(138, 63, 255, 0.4);
+                }
+            }
+
+            .firstEnter {
+                @include service.btnSecondary;
+                min-width: 120px;
+                background-color: #e0e5ec;
+                color: #222;
+
+                &:hover {
+                    background-color: #d7dbe3;
+                }
+            }
+
+            .hidden {
+                display: none;
+            }
+        }
+    }
+}

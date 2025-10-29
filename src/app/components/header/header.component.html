@@ -1,4 +1,4 @@
-<header [@brightnessAnim]="elemHover_header ? 'hover' : 'normal'" (mouseenter)="elemHover_header = true" (mouseleave)="elemHover_header = false"
+<header class="mainUpBlock" [@brightnessAnim]="elemHover_header ? 'hover' : 'normal'" (mouseenter)="elemHover_header = true" (mouseleave)="elemHover_header = false"
 [@textColorAnim]="elemHover_header ? 'hover' : 'normal'" (mouseenter)="elemHover_header = true" (mouseleave)="elemHover_header = false" @headerSlideIn>
     <div class="logo" routerLink="/">
         <figure>
@@ -13,24 +13,24 @@
         <button (click)="onSearch()">Найти</button>
     </div>
 
-    <nav>
+    <nav class="navMenu">
         <a routerLink="/" routerLinkActive="active">Главная</a>
         <a routerLink="/cart" routerLinkActive="active" (click)="goToCart()">
             Корзина <span *ngIf="cartCount > 0" class="cart">({{ cartCount }})</span>
             <img src="assets/cart-icon.png" alt="Cart">
         </a>
         <ng-container *ngIf="!user">
-            <a (click)="goToAuth()" class="userStatus">Войти</a>
+            <button (click)="goToAuth()" class="userStatus">Войти</button>
         </ng-container>
 
         <ng-container *ngIf="user">
-            <a (click)="goToProfile()" class="userStatus">Личный Кабинет</a>
+            <button (click)="goToProfile()" class="userStatus">Личный Кабинет</button>
             <button (click)="logout()">Выйти</button>
         </ng-container>
     </nav>
 </header>
 
-<aside [@brightnessAnim]="elemHover_sidebar ? 'hover' : 'normal'" (mouseenter)="elemHover_sidebar = true" (mouseleave)="elemHover_sidebar = false"
+<aside class="rightPanel" [@brightnessAnim]="elemHover_sidebar ? 'hover' : 'normal'" (mouseenter)="elemHover_sidebar = true" (mouseleave)="elemHover_sidebar = false"
 [@textColorAnim]="elemHover_sidebar ? 'hover' : 'normal'" (mouseenter)="elemHover_sidebar = true" (mouseleave)="elemHover_sidebar = false" @sidebarSlideIn>
     <h3>Топ игр текущей недели</h3>
     <ul>

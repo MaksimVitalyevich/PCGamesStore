@@ -1,0 +1,125 @@
+/* ==============================================================
+    Общий файл для оформления служебно-подобных страниц
+    Характерен в применении к компонентам, соблюдающим формальность!
+    Пример использования Auth-Form, Profile, Payment, и т. д.
+   ============================================================== */
+
+/* Базовые элементы (Body) */
+body {
+  background-color: var(--accent-formal-light);
+  font-family: var(--font-formal-main);
+  color: var(--accent-formal-dark);
+  margin: 0;
+  padding: 0;
+}
+
+/* Сервисные кнопки */
+@mixin btnPrimary {
+  background-color: var(--accent-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  &:hover {
+    background-color: #004ee8;
+    box-shadow: 0 0 10px rgba(0, 70, 255, 0.25);
+  }
+}
+@mixin btnSuccess {
+  background-color: var(--accent-lime);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  &:hover {
+    background-color: #4ade26;
+    box-shadow: 0 0 10px rgba(55, 255, 0, 0.25);
+  }
+}
+@mixin btnDanger {
+  background-color: var(--accent-light-red);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  &:hover {
+    background-color: #e32121;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+  }
+}
+@mixin btnSecondary {
+  background-color: #e0e5ec;
+  color: #222;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  &:hover {
+    background-color: #d7dbe3;
+  }
+}
+
+/* Общие контейнеры форм */
+%formContainer {
+  background: white;
+  box-shadow: 0 0 25px var(--color-shadow);
+  border-radius: 14px;
+  padding: 2rem 2.5rem;
+  width: 400px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  %label {
+    font-weight: 600;
+    color: #333;
+  }
+
+  %input, %select {
+    padding: 0.6rem 0.9rem;
+    border: 1.8px solid #bfc5d2;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.25s ease;
+
+    &:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 6px rgba(0, 70, 255, 0.25);
+    }
+    &::placeholder {
+      color: var(--muted-text);
+    }
+  }
+}
+
+%warningText {
+  color: var(--accent-orange);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+/* Глобальная структура всех сервисных страниц */
+%servicePage {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--accent-formal-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

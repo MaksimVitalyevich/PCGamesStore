@@ -12,14 +12,14 @@ export const themeColorAnim = trigger('themeColorAnim', [
 /** Плавное осветление заднего фона */
 export const brightnessAnim = trigger('brightnessAnim', [
     state('normal', style({ filter: 'brightness(1)' })),
-    state('hover', style({ filter: 'brightness(1.25)' })),
+    state('hover', style({ filter: 'brightness(1.15)' })),
     transition('normal <=> hover', animate('400ms ease'))
 ]);
 
 /** Плавное изменение цвета текста */
 export const textColorAnim = trigger('textColorAnim', [
-    state('normal', style({ color: '#fff' })),
-    state('hover', style({ color: '#ffe100' })),
+    state('normal', style({ color: 'var(--accent-purple)' })),
+    state('hover', style({ color: 'var(--accent-purple-hover)' })),
     transition('normal <=> hover', animate('300ms ease'))
 ]);
 
@@ -41,11 +41,11 @@ export const sidebarSlideIn = trigger('sidebarSlideIn', [
 /** Плавное появление/исчезновение вкладок ПК игр с затемнением при наведении */
 export const gameCardAnim = trigger('gameCardAnim', [
     transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(30px)' }),
+        style({ opacity: 0, transform: 'translateY(25px)' }),
         animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
     ]),
     transition(':leave', [
-        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(30px)' }))
+        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(25px)' }))
     ]),
     state('hover', style({ filter: 'brightness(0.9)' })),
     state('normal', style({ filter: 'brightness(1)' }))
@@ -64,11 +64,11 @@ export const modalAnims = trigger('modalAnims', [
 
 export const gameEditAnim = trigger('gameEditAnim', [
     transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(10px)' }),
+        style({ opacity: 0, transform: 'translateY(15px)' }),
         animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
     ]),
     transition(':leave', [
-        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(10px)' }))
+        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(15px)' }))
     ])
 ]);
 

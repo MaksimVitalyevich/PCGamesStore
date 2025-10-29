@@ -1,75 +1,75 @@
 <div class="authFormField">
-    <h2 class="loginTitleVar" *ngIf="mode === LoginMethod.Login">Вход</h2>
-    <h2 class="registerTitleVar" *ngIf="mode === LoginMethod.Register">Регистрация</h2>
-    <h2 class="quickLoginTitleVar" *ngIf="mode === LoginMethod.QuickLogin">Быстрый вход</h2>
-
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="reactiveAuth">
+        <h2 class="loginTitleVar" *ngIf="mode === LoginMethod.Login">Вход</h2>
+        <h2 class="registerTitleVar" *ngIf="mode === LoginMethod.Register">Регистрация</h2>
+        <h2 class="quickLoginTitleVar" *ngIf="mode === LoginMethod.QuickLogin">Быстрый вход</h2>
+
         <div *ngIf="mode === LoginMethod.Register">
-            <label class="roleselectMark">Роль пользователя</label>
+            <label>Роль пользователя</label>
             <select formControlName="role">
                 <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
             </select>      
         </div>
 
         <div>
-            <label class="usernameMark">Имя Пользователя *</label>
+            <label>Имя Пользователя *</label>
             <input formControlName="username">
 
             <small class="hint" *ngIf="authForm.get('username')?.touched && authForm.get('username')?.hasError('required')">
-                Это поле обязательно для заполнения!
+                * Это поле обязательно для заполнения!
             </small>
 
             <small class="hint warning" *ngIf="authForm.get('username')?.touched && authForm.get('username')?.hasError('minlength')">
-                Минимум 4 символа
+                * Минимум 4 символа
             </small>
         </div>
 
         <div *ngIf="mode === LoginMethod.Register">
-            <label class="datebirthMark">Дата рождения</label>
+            <label>Дата рождения</label>
             <input type="date" formControlName="birthdate">
         </div>
 
         <div *ngIf="mode === LoginMethod.Register">
-            <label class="usernamecredentialsMark">ФИО</label>
+            <label>ФИО</label>
             <input formControlName="usercredentials">
         </div>
 
         <div>
-            <label class="passwordMark">Пароль *</label>
+            <label>Пароль *</label>
             <input type="password" formControlName="password">
 
             <small class="hint" *ngIf="authForm.get('password')?.touched && authForm.get('password')?.hasError('required')">
-                Это поле обязательно для заполнения!
+                * Это поле обязательно для заполнения!
             </small>
 
             <small class="hint warning" *ngIf="authForm.get('password')?.touched && authForm.get('password')?.hasError('pattern')">
-                Нужен хотя бы 1 заглавный и 1 строчный символ
+                * Нужен хотя бы 1 заглавный и 1 строчный символ
             </small>
         </div>
 
         <div *ngIf="mode === LoginMethod.Register">
-            <label class="emailMark">Электронная почта *</label>
+            <label>Электронная почта *</label>
             <input formControlName="email" placeholder="example@userhub.local">
 
             <small class="hint" *ngIf="authForm.get('email')?.touched && authForm.get('email')?.hasError('required')">
-                Это поле обязательно для заполнения!
+                * Это поле обязательно для заполнения!
             </small>
 
             <small class="hint warning" *ngIf="authForm.get('email')?.touched && authForm.get('email')?.hasError('email')">
-                Допустимый формат "example&#64;userhub.local"
+                * Допустимый формат "example&#64;userhub.local"
             </small>
         </div>
 
         <div *ngIf="mode === LoginMethod.Register">
-            <label class="phoneMark">Тел. номер *</label>
+            <label>Тел. номер *</label>
             <input formControlName="phone" placeholder="+7 (XXX) XXX XX XX">
 
             <small class="hint" *ngIf="authForm.get('phone')?.touched && authForm.get('phone')?.hasError('required')">
-                Это поле обязательно для заполнения!
+                * Это поле обязательно для заполнения!
             </small>
 
             <small class="hint warning" *ngIf="authForm.get('phone')?.touched && authForm.get('phone')?.hasError('pattern')">
-                Должен начинаться с +7 и иметь пробелы. Допустимый формат "+7 XXX XXX XX XX"
+                * Должен начинаться с +7 и иметь пробелы. Допустимый формат "+7 XXX XXX XX XX"
             </small>
         </div>
 
@@ -86,7 +86,7 @@
             </label>
 
             <div *ngIf="authForm.get('agreement')?.invalid && authForm.get('agreement')?.touched" class="redWarningText">
-                Для продолжения, необходимо подтвердить согласие!
+                * Для продолжения, необходимо подтвердить согласие!
             </div>
         </div>
 
@@ -108,17 +108,18 @@
         <div *ngIf="errMessage" class="errorText">{{ errMessage }}</div>
 
         <div class="btnsField">
-            <button *ngIf="mode !== LoginMethod.QuickLogin" type="submit" class="subEnter">
+            <button type="submit" class="subEnter" 
+            [ngClass]="{ hidden: mode === LoginMethod.QuickLogin, registerMode: mode === LoginMethod.Register, loginMode: mode === LoginMethod.Login }">
                 {{ mode === LoginMethod.Login ? 'Войти' : 'Создать аккаунт' }}
             </button>
-            <button *ngIf="mode === LoginMethod.QuickLogin" type="button" class="quickEnter" (click)="onQuickLogin()">
+            <button [ngClass]="{ hidden: mode !== LoginMethod.QuickLogin }" type="button" class="quickEnter" (click)="onQuickLogin()">
                 Использовать этот аккаунт</button>
             <button type="button" class="firstEnter" (click)="toggleMode(LoginMethod.Login)" 
-            *ngIf="mode !== LoginMethod.Login">Обычный вход</button>
+            [ngClass]="{ hidden: mode === LoginMethod.Login }">Обычный вход</button>
             <button type="button" class="firstEnter" (click)="toggleMode(LoginMethod.Register)"
-            *ngIf="mode !== LoginMethod.Register">Регистрация</button>
+            [ngClass]="{ hidden: mode === LoginMethod.Register }">Регистрация</button>
             <button type="button" class="firstEnter" (click)="toggleMode(LoginMethod.QuickLogin)"
-            *ngIf="mode !== LoginMethod.QuickLogin">Быстрый вход</button>
+            [ngClass]="{ hidden: mode === LoginMethod.QuickLogin }">Быстрый вход</button>
         </div>
     </form>
 </div>

@@ -1,6 +1,6 @@
 <div class="homeContainer">
     <div *ngIf="purchased.length > 0" class="purchasedList" [@purchaseFieldAnim]>
-        <h4>История ваших покупок:</h4>
+        <h4 class="hot">История ваших покупок:</h4>
         <ul>
             <li *ngFor="let game of purchased">{{ game.title }} - {{ game.purchaseDate | date:'medium' }}</li>
         </ul>
@@ -10,8 +10,7 @@
 
     <div class="gamesGrid">
         <div *ngFor="let game of games" class="gameCard" [@gameCardAnim]="hoveredCard === game ? 'hover' : 'normal'" (mouseenter)="hoveredCard = game" (mouseleave)="hoveredCard = null">
-            <img [src]="game.image || 'assets/games/no-cover.png'" [alt]="game.title || 'Без обложки'" 
-            loading="lazy" class="gameImage">
+            <img [src]="game.image || 'assets/games/no-cover.png'" [alt]="game.title || 'Без обложки'" loading="lazy" class="gameImage">
 
             <div class="gameInfo">
                 <h3 class="hot">{{ game.title }}</h3>

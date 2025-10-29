@@ -1,13 +1,53 @@
-@use '../../../styles.scss' as *;
+@use '../../../styles.scss' as home;
 
 .homeContainer {
   background-color: var(--color-bg-light);
   color: var(--text-dark);
+  font-family: var(--font-accent);
   padding: 2rem;
+
+  .purchasedList {
+    top: 0;
+    width: 100%;
+    background: linear-gradient(120deg, var(--accent-purple), var(--accent-light-red));
+    border: 2px solid var(--accent-darkalice);
+    border-radius: 9px;
+    box-shadow: 0 4px 10px var(--accent-purple);
+    padding: 0.25rem;
+
+    h4 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent-turquoise);
+      letter-spacing: 0.5px;
+      text-align: center;
+      text-shadow: 0 0 6px var(--color-shadow);
+
+      &.hot {
+        color: var(--accent-red);
+        text-shadow: 0 0 5px rgba(255, 59, 59, 0.7), 0 0 10px rgba(0, 230, 230, 0.8);
+      }
+    }
+
+    ul {
+      list-style: decimal linear-gradient(75deg, var(--accent-green), var(--accent-purple));
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.2rem;
+        font-weight: 300;
+        padding: 0.2rem 0.4rem;
+        color: var(--accent-green);
+        text-shadow: 0 0 4px var(--accent-turquoise);
+        border-bottom: 1px solid var(--border-section);
+      }
+    }
+  }
 
   .homeTitle {
     color: var(--accent-turquoise);
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: bold;
     text-shadow: 0 0 6px rgba(0, 230, 230, 0.6);
     letter-spacing: 0.5px;
@@ -16,125 +56,127 @@
 
   .gamesGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
     justify-items: center;
-  }
+    align-items: start;
 
-  .gameCard {
-    width: 100%;
-    max-width: 800px;
-    background: linear-gradient(145deg, rgba(70, 0, 90, 0.95), rgba(0, 130, 70, 0.9));
-    color: var(--text-main);
-    border: 3px solid var(--border-tab);
-    border-radius: 16px;
-    box-shadow: 0 2px 15px var(--color-shadow);
-    overflow: hidden;
-    padding: 1rem;
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
+    .gameCard {
+      width: 100%;
+      max-width: 310px;
+      background: linear-gradient(145deg, rgba(70, 0, 90, 0.95), rgba(0, 130, 70, 0.9));
+      color: var(--text-main);
+      border: 3px solid var(--border-tab);
+      border-radius: 16px;
+      box-shadow: 0 2px 15px var(--color-shadow);
+      overflow: hidden;
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+  
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(0, 255, 100, 0.7);
+      }
 
-    &:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(0, 255, 100, 0.7);
+      .gameImage {
+        width: 100%;
+        height: 180px;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 0.8rem;
+      }
+
+      .gameInfo {
+        text-align: center;
+        h3 {
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: var(--accent-turquoise);
+          letter-spacing: 0.5px;
+          text-shadow: 0 0 6px var(--color-shadow);
+
+          &.hot {
+            color: var(--accent-light-red);
+            text-shadow: 0 0 5px rgba(255, 59, 59, 0.7), 0 0 10px rgba(0, 230, 230, 0.8);
+          }
+        }
+        .genreText {
+          font-size: 0.9rem;
+          color: var(--accent-turquoise);
+        }
+        .priceText {
+          font-weight: bold;
+          color: var(--accent-light-red);
+          text-shadow: 0 0 4px rgba(255, 0, 0, 0.4);
+        }
+      }
+
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    
+        button {
+          background-image: linear-gradient(135deg, var(--accent-turquoise), var(--accent-light-red));
+          color: white;
+          padding: 10px 16px;
+          font-weight: bold;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: 0.25s;
+    
+          &:hover {
+            box-shadow: 0 0 12px rgba(255, 59, 59, 0.6), 0 0 18px rgba(0, 230, 230, 0.5);
+          }
+    
+          &.btnDetails {
+            color: black;
+          }
+          &.btnEdit {
+            background-image: none;
+            background-color: var(--accent-purple);
+            color: white;
+          }
+          &.btnBuy {
+            color: gold;
+          }
+          &.btnDelete {
+            background-image: none;
+            background-color: crimson;
+            color: coral;
+          }
+        }
+      }
     }
-  }
 
-  .gameImage {
-    width: 100%;
-    height: 180px;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 0.8rem;
-  }
-
-  .gameInfo {
-    text-align: center;
-    h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent-turquoise);
-      letter-spacing: 0.5px;
-      text-shadow: 0 0 6px var(--color-shadow);
-    }
-    h3.hot {
-      color: var(--accent-red);
-      text-shadow: 0 0 5px rgba(255, 59, 59, 0.7), 0 0 10px rgba(0, 230, 230, 0.8);
-    }
-    .genreText {
-      font-size: 0.9rem;
-      color: var(--accent-turquoise);
-    }
-    .priceText {
-      font-weight: bold;
-      color: var(--accent-red);
-      text-shadow: 0 0 4px rgba(255, 0, 0, 0.4);
-    }
-  }
-
-  .actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 1rem;
-
-    button {
-      background: linear-gradient(135deg, var(--accent-turquoise), var(--accent-red));
-      color: #fff;
-      padding: 10px 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
+    .addGameCard {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: repeating-linear-gradient(45deg, rgba(0, 255, 120, 0.1), rgba(180, 0, 255, 0.1));
+      border: 2px dashed darkgreen;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 280px;
+      color: darkgreen;
       cursor: pointer;
-      transition: background-color 0.25s, transform 0.25s;
-
-      &.hover {
-        box-shadow: 0 0 12px rgba(255, 59, 59, 0.6), 0 0 18px rgba(0, 230, 230, 0.5);
+      height: 220px;
+      transition: 0.3s;
+  
+      &:hover {
+        background: rgba(0, 255, 120, 0.2);
+        transform: scale(1.03);
       }
-
-      &.btnDetails {
-        background-color: var(--accent-turquoise);
-        color: #000;
+  
+      .addSign {
+        font-size: 2.5rem;
+        font-weight: bold;
       }
-      &.btnEdit {
-        background-color: var(--accent-purple);
-        color: #fff;
-      }
-      &.btnBuy {
-        background-color: mediumspringgreen;
-        color: #000;
-      }
-      &.btnDelete {
-        background-color: crimson;
-        color: #fff;
-      }
-    }
-  }
-
-  .addGameCard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: repeating-linear-gradient(45deg, rgba(0, 255, 120, 0.1), rgba(180, 0, 255, 0.1));
-    border: 2px dashed darkgreen;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 280px;
-    color: darkgreen;
-    cursor: pointer;
-    height: 220px;
-    transition: 0.3s;
-
-    &hover {
-      background: rgba(0, 255, 120, 0.2);
-      transform: scale(1.03);
-    }
-
-    .addSign {
-      font-size: 2.5rem;
-      font-weight: bold;
     }
   }
 
@@ -153,53 +195,149 @@
     z-index: 1000;
     backdrop-filter: blur(6px);
     animation: fadeIn 0.3s ease forwards;
-  }
 
-  .modalContent {
-    background: var(--color-bg-light);
-    padding: 1.5rem;
-    border: 2px solid var(--accent-green);
-    border-radius: 16px;
-    box-shadow: 0 0 10px var(--accent-purple), 0 0 25px rgba(0, 255, 100, 0.4);
-    width: 520px;
-    max-height: 90%;
-    color: var(--text-dark);
-    overflow-y: auto;
-    position: relative;
-    animation: slideUp 0.35s ease forwards;
+    .modalContent {
+      background: linear-gradient(145deg, rgba(15, 10, 35, 0.95), rgba(40, 0, 60, 0.92), rgba(0, 40, 25, 0.9));
+      padding: 1.5rem;
+      border: 2px solid var(--accent-green);
+      border-radius: 16px;
+      box-shadow: 0 0 12px rgba(0, 255, 150, 0.5), 0 0 25px rgba(150, 0, 255, 0.4);
+      width: 520px;
+      max-height: 90%;
+      color: var(--accent-darkalice);
+      overflow-y: auto;
+      position: relative;
+      animation: slideUp 0.35s ease forwards, pulseNeon 4.5s ease-in-out infinite;
+
+      .closeBtn {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        background: none;
+        border: none;
+        font-size: 1.6rem;
+        color: var(--accent-light-red);
+        cursor: pointer;
+        transition: color 0.25s, transform 0.25s;
+  
+        &:hover {
+          color: #ff4f4f;
+          transform: scale(1.2);
+        }
+      }
+
+      .viewSection {
+        display: inline-block;
+        justify-content: space-between;
+        align-items: left;
+        border-bottom: 2px solid var(--border-section);
+        padding-bottom: 0.3rem;
+        margin-bottom: 0.9rem;
+    
+        h2 {
+          font-size: 1.4rem;
+          color: var(--accent-turquoise);
+          text-shadow: 0 0 6px rgba(0, 230, 230, 0.6);
+        }
+      }
+
+      .gameFormEdit {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        gap: 0.9rem;
+        padding: 0.8rem 0;
+        color: var(--accent-turquoise);
+
+        label {
+          display: block;
+          width: 100%;
+          color: var(--accent-turquoise);
+          font-weight: 600;
+          margin-bottom: 0.3rem;
+        }
+
+        input {
+          width: 100%;
+          background-color: var(--color-shadow);
+          border: 2px solid var(--accent-purple);
+          border-radius: 8px;
+          color: var(--accent-darkalice);
+          padding: 0.5rem 0.6rem;
+          font-weight: 500;
+          transition: 0.25s;
+          outline: none;
+
+          &:focus {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 8px rgba(0, 255, 100, 0.5);
+          }
+        }
+
+        .modalActions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 0.8rem;
+          margin-top: 1.2rem;
+
+          button {
+            padding: 0.5rem 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.25s;
+          }
+    
+          .btnSave { 
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-purple)); 
+            color: white;
+            text-shadow: 0 0 6px var(--accent-darkalice);
+            
+            &:hover {
+              box-shadow: 0 0 10px var(--accent-green);
+              transform: scale(1.05);
+            }
+          }
+
+          .btnCancel { 
+            background: crimson; 
+            color: white;
+    
+            &:hover {
+              box-shadow: 0 0 10px crimson;
+              transform: scale(1.05);
+            }
+          }
+        }
+      }
+    }
   }
 }
-  
-  .closeBtn {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    background: transparent;
-    border: none;
-    font-size: 1.3rem;
-    cursor: pointer;
+
+.modalContent::-webkit-scrollbar {
+  width: 10px;
+}
+.modalContent::-webkit-scrollbar-track {
+  background: rgba(20, 10, 35, 0.4);
+  border-radius: 8px;
+  box-shadow: inset 0 0 6px rgba(0, 255, 150, 0.2);
+}
+.modalContent::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent-green), var(--accent-purple));
+  border: 1px solid var(--border-tab);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 255, 150, 0.5);
+  animation: pulseNeon 4.5ss ease-in-out infinite, fadeIn 0.3s ease forwards;
+  transition: 0.3s;
+
+  &:hover {
+    background: linear-gradient(180deg, var(--accent-turquoise), var(--accent-light-red));
+    box-shadow: 0 0 18px rgba(255, 0, 255, 0.7);
   }
-  
-  .editForm label {
-    display: block;
-    margin-top: 0.4rem;
-    font-weight: 600;
-  }
-  
-  .editForm input {
-    width: 100%;
-    padding: 0.4rem;
-    margin-top: 0.2rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .modalActions {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-  }
-  
-  .btnSave { background: #28a745; color: white; }
-  .btnCancel { background: #6c757d; color: white; }
+}
+
+@keyframes pulseNeon {
+  0%, 100% { box-shadow: 0 0 8px rgba(0, 255, 150, 0.4), 0 0 16px rgba(180, 0, 255, 0.3); }
+  50% { box-shadow: 0 0 14px rgba(0, 255, 200, 0.8), 0 0 26px rgba(255, 0, 255, 0.6) }
+}
