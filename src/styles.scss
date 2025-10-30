@@ -1,8 +1,10 @@
+//@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
 /* ======================== Основная Палитра сайта ============================ */
 /* ======================== Шрифты ============================================= */
 :root {
   --color-bg-dark: #0d0d0d;
-  --color-bg-light: #f0f0f7;
+  --color-bg-dullgreen: #17381c;
   --accent-formal-dark: #1b1b1b;
   --accent-formal-light: #f5f6fa;
   --accent-turquoise: #00e6e6;
@@ -20,7 +22,7 @@
   --accent-purple-hover: #b354fc;
   --text-main: #648fe0;
   --text-dark: #101010;
-  --muted-text: #999;
+  --color-muted: #999;
   --color-shadow: #00000040;
 
   --font-main: 'Roboto', sans-serif;
@@ -48,7 +50,20 @@ img {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
 @keyframes slideUp {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+@keyframes slideDown {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(20px); opacity: 0; }
+}
+
+@keyframes neonBreath {
+  0%, 100% { box-shadow: 0 0 8px rgba(0, 255, 150, 0.4), 0 0 16px rgba(180, 0, 255, 0.3); }
+  50% { box-shadow: 0 0 14px rgba(0, 255, 200, 0.8), 0 0 26px rgba(255, 0, 255, 0.6) }
 }

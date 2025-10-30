@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { takeUntil } from 'rxjs/operators';
+import { Unsubscriber } from '../../unsubscriber-helper';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentService } from '../../services/payment.service';
 import { CartService } from '../../services/cart.service';
@@ -14,7 +16,7 @@ import { Router } from '@angular/router';
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.scss'
 })
-export class PaymentComponent {
+export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy {
   paymentForm!: FormGroup;
   message = "";
   isLoading = false;
@@ -30,7 +32,7 @@ export class PaymentComponent {
     private cartService: CartService,
     private balanceService: BalanceService, 
     private router: Router
-  ) { }
+  ) { super(); }
 
   ngOnInit() {
     this.paymentForm = this.fb.group({
@@ -42,12 +44,12 @@ export class PaymentComponent {
       agreement: [false, Validators.requiredTrue]
     });
 
-    this.cartService.totalAmount$.subscribe(amount => {
+    this.cartService.totalAmount$.pipe(takeUntil(this.destroy$)).subscribe(amount => {
       this.totalAmount = amount;
       this.updateFinalAmount();
     });
 
-    this.balanceService.balance$.subscribe(b => this.balance === b)
+    this.balanceService.balance$.pipe(takeUntil(this.destroy$)).subscribe(b => this.balance === b)
 
     this.paymentForm.get('promoCode')?.valueChanges.subscribe(code => {
       if (code && code.length >= 4) this.applyPromo(code);
@@ -110,4 +112,6 @@ export class PaymentComponent {
       }
     });
   }
+
+  ngOnDestroy() { this.subClean(); }
 }

@@ -1,23 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
+import { Unsubscriber } from '../../unsubscriber-helper';
 import { Game } from '../../models/game.model';
 import { GameService } from '../../services/game.service';
 import { CartService } from '../../services/cart.service';
 import { PurchaseService } from '../../services/purchase.service';
 import { UserService } from '../../services/user.service';
+import { FiltrationService } from '../../services/filtration.service';
 import { UserRole } from '../../models/enumerators.model';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GameFiltersComponent } from '../game-filters/game-filters.component';
 import { purchaseFieldAnim, modalAnims, gameCardAnim, gameEditAnim } from '../../app.animations';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, GameFiltersComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   animations: [purchaseFieldAnim, modalAnims, gameCardAnim, gameEditAnim]
 })
-export class HomeComponent {
+export class HomeComponent extends Unsubscriber implements OnInit, OnDestroy {
   games: Game[] = [];
   purchased: Game[] = [];
   role: UserRole | null = null;
@@ -28,6 +32,7 @@ export class HomeComponent {
   gameForm!: FormGroup;
   UserRole = UserRole;
   showModal = false;
+  showFilters = false;
   isEditing = false;
 
   constructor(
@@ -35,17 +40,27 @@ export class HomeComponent {
     private gameService: GameService, 
     private cartService: CartService,
     private purchaseService: PurchaseService, 
-    private userService: UserService
-  ) { }
+    private userService: UserService,
+    private filterService: FiltrationService
+  ) { super(); }
 
   ngOnInit() {
-    this.gameService.game$.subscribe(games => {
+    this.gameService.game$.pipe(takeUntil(this.destroy$)).subscribe(games => {
       this.games = games;
-      this.filteredGames = games;
+      this.filteredGames = [...games];
     });
-    this.userService.role$.subscribe(role => this.role = role);
-    this.purchaseService.purchases$.subscribe((list) => this.purchased = list);
+    this.userService.role$.pipe(takeUntil(this.destroy$)).subscribe(role => this.role = role);
+    this.cartService.cart$.pipe(takeUntil(this.destroy$)).subscribe(cartItems => {
+      this.purchased = this.purchased.filter(p => cartItems.some(c => c.id === p.id));
+    });
+    this.purchaseService.purchases$.pipe(takeUntil(this.destroy$)).subscribe((list) => this.purchased = list);
+    this.filterService.filterToogle$.pipe(takeUntil(this.destroy$)).subscribe(() => this.showFilters = !this.showFilters);
+
+    console.log(this.games);
   }
+
+  /** Проверка купленности самой игры */
+  isPurchasedAlready(gameID: number) { return this.purchased.some(p => p.id === gameID); }
 
   /** Открыть модальное окно с подробностями */
   openModal(game: Game) {
@@ -54,9 +69,38 @@ export class HomeComponent {
     this.showModal = true;
   }
 
+  /** Фильтрация поиска (продвинутая) */
+  onFiltersChanged(filters: any) {
+    this.filteredGames = this.gameService.getGames().filter(game =>
+      game.price >= filters.price[0] && game.price <= filters.price[1] &&
+      game.rating >= filters.rating[0] && game.rating <= filters.rating[1] &&
+      (filters.genre ? game.genre === filters.genre : true)
+    );
+
+    this.games = this.filteredGames;
+  }
+
+  onImageSelected(event: Event, chosenGame: Game) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+
+    const imageFile = input.files[0];
+    const validTypes = ['image/webp', 'image/png', 'image/jpeg'];
+    if (!validTypes.includes(imageFile.type)) {
+      alert('Недопустимый формат для изображения для обложки игры!');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      chosenGame.image = reader.result as string;
+      this.gameService.updateGameImage(chosenGame.image);
+    };
+    reader.readAsDataURL(imageFile);
+  }
+
   /** Переключение в режим редактирования */
   editGame(updated: Game) {
-    if (!this.userService.isAuthenticated()) return alert('Требуется войти в систему!');
     this.selectedGame = updated;
     this.isEditing = true;
     this.showModal = true;
@@ -64,6 +108,7 @@ export class HomeComponent {
     this.gameForm = this.fb.group({
       title: [updated.title, Validators.required],
       genre: [updated.genre, Validators.required],
+      rating: [updated.rating, [Validators.required, Validators.minLength(0), Validators.maxLength(10)]],
       price: [updated.price, [Validators.required, Validators.min(0)]],
       systemRequirements: [updated.systemRequirements],
       developer: [updated.developer],
@@ -74,7 +119,6 @@ export class HomeComponent {
 
   /** Добавление игры  */
   addNewGame() {
-    if (!this.userService.isAuthenticated()) return alert('Требуется войти в систему!');
     this.isEditing = true;
     this.selectedGame = null;
     this.showModal = true;
@@ -82,6 +126,7 @@ export class HomeComponent {
     this.gameForm = this.fb.group({
       title: ['', Validators.required],
       genre: ['', Validators.required],
+      rating: [0, [Validators.required, Validators.minLength(0), Validators.maxLength(10)]],
       price: [0, [Validators.required, Validators.min(0)]],
       systemRequirements: [''],
       developer: [''],
@@ -92,6 +137,8 @@ export class HomeComponent {
 
   deleteGame(gameID: number) {
     this.gameService.removeGame(gameID);
+    this.cartService.removeItem(gameID);
+    this.purchaseService.removePurchase(gameID);
     alert(`Удалена игра: ${gameID}`);
   }
 
@@ -101,15 +148,11 @@ export class HomeComponent {
 
     if (this.selectedGame) {
       // Редактируем существующее
-      const idx = this.games.findIndex(g => g.id === this.selectedGame!.id);
-      this.games[idx] = { ...this.games[idx], ...this.gameForm.value };
+      this.gameService.updateGame(this.selectedGame.id, this.gameForm.value);
     } else {
       // Добавляем новую
-      const newGame: Game = {
-        id: this.games.length + 1,
-        ...this.gameForm.value
-      };
-      this.games.push(newGame);
+      const newGame: Game = { id: this.games.length + 1, ...this.gameForm.value };
+      this.gameService.addGame(newGame);
     }
 
     this.closeModal();
@@ -122,11 +165,12 @@ export class HomeComponent {
       return;
     }
 
-    this.cartService.addItem(game);
-    alert(`Игра "${game.title}" добавлена в вашу корзину!`);
-    this.purchaseService.addPurchase(game);
+    if (!this.isPurchasedAlready(game.id)) {
+      this.cartService.addItem(game);
+      this.purchaseService.addPurchase(game);
+      alert(`Игра "${game.title}" добавлена в вашу корзину!`);
+    }
   }
-  isPurchasedAlready(gameID: number) { return this.purchaseService.hasPurchased(gameID); }
 
   /** закрытие модального окна */
   closeModal() {
@@ -134,4 +178,6 @@ export class HomeComponent {
     this.isEditing = false;
     this.selectedGame = null;
   }
+
+  ngOnDestroy() { this.subClean(); }
 }

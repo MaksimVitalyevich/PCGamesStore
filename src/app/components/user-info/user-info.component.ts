@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Unsubscriber } from '../../unsubscriber-helper';
+import { takeUntil } from 'rxjs/operators';
 import { UserService } from '../../services/user.service';
 import { BalanceService } from '../../services/balance.service';
 import { UserRole } from '../../models/enumerators.model';
@@ -13,15 +15,17 @@ import { userInfoAnims } from '../../app.animations';
   styleUrl: './user-info.component.scss',
   animations: [userInfoAnims]
 })
-export class UserInfoComponent {
+export class UserInfoComponent extends Unsubscriber implements OnInit, OnDestroy {
   currentRole: UserRole | null = null;
   balance = 0;
   hover = false;
 
-  constructor(private userService: UserService, private balanceServie: BalanceService) { }
+  constructor(private userService: UserService, private balanceServie: BalanceService) { super(); }
 
   ngOnInit() {
-    this.userService.role$.subscribe(role => this.currentRole = role);
-    this.balanceServie.balance$.subscribe(balance => this.balance = balance);
+    this.userService.role$.pipe(takeUntil(this.destroy$)).subscribe(role => this.currentRole = role);
+    this.balanceServie.balance$.pipe(takeUntil(this.destroy$)).subscribe(balance => this.balance = balance);
   }
+
+  ngOnDestroy(): void { this.subClean(); }
 }

@@ -5,6 +5,7 @@ export interface Game {
     purchaseDate?: Date;
     short?: string;
     genre: string;
+    rating: number;
     full?: string;
     developer?: string;
     companyName?: string;

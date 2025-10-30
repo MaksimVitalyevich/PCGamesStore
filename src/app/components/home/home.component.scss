@@ -1,7 +1,7 @@
 @use '../../../styles.scss' as home;
 
 .homeContainer {
-  background-color: var(--color-bg-light);
+  background-image: linear-gradient(120deg, var(--color-bg-dark), var(--color-bg-dullgreen));
   color: var(--text-dark);
   font-family: var(--font-accent);
   padding: 2rem;
@@ -56,7 +56,7 @@
 
   .gamesGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.2rem;
     justify-items: center;
     align-items: start;
@@ -72,7 +72,8 @@
       overflow: hidden;
       padding: 1rem;
       text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: 0.3s;
+      animation: slideUp 0.3s ease;
   
       &:hover {
         transform: scale(1.05);
@@ -105,6 +106,11 @@
         .genreText {
           font-size: 0.9rem;
           color: var(--accent-turquoise);
+        }
+        .ratingText {
+          font-weight: bold;
+          color: var(--accent-orange);
+          text-shadow: 0 0 4px rgba(255, 125, 0, 0.8);
         }
         .priceText {
           font-weight: bold;
@@ -140,9 +146,22 @@
             background-image: none;
             background-color: var(--accent-purple);
             color: white;
+
+            &:hover {
+              box-shadow: 0 0 12px var(--accent-light-purple);
+            }
           }
           &.btnBuy {
             color: gold;
+          }
+          &.bought {
+            background-image: none;
+            background-color: var(--color-muted);
+            color: darkslategray;
+
+            &:hover {
+              box-shadow: 0 0 12px var(--color-muted);
+            }
           }
           &.btnDelete {
             background-image: none;
@@ -202,12 +221,12 @@
       border: 2px solid var(--accent-green);
       border-radius: 16px;
       box-shadow: 0 0 12px rgba(0, 255, 150, 0.5), 0 0 25px rgba(150, 0, 255, 0.4);
-      width: 520px;
+      width: 600px;
       max-height: 90%;
       color: var(--accent-darkalice);
       overflow-y: auto;
       position: relative;
-      animation: slideUp 0.35s ease forwards, pulseNeon 4.5s ease-in-out infinite;
+      animation: slideUp 0.35s ease forwards, neonBreath 4.5s ease-in-out infinite;
 
       .closeBtn {
         position: absolute;
@@ -235,9 +254,30 @@
         margin-bottom: 0.9rem;
     
         h2 {
+          text-align: center;
           font-size: 1.4rem;
           color: var(--accent-turquoise);
           text-shadow: 0 0 6px rgba(0, 230, 230, 0.6);
+        }
+        .viewImage {
+          position: absolute;
+          display: flex;
+          width: 200px;
+          height: 200px;
+          object-fit: cover;
+          overflow: auto;
+          border-radius: 5px;
+          margin-bottom: 0.4rem;
+        }
+        p {
+          position: relative;
+          right: -210px;
+          text-align: justify;
+          max-width: 350px;
+
+          b {
+            color: var(--accent-purple);
+          }
         }
       }
 
@@ -328,16 +368,11 @@
   border: 1px solid var(--border-tab);
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 255, 150, 0.5);
-  animation: pulseNeon 4.5ss ease-in-out infinite, fadeIn 0.3s ease forwards;
+  animation: neonBreath 4.5ss ease-in-out infinite, fadeIn 0.3s ease forwards;
   transition: 0.3s;
 
   &:hover {
     background: linear-gradient(180deg, var(--accent-turquoise), var(--accent-light-red));
     box-shadow: 0 0 18px rgba(255, 0, 255, 0.7);
   }
-}
-
-@keyframes pulseNeon {
-  0%, 100% { box-shadow: 0 0 8px rgba(0, 255, 150, 0.4), 0 0 16px rgba(180, 0, 255, 0.3); }
-  50% { box-shadow: 0 0 14px rgba(0, 255, 200, 0.8), 0 0 26px rgba(255, 0, 255, 0.6) }
 }

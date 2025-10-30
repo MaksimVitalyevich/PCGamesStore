@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { takeUntil } from 'rxjs/operators';
+import { Unsubscriber } from '../../unsubscriber-helper';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Theme } from '../../models/enumerators.model';
 import { UserService } from '../../services/user.service';
@@ -19,7 +21,7 @@ import { purchaseFieldAnim, gameCardAnim, themeColorAnim } from '../../app.anima
   styleUrl: './profile.component.scss',
   animations: [purchaseFieldAnim, gameCardAnim, themeColorAnim]
 })
-export class ProfileComponent {
+export class ProfileComponent extends Unsubscriber implements OnInit, OnDestroy {
   profileForm!: FormGroup;
   user!: User;
   usergames: Game[] = [];
@@ -34,7 +36,7 @@ export class ProfileComponent {
     private purchaseService: PurchaseService,
     private domSanitizer: DomSanitizer,
     private router: Router
-  ) { }
+  ) { super(); }
 
   ngOnInit() {
     const user = this.userService.user;
@@ -52,9 +54,9 @@ export class ProfileComponent {
       password: ['', [Validators.minLength(6)]]
     });
 
-    this.balanceService.balance$.subscribe(() => {}); // для реактивного обновления в непрерывном состоянии
-    this.purchaseService.purchases$.subscribe(purchases => this.usergames = purchases);
-    this.userService.theme$.subscribe(theme => this.currentTheme = theme);
+    this.balanceService.balance$.pipe(takeUntil(this.destroy$)).subscribe(() => {}); // для реактивного обновления в непрерывном состоянии
+    this.purchaseService.purchases$.pipe(takeUntil(this.destroy$)).subscribe(purchases => this.usergames = purchases);
+    this.userService.theme$.pipe(takeUntil(this.destroy$)).subscribe(theme => this.currentTheme = theme);
   }
 
   /** Выбор фото (аватар) пользователя */
@@ -109,4 +111,6 @@ export class ProfileComponent {
     this.userService.logout();
     this.router.navigate(['/']);
   }
+
+  ngOnDestroy() { this.subClean(); }
 }

@@ -8,9 +8,8 @@
     </div>
 
     <div class="searcharea">
-        <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" 
-        placeholder="Поиск игр по названию...">
-        <button (click)="onSearch()">Найти</button>
+        <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" placeholder="Поиск игр по названию...">
+        <button (click)="onFilterClick()">Продвинутый поиск</button>
     </div>
 
     <nav class="navMenu">

@@ -5,22 +5,24 @@
 
     <div *ngIf="cart.length > 0" class="ownedGamesField">
         <div *ngFor="let game of cart" class="ownedGamesCard">
-            <div>
+            <div class="ownedGameInfo">
+                <h3>Приобретенный товар:</h3>
                 <div class="gameTitle">{{ game.title }}</div>
                 <div class="gamePriceText">
                     {{ game.price }} ₽ × {{ 1 }}
                 </div>
             </div>
-            <button (click)="remove(game.id)" class="gameDeletionText">Удалить</button>
+            <button (click)="remove(game.id)" class="btnGameDeletion">Удалить</button>
         </div>
 
         <div class="cartBalanceField">
             <div class="balanceText">Итого: {{ total }} ₽</div>
             <button class="btnPaymentLink" (click)="gotoPayment()">Перейти к оплате</button>
-        </div>
 
-        <div class="cartCleanup">
-            <button class="btnClearCart" (click)="clear()">Очистить корзину</button>
+            <div class="cartActions">
+                <button class="btnUpdateCart" (click)="refresh()">Обновить корзину</button>
+                <button class="btnClearCart" (click)="clear()">Очистить корзину</button>
+            </div>
         </div>
     </div>
 </div>

@@ -47,6 +47,11 @@
             @extend %select;
             background-color: #fafafa;
             width: 50%;
+            transition: 0.2s;
+
+            &:hover {
+                box-shadow: 0 0 6px var(--color-shadow);
+            }
         }
 
         .hint {

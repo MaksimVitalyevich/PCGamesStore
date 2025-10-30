@@ -29,8 +29,16 @@ export class CartService {
 
   /** Удаляет игру по ID */
   removeItem(id: number): void {
-    const updated = this.itemsSource.value.filter(g => g.id === id);
+    const updated = this.itemsSource.value.filter(g => g.id !== id);
     this.updateCart(updated);
+  }
+
+  /** Обновление состояния корзины (после внешних изменений) */
+  refreshCart(): void {
+    const saved = localStorage.getItem('cart');
+    const parsed: Game[] = saved ? JSON.parse(saved) : [];
+    this.itemsSource.next(parsed);
+    this.updateTotal(parsed);
   }
 
   /** Очистка корзины */

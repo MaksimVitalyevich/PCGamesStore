@@ -48,6 +48,11 @@
             background-color: #f7f5f5;
             border-radius: 6px;
             box-sizing: border-box;
+            transition: 0.2s;
+
+            &:hover {
+                box-shadow: 0 0 6px var(--color-shadow);
+            }
         }
 
         .creditCardCredentials {
@@ -70,7 +75,7 @@
                     box-shadow: 0 0 8px var(--border-tab);
                 }
                 &::placeholder {
-                    color: var(--muted-text);
+                    color: var(--color-muted);
                 }
             }
 

@@ -18,6 +18,10 @@ export class PurchaseService {
     this.purchasesSource.next(updated);
     this.purchaseCompleted.emit(updated);
   }
+  removePurchase(gameID: number): void { 
+    const updated = this.purchasesSource.value.filter(p => p.id !== gameID);
+    this.purchasesSource.next(updated);
+  }
 
   hasPurchased(gameID: number): boolean { return this.purchasesSource.value.some((g) => g.id === gameID); }
   clearPurchases(): void { this.purchasesSource.next([]); }

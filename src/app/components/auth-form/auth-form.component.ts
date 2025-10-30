@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { takeUntil } from 'rxjs/operators';
+import { Unsubscriber } from '../../unsubscriber-helper';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.model';
@@ -13,7 +15,7 @@ import { UserRole, LoginMethod } from '../../models/enumerators.model';
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss'
 })
-export class AuthFormComponent {
+export class AuthFormComponent extends Unsubscriber implements OnInit, OnDestroy {
   authForm!: FormGroup;
   mode: LoginMethod = LoginMethod.Register || LoginMethod.Login;
   LoginMethod = LoginMethod;
@@ -28,7 +30,7 @@ export class AuthFormComponent {
   // Паттерн телефона: допустимый формат +7 111 111 11 11
   private static phonePattern = /^\+7[\s(]*\d{3}[\s)]*\d{3}[\s-]?\d{2}[\s-]?\d{2}$/
 
-  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) { }
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) { super(); }
 
   ngOnInit() {
     this.authForm = this.fb.group({
@@ -43,7 +45,7 @@ export class AuthFormComponent {
     });
 
     this.updateValidatorsForModes(this.mode);
-    this.userService.role$.subscribe(role => this.currentRole = role);
+    this.userService.role$.pipe(takeUntil(this.destroy$)).subscribe(role => this.currentRole = role);
   }
 
   private updateValidatorsForModes(mode: LoginMethod): void {
@@ -150,4 +152,6 @@ export class AuthFormComponent {
       });
     }
   }
+
+  ngOnDestroy() { this.subClean(); }
 }

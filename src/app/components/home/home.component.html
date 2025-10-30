@@ -6,21 +6,23 @@
         </ul>
     </div>
 
+    <app-game-filters *ngIf="showFilters" (filtersChanged)="onFiltersChanged($event)"></app-game-filters>
     <h2 class="homeTitle">Каталог ПК игр</h2>
 
     <div class="gamesGrid">
         <div *ngFor="let game of games" class="gameCard" [@gameCardAnim]="hoveredCard === game ? 'hover' : 'normal'" (mouseenter)="hoveredCard = game" (mouseleave)="hoveredCard = null">
-            <img [src]="game.image || 'assets/games/no-cover.png'" [alt]="game.title || 'Без обложки'" loading="lazy" class="gameImage">
+            <img [src]="game.image || 'public/games/no-cover.png'" [alt]="game.title || 'Без обложки'" loading="lazy" class="gameImage">
 
             <div class="gameInfo">
                 <h3 class="hot">{{ game.title }}</h3>
                 <p class="genreText">{{ game.genre }}</p>
+                <p class="ratingText">{{ game.rating }}</p>
                 <p class="priceText">{{ game.price | currency:'RUB':'symbol-narrow' }}</p>
             </div>
 
             <div class="actions">
                 <button class="btnDetails" (click)="openModal(game)">Подробнее</button>
-                <button class="btnBuy" [disabled]="isPurchasedAlready(game.id)" (click)="buyGame(game)" *ngIf="role === UserRole.User || role === UserRole.PremiumUser || role === UserRole.Moderator">
+                <button class="btnBuy" [ngClass]="{ bought: isPurchasedAlready(game.id) }" [disabled]="isPurchasedAlready(game.id)" (click)="buyGame(game)">
                     {{ isPurchasedAlready(game.id) ? 'Уже приобретено' : 'Купить эту игру' }}
                 </button>
                 <button *ngIf="role === UserRole.Moderator" class="btnEdit" (click)="editGame(game)">Редактировать</button>
@@ -40,8 +42,10 @@
 
             <div *ngIf="!isEditing && selectedGame" class="viewSection">
                 <h2>{{ selectedGame.title }}</h2>
+                <img [src]="selectedGame.image || 'public/games/no-cover.png'" [alt]="selectedGame.title || 'Без обложки'" loading="lazy" class="viewImage">
                 <p><b>Год выхода:</b> {{ selectedGame.published_at }}</p>
                 <p><b>Жанр:</b> {{ selectedGame.genre }}</p>
+                <p><b>Рейтинг:</b> {{ selectedGame.rating }}</p>
                 <p><b>Цена:</b> {{ selectedGame.price }} ₽</p>
                 <p><b>Разработчик:</b> {{ selectedGame.developer }}</p>
                 <p><b>Компания:</b> {{ selectedGame.companyName }}</p>
@@ -53,11 +57,17 @@
                 <label>Название</label>
                 <input formControlName="title">
 
+                <label for="imageInput">Обложка игры (Добавить/Редактировать)</label>
+                <input type="file" id="imageInput" accept=".webp, .png, .jpg, .jpeg" hidden>
+
                 <label>Год выхода</label>
                 <input type="date" formControlName="published_at">
 
                 <label>Жанр</label>
                 <input formControlName="genre">
+
+                <label>Рейтинг (0-10)</label>
+                <input type="number" min="0" formControlName="rating">
 
                 <label>Цена (₽)</label>
                 <input type="number" formControlName="price">

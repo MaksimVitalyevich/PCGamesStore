@@ -1,4 +1,4 @@
-@use '../styles.scss' as *;
+@use '../styles.scss' as framing;
 
 /* ============================================================
     Общий файл каркаса оформления для сайта
@@ -56,11 +56,15 @@
         padding: 0.5rem 0.8rem;
         border-radius: 8px;
         border: 2px solid var(--accent-purple);
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: var(--color-bg-dark);
         color: var(--accent-darkalice);
         width: 220px;
         font-size: 1rem;
+        transition: 0.15s;
 
+        &:focus {
+          border-color: var(--accent-purple-hover);
+        }
         &::placeholder {
         color: rgba(0, 247, 250, 0.6)
       }

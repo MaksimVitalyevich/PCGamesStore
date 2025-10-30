@@ -17,7 +17,7 @@ export class AppComponent {
   cartCount = 0;
   user: any = null;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService) { }
 
   ngOnInit() { this.cartService.cart$.subscribe(c => this.cartCount = c.length); }
 }
