@@ -1,9 +1,17 @@
 <div class="paymentField">
     <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" class="paymentMethodForm">
-        <h2 class="paymentTitle">Оплата заказа</h2>
+        <h2 class="paymentTitle">Подтверждение оплаты</h2>
+
+        <div *ngIf="cartItems.length > 0; else emptyCart" class="paymentItems">
+            <ul>
+                <li *ngFor="let item of cartItems">
+                    {{ item.title }} - {{ item.price | currency:'RUB':'symbol-narrow' }}
+                </li>
+            </ul>
+        </div>
 
         <p class="totalSumText">
-            Итоговая сумма заказа: <b>{{ totalAmount }} ₽</b><br>
+            Итоговая сумма заказа составляет: <b>{{ totalAmount }} ₽</b><br>
             <span *ngIf="discount > 0" class="discountText">
                 Применена скидка {{ discount }}% -> <b>{{ finalAmount.toFixed(2) }} ₽</b>
             </span>
@@ -50,6 +58,10 @@
             </button>
             <button type="button" class="cancelPay" (click)="cancelPayment()">Прервать операцию</button>
         </div>
+
+        <ng-template #emptyCart>
+            <p>Ваша корзина пустая!</p>
+        </ng-template>
 
         <div *ngIf="message" class="messageNotifier" 
         [class.text-green-600]="message.includes('успешно') || message.includes('применён')"

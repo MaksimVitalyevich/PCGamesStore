@@ -39,7 +39,75 @@
         @extend %serviceBlock;
 
         .disclaimer {
+            text-align: left;
             color: var(--accent-red);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        .formalGreet {
+            text-align: right;
+            color: var(--accent-orange);
+            font-weight: 600;
+            margin-top: 0.6rem;
+            margin-bottom: 0.9rem;
+        }
+        .techInfo {
+            max-width: 900px;
+            padding: 0.55rem 0.66rem;
+            background-color: rgb(250, 250, 195);
+            border-left: 10px solid rgba(250, 250, 190, 0.7);
+            border-radius: 10px;
+
+            h2 {
+                text-align: center;
+                color: var(--accent-darkalice);
+                font-weight: 600;
+                margin-top: 0.8rem;
+            }
+
+            p {
+                font-family: var(--font-formal-accent);
+                font-size: 1.1rem;
+                text-align: justify;
+                color: var(--text-dark);
+                letter-spacing: 0.3px;
+            }
+            ul {
+                margin-left: 1.2rem;
+                list-style-type: square;
+
+                li {
+                    margin-bottom: 0.2rem;
+                }
+            }
+            .knownRights {
+                display: inline-block;
+                align-self: flex-end;
+                text-align: center;
+                max-width: 600px;
+                padding: 0.22rem 0.44rem;
+                background-color: #f3eeee;
+                border-radius: 20px;
+                color: var(--accent-lime);
+
+                span {
+                    display: flex;
+                    margin: 0;
+                    color: green;
+                    font-size: 0.99rem;
+                    font-variant: small-caps;
+                    font-weight: 800;
+
+                    p {
+                        font-variant: normal;
+                        font-weight: 400;
+                        margin: 0;
+                        padding: 0.44rem;
+                        color: rgba(14, 196, 75, 0.9);
+                    }
+                }
+            }
         }
     }
 

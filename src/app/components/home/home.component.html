@@ -2,7 +2,7 @@
     <div *ngIf="purchased.length > 0" class="purchasedList" [@purchaseFieldAnim]>
         <h4 class="hot">История ваших покупок:</h4>
         <ul>
-            <li *ngFor="let game of purchased">{{ game.title }} - {{ game.purchaseDate | date:'medium' }}</li>
+            <li *ngFor="let game of purchased">{{ game.title }} - {{ game.purchaseDate ? (game.purchaseDate| date:'medium') : 'Без даты' }}</li>
         </ul>
     </div>
 
@@ -14,7 +14,7 @@
             <img [src]="game.image || 'public/games/no-cover.png'" [alt]="game.title || 'Без обложки'" loading="lazy" class="gameImage">
 
             <div class="gameInfo">
-                <h3 class="hot">{{ game.title }}</h3>
+                <h3 [class.hot]="game.rating >= 7">{{ game.title }}</h3>
                 <p class="genreText">{{ game.genre }}</p>
                 <p class="ratingText">{{ game.rating }}</p>
                 <p class="priceText">{{ game.price | currency:'RUB':'symbol-narrow' }}</p>

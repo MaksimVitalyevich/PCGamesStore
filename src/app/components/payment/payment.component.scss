@@ -23,6 +23,22 @@
             color: var(--accent-formal-dark);
         }
 
+        .paymentItems {
+            display: inline-block;
+            align-items: start;
+            gap: 0.35rem;
+
+            ul {
+                list-style: none;
+                font-size: 1.1rem;
+                padding: 0;
+
+                li {
+                    color: var(--accent-formal-dark);
+                }
+            }
+        }
+
         .totalSumText {
             font-family: Arial, Helvetica, sans-serif;
             color: var(--accent-lime);

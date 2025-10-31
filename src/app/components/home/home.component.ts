@@ -23,6 +23,7 @@ import { purchaseFieldAnim, modalAnims, gameCardAnim, gameEditAnim } from '../..
 })
 export class HomeComponent extends Unsubscriber implements OnInit, OnDestroy {
   games: Game[] = [];
+  cartGames: Game[] = [];
   purchased: Game[] = [];
   role: UserRole | null = null;
   filteredGames: Game[] = [];
@@ -50,9 +51,7 @@ export class HomeComponent extends Unsubscriber implements OnInit, OnDestroy {
       this.filteredGames = [...games];
     });
     this.userService.role$.pipe(takeUntil(this.destroy$)).subscribe(role => this.role = role);
-    this.cartService.cart$.pipe(takeUntil(this.destroy$)).subscribe(cartItems => {
-      this.purchased = this.purchased.filter(p => cartItems.some(c => c.id === p.id));
-    });
+    this.cartService.cart$.pipe(takeUntil(this.destroy$)).subscribe(cartItems => this.cartGames = cartItems);
     this.purchaseService.purchases$.pipe(takeUntil(this.destroy$)).subscribe((list) => this.purchased = list);
     this.filterService.filterToogle$.pipe(takeUntil(this.destroy$)).subscribe(() => this.showFilters = !this.showFilters);
 
@@ -60,7 +59,7 @@ export class HomeComponent extends Unsubscriber implements OnInit, OnDestroy {
   }
 
   /** Проверка купленности самой игры */
-  isPurchasedAlready(gameID: number) { return this.purchased.some(p => p.id === gameID); }
+  isPurchasedAlready(gameID: number) { return this.cartGames.some(p => p.id === gameID); }
 
   /** Открыть модальное окно с подробностями */
   openModal(game: Game) {
@@ -138,7 +137,6 @@ export class HomeComponent extends Unsubscriber implements OnInit, OnDestroy {
   deleteGame(gameID: number) {
     this.gameService.removeGame(gameID);
     this.cartService.removeItem(gameID);
-    this.purchaseService.removePurchase(gameID);
     alert(`Удалена игра: ${gameID}`);
   }
 
@@ -167,7 +165,6 @@ export class HomeComponent extends Unsubscriber implements OnInit, OnDestroy {
 
     if (!this.isPurchasedAlready(game.id)) {
       this.cartService.addItem(game);
-      this.purchaseService.addPurchase(game);
       alert(`Игра "${game.title}" добавлена в вашу корзину!`);
     }
   }

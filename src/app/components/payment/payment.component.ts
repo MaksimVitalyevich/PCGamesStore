@@ -4,8 +4,10 @@ import { takeUntil } from 'rxjs/operators';
 import { Unsubscriber } from '../../unsubscriber-helper';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentService } from '../../services/payment.service';
+import { PurchaseService } from '../../services/purchase.service';
 import { CartService } from '../../services/cart.service';
 import { BalanceService } from '../../services/balance.service';
+import { Game } from '../../models/game.model';
 import { PayMethod } from '../../models/enumerators.model';
 import { Router } from '@angular/router';
 
@@ -18,18 +20,22 @@ import { Router } from '@angular/router';
 })
 export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy {
   paymentForm!: FormGroup;
+  cartItems: Game[] = [];
   message = "";
   isLoading = false;
+  isPaying = false;
 
   totalAmount = 0;
   discount = 0;
   finalAmount = 0;
   balance = 0;
+  progress = 0;
 
   constructor(
     private fb: FormBuilder, 
     private paymentService: PaymentService, 
     private cartService: CartService,
+    private purchaseService: PurchaseService,
     private balanceService: BalanceService, 
     private router: Router
   ) { super(); }
@@ -44,6 +50,7 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
       agreement: [false, Validators.requiredTrue]
     });
 
+    this.cartService.cart$.pipe(takeUntil(this.destroy$)).subscribe(items => this.cartItems = items);
     this.cartService.totalAmount$.pipe(takeUntil(this.destroy$)).subscribe(amount => {
       this.totalAmount = amount;
       this.updateFinalAmount();
@@ -84,6 +91,9 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
     this.updateFinalAmount();
   }
 
+  calculateTotal(items: Game[]) {
+    return items.reduce((acc, item) => acc + (item.price || 0), 0);
+  }
   updateFinalAmount() { this.finalAmount = this.totalAmount - (this.totalAmount * this.discount / 100); }
 
   onSubmit() {
@@ -97,19 +107,37 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
       this.message = "У вас недостаточно средств на счету!";
       return;
     }
+
+    this.totalAmount = this.calculateTotal(this.cartItems);
     
+    this.isPaying = true;
+    this.message = "Выполняется обработка платежа...";
     this.isLoading = true;
 
-    this.paymentService.simulatePayment(this.paymentForm.value, this.totalAmount).subscribe(result => {
-      this.isLoading = false;
-      if (result.success) {
-        this.balanceService.decrease(this.finalAmount);
-        this.cartService.clearCart();
-        this.message = `Оплата прошла успешно! С вашего счета списано ${this.finalAmount.toFixed(2)} ₽`;
-        setTimeout(() => this.router.navigate(['/profile']), 2500);
-      } else {
-        this.message = "Сбой при оплате!";
-      }
+    this.paymentService.simulatePayment(this.paymentForm.value, this.totalAmount).pipe(takeUntil(this.destroy$)).subscribe(result => {
+      const interval = window.setInterval(() => {
+        this.progress += 10;
+
+        if (this.progress >= 100) {
+          window.clearInterval(interval);
+          this.isLoading = false;
+          this.isPaying = false;
+
+          if (result.success) {
+            this.message = `Оплата прошла успешно! С вашего счета списано ${ this.finalAmount.toFixed(2) } ₽`;
+            this.cartItems.forEach(game => this.purchaseService.addPurchase(game));
+            this.balanceService.decrease(this.finalAmount);
+
+            this.cartService.clearCart();
+            this.totalAmount = 0;
+
+            setTimeout(() => this.router.navigate(['/profile']), 2500);
+            
+          } else {
+            this.message = "Сбой при оплате!";
+          }
+        }
+      }, 300);
     });
   }
 
