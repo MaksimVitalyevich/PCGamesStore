@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { debounce, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Unsubscriber } from '../../unsubscriber-helper';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -59,6 +59,7 @@ export class HeaderComponent extends Unsubscriber implements OnInit, OnDestroy {
     this.router.navigate(['/auth']);
   }
 
+  gotoAbout() { this.router.navigate(['/about']); }
   goToAuth() { this.router.navigate(['/auth']); }
   goToCart() { this.router.navigate(['/cart']); }
   goToProfile() { this.router.navigate(['/profile']); }
