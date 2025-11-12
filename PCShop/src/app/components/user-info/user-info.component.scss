@@ -1,0 +1,36 @@
+.userInfoPanel {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  background-image: linear-gradient(90deg, var(--color-spacevoid-variant-one), var(--color-spacevoid-variant-two));
+  color: var(--accent-turquoise);
+  border: 3px double var(--border-tab);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: var(--font-accent-extra);
+  font-size: 1rem;
+  box-shadow: 0 2px 8px var(--color-shadow);
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+  transition: 0.35s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--color-shadow);
+  }
+
+  .roleDisplay, .balanceDisplay {
+    margin: 2px 0;
+
+    .roleHighlight {
+      text-shadow: 0 0 8px var(--accent-turquoise);
+      font-weight: 400;
+    }
+  }
+
+  .balanceHighlight {
+    color: var(--color-neon-yellow);
+    text-shadow: 0 0 8px var(--color-neon-yellow);
+    font-weight: 600;
+  }
+}

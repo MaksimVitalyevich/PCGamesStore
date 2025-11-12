@@ -1,0 +1,46 @@
+.homeContainer {
+  background-image: linear-gradient(120deg, var(--color-bg-dark), var(--color-bg-dullgreen));
+  color: var(--text-dark);
+  font-family: var(--font-accent-variant-one);
+  padding: 2rem;
+
+  .homeTitle {
+    color: var(--accent-turquoise);
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-shadow: 0 0 6px var(--color-neon-teal);
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+  }
+
+  .loader {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 5px;
+
+    .spinner-wrapper {
+      position: relative;
+      width: 150px;
+      height: 150px;
+
+      .spinner {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: fill;
+        border: 2px dashed var(--color-neon-green);
+        color: var(--color-neon-green);
+        box-shadow: 0 0 8px rgba(0, 225, 155, 0.6);
+        text-shadow: 0 0 9px var(--color-neon-green);
+      }
+    }
+
+    p {
+      color: rgba(0, 225, 15, 0.8);
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+  }
+}

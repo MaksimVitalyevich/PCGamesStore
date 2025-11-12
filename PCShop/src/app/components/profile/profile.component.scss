@@ -1,0 +1,165 @@
+@use '../../services.style.scss' as profile;
+
+.profileField {
+  @extend %servicePage;
+  flex-direction: column;
+  gap: 1rem;
+
+  .profileTitle {
+      color: var(--color-blue);
+      font-family: var(--font-formal-accent);
+    }
+  .profileHint {
+      color: var(--accent-formal-dark);
+      margin: 0;
+      font-size: 0.8rem;
+      line-height: 1.2;
+    }
+
+  .avatar-wrapper {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 1rem;
+
+      .avatar {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 3px solid var(--accent-color, #7c4dff);
+          box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+        }
+      .uploadBtn {
+          position: absolute;
+          bottom: -8px;
+          right: -8px;
+          background-color: var(--accent-color, #7c4dff);
+          color: #fff;
+          padding: 4px 8px;
+          border-radius: 12px;
+          font-size: 12px;
+          cursor: pointer;
+          transition: 0.2s;
+
+          &:hover {
+              background-color: #5e35b1;
+            }
+        }
+    }
+
+  .ProfileForm {
+      @extend %formContainer;
+      max-width: calc(100% - 60px);
+      padding: 1.4rem 1.8rem;
+      display: flex;
+      font-family: var(--font-formal-accent);
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: stretch;
+
+      label {
+        @extend %label;
+        display: block;
+        margin-bottom: 0.4rem;
+      }
+      input {
+        @extend %input;
+        background-color: #fdfdfd;
+        width: 90%;
+        transition: 0.2s;
+
+        &:hover {
+          box-shadow: 0 0 6px var(--color-shadow);
+        }
+      }
+      .hint {
+        @extend %warningText;
+
+        &.warning {
+          color: var(--color-red);
+          text-align: center;
+          font-family: var(--font-formal-office);
+        }
+      }
+      .btnAdjustChanges {
+        @include profile.btnSuccess;
+        margin-top: 0.2rem;
+
+        &:hover {
+          transform: scale(1.03);
+          box-shadow: 0 0 10px green;
+        }
+      }
+    }
+
+  .userActions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      background: linear-gradient(180deg, var(--accent-formal-light), var(--accent-secondary));
+      border-radius: 13px;
+      padding: 1rem;
+
+      .balanceField {
+          background-color: var(--accent-lightyellow);
+          border: 1px solid var(--accent-pergament);
+          border-radius: 7px;
+          margin: 0.5rem;
+          box-shadow: 0 0 16px var(--accent-formal-darkgray);
+    
+          .balanceCardInfo {
+              margin: 0;
+              padding: 0;
+              width: 500px;
+    
+              p {
+                  margin-left: 1rem;
+                  color: var(--text-formal-dark);
+                  font-size: 1.2rem;
+                  font-weight: 500;
+                  letter-spacing: 0.1px;
+    
+                  span {
+                      display: flex;
+                      margin: 0;
+                      padding: 0.2rem 0.3rem;
+                      font-variant: small-caps;
+                      color: var(--accent-formal-darkgreen);
+                    }
+                }
+              .FunderApplier {
+                  @include profile.btnSuccess;
+                  position: relative;
+                  margin-left: 0.6rem;
+                  margin-bottom: 0.6rem;
+                  min-width: 150px;
+                  width: 180px;
+    
+                  &:hover {
+                      background-color: var(--accent-formal-darkgreen);
+                      transform: scale(1.03);
+                    }
+                }
+            }
+        }
+
+      .logoutField {
+          display: inline-block;
+          align-self: flex-end;
+          padding: 0;
+          margin: 0.7rem 0;
+    
+          .logoutBtn {
+              @include profile.btnDanger;
+              min-width: 150px;
+              width: 180px;
+    
+              &:hover {
+                  background-color: var(--color-red);
+                  transform: scale(1.03);
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,241 @@
+.purchaseField {
+  background: linear-gradient(120deg, var(--color-bg-light), var(--color-spacedust-variant-two));
+  padding: 2rem;
+  color: var(--accent-lightred);
+  font-family: var(--font-accent-variant-two);
+  min-height: 100vh;
+
+  .btnFilterActions {
+    display: flex;
+    position: relative;
+    bottom: 20px;
+    justify-content: flex-end;
+    gap: 0.75rem;
+
+    button {
+      background: linear-gradient(135deg, var(--color-spacevoid-variant-one), var(--color-spacevoid-variant-two));
+      border: none;
+      color: white;
+      border-radius: 8px;
+      padding: 0.5rem 0.7rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.25s;
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px var(--accent-darkpurple);
+      }
+    }
+  }
+
+  .loader {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 5px;
+
+    .spinner-wrapper {
+      position: relative;
+      width: 150px;
+      height: 150px;
+
+      .spinner {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: fill;
+        border: 2px dashed var(--color-neon-yellow);
+        color: var(--color-neon-yellow);
+        box-shadow: 0 0 8px rgba(210, 100, 21, 0.85);
+        text-shadow: 0 0 9px var(--color-neon-yellow);
+      }
+    }
+
+    p {
+      color: rgba(255, 123, 0, 0.9);
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+  }
+
+  .purchaseTitle {
+    color: var(--color-neon-orange);
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 0 0 6px var(--color-neon-yellow);
+    margin-bottom: 1.4rem;
+  }
+
+  .emptyPurchaseText {
+    text-align: center;
+    background: var(--color-spacevoid-variant-one);
+    border: 1px solid var(--color-neon-purple);
+    border-radius: 10px;
+    padding: 1rem;
+    font-size: 1.2rem;
+    color: var(--accent-darkalice);
+  }
+
+  .purchasedGameField {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 0.6rem;
+    justify-items: stretch;
+    align-items: start;
+
+    .purchasedGameCard {
+      box-sizing: border-box;
+      max-width: 360px;
+      background: linear-gradient(135deg, var(--color-spacedust-variant-one), var(--color-spacedust-variant-two));
+      color: var(--accent-lightpurple);
+      border: 3px solid var(--color-spacevoid-variant-two);
+      border-radius: 16px;
+      box-shadow: 0 2px 15px var(--color-bg-light);
+      overflow: hidden;
+      padding: 0;
+      margin: 0 auto;
+      transition: 0.3s;
+      animation: slideUp 0.3s ease;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+
+      &:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 20px rgba(20, 10, 40, 0.7);
+      }
+
+      .purchasedGameCardFrame {
+        box-sizing: border-box;
+        border: 1.5px solid var(--accent-darkpink);
+        border-radius: 16px;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0.5rem;
+        box-shadow: 0 2px 15px var(--color-neon-pink) inset;
+
+        &:hover {
+          box-shadow: 0 0 20px rgba(255, 1, 85, 0.5);
+        }
+      }
+
+      .purchaseImage {
+        width: 100%;
+        height: 180px;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 0.8rem;
+      }
+
+      .purchaseGameInfo {
+        text-align: center;
+
+        h3 {
+          color: var(--color-neon-teal);
+          font-size: 1.3rem;
+          font-weight: 700;
+          letter-spacing: 0.4px;
+          text-shadow: 0 0 6px var(--text-dark);
+          margin-bottom: 0.3rem;
+
+          &.hot {
+            color: var(--color-neon-yellow);
+            text-shadow: 0 0 5px var(--color-neon-orange), 0 0 10px var(--accent-hot-variant-one);
+          }
+        }
+        span {
+          font-size: 1.3rem;
+          font-weight: 700;
+          color: var(--color-neon-yellow);
+          letter-spacing: 0.6px;
+          text-shadow: 0 0 5px var(--color-neon-yellow);
+
+          &.top {
+            color: var(--accent-neon-orange);
+            text-shadow: 0 0 7px var(--accent-lightred);
+          }
+        }
+
+        .purchaseGenre {
+          color: var(--accent-turquoise);
+          font-size: 0.9rem;
+          margin-bottom: 0.4rem;
+        }
+        .purchaseRating {
+          color: var(--color-neon-orange);
+          font-weight: bold;
+          text-shadow: 0 0 4px rgba(255, 125, 0, 0.8);
+
+          &.hot {
+            color: var(--accent-lightred);
+            text-shadow: 0 0 5px var(--accent-hot-variant-one), 0 0 10px var(--accent-hot-variant-two);
+          }
+        }
+        .purchasePrice {
+          color: var(--color-neon-green);
+          text-shadow: 0 0 4px var(--accent-hot-variant-two);
+          font-weight: 600;
+          margin-bottom: 0.4rem;
+        }
+        .purchaseDate {
+          font-size: 0.85rem;
+          color: var(--color-bg-dullgreen);
+        }
+      }
+    }
+  }
+
+  .purchasePaginator {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+
+    .btnPreviousPage, .btnNextPage {
+      background-image: linear-gradient(135deg, var(--color-spacevoid-variant-one), var(--color-spacevoid-variant-two));
+      border: 2px solid var(--accent-darkpurple);
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      padding: 0.6rem 1.2rem;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 8px var(--accent-darkpurple), 0 0 12px var(--color-spacedust-variant-two) inset;
+
+      &:hover:not(:disabled) {
+        transform: scale(1.06);
+        box-shadow: 0 0 12px var(--accent-darkpurple), 0 0 16px var(--color-spacedust-variant-two), 0 0 20px var(--accent-lightpurple);
+      }
+      &.first {
+        background-image: none;
+        background-color: var(--color-bg-light);
+        color: var(--color-spacedust-variant-two);
+        box-shadow: 0 0 12px var(--color-spacedust-variant-one);
+      }
+    }
+    .btnPageNum {
+      background-image: linear-gradient(90deg, var(--color-neon-green), var(--color-neon-orange));
+      border: 2px solid var(--accent-darkpurple);
+      border-radius: 50%;
+      color: black;
+      font-weight: bold;
+      padding: 0.6rem 0.9rem;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 8px var(--color-neon-green), 0 0 12px var(--color-neon-yellow) inset;
+
+      &:hover {
+        transform: scale(1.06);
+        box-shadow: 0 0 12px var(--color-neon-green), 0 0 16px var(--color-neon-yellow) inset, 0 0 20px var(--accent-turquoise);
+      }
+      &.active {
+        background-image: linear-gradient(90deg, var(--color-neon-purple), var(--color-neon-teal));
+        border-color: var(--color-neon-pink);
+        box-shadow: 0 0 12px var(--color-neon-purple), 0 0 16px var(--color-neon-teal) inset;
+      }
+    }
+  }
+}

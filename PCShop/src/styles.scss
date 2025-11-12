@@ -1,0 +1,111 @@
+//@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+/* 1. Глобальные переменные стилей и шрифтов (оставлено для fallback загрузки) */
+:root {
+  /* Для геймерского стиля (неоновый вайб): */
+  --accent-turquoise: #00e6e6;
+  --color-neon-orange: #dd900be4;
+  --color-neon-yellow: #d0bc07;
+  --border-tab: #084d3a;
+  --color-bg-light: #c7c3c3;
+  --text-light: #e9e7e7;
+  --color-neon-teal: #00c7e6d7;
+  --accent-lightred: #ff3b3b;
+  --color-neon-pink: #f00fa5;
+  --accent-lightpurple: #b354fceb;
+  --color-spacedust-variant-one: #fc6b55;
+  --color-spacedust-variant-two: #33575b;
+  --color-bg-dark: #0d0d0d;
+  --text-dark: #101010;
+  --color-bg-dullgreen: #17381c;
+  --color-spacevoid-variant-one: #140d17;
+  --color-spacevoid-variant-two: #121322;
+  --accent-hot-variant-one: #ff5a5ac9;
+  --accent-hot-variant-two: #2af1bfd6;
+  --accent-darkred: #690202;
+  --accent-darkalice: #1a77d4;
+  --accent-darkpurple: #21025a90;
+  --accent-darkpink: #9f0442ec;
+  --color-neon-green: #00ff85;
+  --color-neon-purple: #8a00ff;
+
+  // Шрифты (геймерские):
+  --font-main: 'Roboto', sans-serif;
+  --font-accent-variant-one: 'Orbitron', 'Roboto', sans-serif;
+  --font-accent-variant-two: 'Minicomputer', 'JetBrains Mono', sans-serif;
+  --font-accent-extra: 'Verdana', monospace;
+
+  /* Для формальности (офисный стиль):*/
+  --accent-ink-header: #0c0066;
+  --accent-ink-text: #3c0066;
+  --border-section: #602a04;
+  --border-shadow: #5c26004b;
+  --text-main: #648fe0;
+  --color-muted: #999;
+  --color-shadow: #00000040;
+  --accent-formal-light: #f5f6fa;
+  --text-formal-light: #efe6e6;
+  --accent-secondary: #d5cccc;
+  --accent-lightyellow: #f0f57a;
+  --accent-formal-gray: #555;
+  --color-danger: #e02525;
+  --color-red: #d00505;
+  --color-orange: #e69000;
+  --accent-notebook-cover: #03fa7282;
+  --color-lime: #2ee600;
+  --color-lightblue: #3535f7;
+  --color-blue: #0044cc;
+  --accent-formal-lightpurple: #8e47ff;
+  --accent-formal-purple: #701efe;
+  --accent-formal-dark: #1b1b1b;
+  --text-formal-dark: #0f0e0e;
+  --accent-formal-darkgray: #222;
+  --accent-formal-darkgreen: #126d0293;
+  --accent-formal-darkpurple: #1c0130bf;
+  --accent-pergament: #aecf38;
+  --accent-bookcover-red: #920101df;
+  --accent-bookcover-blue: #0529de73;
+  --accent-bookcover-green: #04b42d84;
+  
+  // Шрифты (Офисные):
+  --font-formal-main: 'Microsoft YaHei', monospace;
+  --font-formal-office: 'Times New Roman', sans-serif;
+  --font-formal-accent: 'Constantia', sans-serif;
+  --font-formal-extra: 'Courier New', monospace;
+}
+
+/* ======================== Body (глобальный) =================================== */
+body {
+  margin-top: 80px;
+  margin-right: 240px;
+  background-color: var(--color-bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  scroll-behavior: smooth;
+}
+img {
+  width: 100%;
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes slideDown {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(20px); opacity: 0; }
+}
+
+@keyframes neonBreath {
+  0%, 100% { box-shadow: 0 0 8px rgba(0, 255, 150, 0.4), 0 0 16px rgba(180, 0, 255, 0.3); }
+  50% { box-shadow: 0 0 14px rgba(0, 255, 200, 0.8), 0 0 26px rgba(255, 0, 255, 0.6) }
+}

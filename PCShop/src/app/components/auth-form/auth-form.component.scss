@@ -1,0 +1,171 @@
+@use '../../services.style.scss' as service;
+
+.authFormField {
+  @extend %servicePage; // наследует структуру служебной страницы
+
+    .reactiveAuth {
+      @extend %formContainer; // наследует структуру формы
+
+      width: 800px;
+      max-width: calc(100% - 50px);
+      padding: 1.6rem 1.8rem;
+      display: flex;
+      font-family: var(--font-formal-accent);
+      flex-direction: column;
+      gap: 0.85rem;
+      align-items: stretch;
+
+      .loginTitleVar, .registerTitleVar, .quickLoginTitleVar {
+        text-align: center;
+        font-weight: 700;
+        margin-bottom: 0.9rem;
+        
+        &.loginTitleVar {
+          color: var(--color-blue);
+        }
+        &.registerTitleVar {
+          color: var(--text-formal-dark);
+        }
+        &.quickLoginTitleVar {
+          color: var(--accent-formal-lightpurple);
+        }
+      }
+
+      div {
+        display: block;
+        width: 100%;
+      }
+
+      label {
+        @extend %label;
+        display: block;
+        margin-bottom: 0.28rem;
+      }
+
+      input, select {
+        @extend %input;
+        @extend %select;
+        background-color: var(--accent-formal-light);
+        width: 50%;
+        transition: 0.2s;
+
+        &:hover {
+          box-shadow: 0 0 6px var(--color-shadow);
+        }
+      }
+
+      .hint {
+        display: inline-block;
+        margin-top: 0.6rem;
+        margin-left: 0.6rem;
+        font-size: 0.88rem;
+        color: var(--accent-formal-gray);
+        line-height: 1.1;
+
+        &.warning {
+          @extend %warningText;
+        }
+      }
+
+      .inlineAgreementMark {
+        display: flex;
+        align-items: flex-start;
+        padding-right: 300px;
+        gap: 0.6rem;
+
+        input[type="checkbox"] {
+          margin-top: 0.2rem;
+          cursor: pointer;
+        }
+
+        .disclaimerText {
+          text-align: left;
+          font-size: 0.88rem;
+          color: #444;
+        }
+      }
+
+      .redWarningText {
+        @extend %warningText;
+        color: var(--color-red);
+        margin-top: 0.6rem;
+        margin-left: 0.6rem;
+        line-height: 1.1;
+      }
+
+      .quickUsersField {
+        padding: 0.5rem;
+
+        select {
+          @extend %select;
+          border: 1.8px solid var(--accent-formal-purple);
+
+          &:focus {
+            border-color: var(--accent-formal-lightpurple);
+            box-shadow: 0 0 8px var(--accent-formal-purple);
+          }
+        }
+
+        label {
+          font-weight: 600;
+          color: #444;
+          margin-bottom: 0.4rem;
+        }
+      }
+
+      .errorText {
+        color: var(--color-red);
+        font-weight: 800;
+        text-align: center;
+        margin-top: 0.2rem;
+        font-size: 1.15rem;
+      }
+
+      .btnsField {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 0.9rem;
+
+        .subEnter {
+          @include service.btnPrimary;
+          min-width: 150px;
+          transition: 0.25s;
+
+          &:hover {
+            background-color: var(--color-lightblue);
+            transform: scale(1.03);
+          }
+        }
+
+        .quickEnter {
+          @include service.btnSecondary;
+          min-width: 150px;
+          background-color: var(--accent-formal-lightpurple);
+          color: white;
+
+          &:hover {
+            background-color: var(--accent-formal-lightpurple);
+            transform: scale(1.03);
+            box-shadow: 0 0 10px var(--accent-formal-darkpurple);
+          }
+        }
+
+        .firstEnter {
+          @include service.btnSecondary;
+          min-width: 120px;
+          background-color: var(--accent-secondary);
+          color: var(--accent-formal-darkgray);
+
+          &:hover {
+            background-color: #d7dbe3;
+          }
+        }
+
+        .hidden {
+          display: none;
+      }
+    }
+  }
+}

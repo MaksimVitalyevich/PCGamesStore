@@ -1,0 +1,67 @@
+<div class="profileField">
+
+    <h2 class="profileTitle">Личный Кабинет</h2>
+    <p class="profileHint">
+        Управление данными профиля, балансом и настройками вашего аккаунта.
+    </p>
+
+    <div class="avatar-wrapper">
+        <img [src]="user.avatarURL || 'avatars/default.png'" alt="User avatar" class="avatar">
+        <label class="uploadBtn" for="avatarInput">Изменить фото</label>
+        <input type="file" id="avatarInput" accept=".png, .jpg, .jpeg, .webp, .svg" (change)="onAvatarSelected($event)" hidden>
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="saveChanges()" class="ProfileForm">
+        <div>
+            <label>Имя пользователя</label>
+            <input formControlName="username">
+        </div>
+
+        <div>
+            <label>Электронная почта</label>
+            <input formControlName="email">
+            <small class="hint" *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.hasError('required')">
+                Для применения изменении, заполните это поле!
+            </small>
+            <small class="hint warning" *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.hasError('email')">
+                Допустимый формат для изменения "example&#64;userhub.local"
+            </small>
+        </div>
+
+        <div>
+            <label>Тел. номер</label>
+            <input formControlName="phone" placeholder="8XXXXXXXXXX">
+            <small class="hint" *ngIf="profileForm.get('phone')?.touched && profileForm.get('phone')?.hasError('required')">
+                Для записи нового номера, заполните это поле!
+            </small>
+            <small class="hint warning" *ngIf="profileForm.get('phone')?.touched && profileForm.get('phone')?.hasError('pattern')">
+                Допустимый формат "+7 XXX XXX XX XX"
+            </small>
+        </div>
+
+        <div>
+            <label>Пароль (доступен при смене)</label>
+            <input type="password" formControlName="password">
+            <small class="hint warning" *ngIf="profileForm.get('password')?.touched && profileForm.get('password')?.hasError('min')">
+                Чтобы изменить пароль: Должен быть не менее 6 символов, Иметь 1 строчную И заглавную буквы 
+            </small>
+        </div>
+
+        <button type="submit" class="btnAdjustChanges">
+            Сохранить изменения
+        </button>
+    </form>
+
+    <div class="userActions">
+        <div class="balanceField">
+            <div class="balanceCardInfo">
+                <p>Баланс: <span class="text-green-700">{{ profileBalanceCheck() | number:'1.0-0' }} ₽</span></p>
+                <button (click)="addFunds()" class="FunderApplier">+ Пополнить на 500 ₽</button>
+            </div>
+        </div>
+
+        <div class="logoutField">
+            <button (click)="logout()" class="logoutBtn">Выйти из аккаунта</button>
+        </div>
+    </div>
+</div>

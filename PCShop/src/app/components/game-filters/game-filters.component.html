@@ -1,0 +1,25 @@
+<div *ngIf="!isClosed" @modalAnims @sidebarSlideIn (click)="$event.stopPropagation()" class="filtersPanel">
+
+    <button type="button" (click)="onClose()" class="btnFilterClose">X</button>
+    <h4>Фильтры поиска</h4>
+    <div>
+        <label>Цена:</label>
+        <span>{{priceRange[0]}} <input type="range" min="0" max="3000" [(ngModel)]="priceRange[0]"></span>
+        <span>{{priceRange[1]}} <input type="range" min="0" max="3000" [(ngModel)]="priceRange[1]"></span>
+    </div>
+
+    <div>
+        <label>Рейтинг:</label>
+        <span>{{ratingRange[0]}} <input type="range" min="0" max="10" [(ngModel)]="ratingRange[0]"></span>
+        <span>{{ratingRange[1]}} <input type="range" min="0" max="10" [(ngModel)]="ratingRange[1]"></span>
+    </div>
+
+    <div>
+        <label>Жанры:</label>
+        <div *ngFor="let genre of genres" class="genresList">
+            <input type="radio" name="genre" [value]="genre" [(ngModel)]="selectedGenre"> {{genre}}
+        </div>
+    </div>
+
+    <button (click)="applyFilters()">Применить</button>
+</div>

@@ -1,0 +1,124 @@
+<div class="btnFilterActions">
+    <button (click)="toggleFilters()">Продвинутый поиск</button>
+    <button (click)="resetAllFilters()">Сбросить</button>
+</div>
+
+<app-game-filters *ngIf="showFilters" (closed)="closeFiltersModal()"></app-game-filters>
+
+<div class="gamesGrid">
+    <div *ngFor="let game of pagedGames; trackBy: trackById" class="gameCard" [@gameCardAnim]="hoveredCard === game ? 'hover' : 'normal'" (mouseenter)="hoveredCard = game" (mouseleave)="hoveredCard = null"
+        data-tilt data-tilt-max="10" data-tilt-speed="400">
+        <div class="gameCardFrame">
+            <img [src]="game.image || 'games/no-cover.png'" [alt]="game.title || 'Без обложки'" loading="lazy" class="gameImage">
+
+            <div class="gameInfo">
+                <h3 [class.hot]="game.rating >= 8">{{ game.title }}</h3>
+                <span [class.top]="game.rating >= 8" [innerText]="getStars(game.title) | async" class="gameStarField"></span>
+                <p class="genreText">{{ game.genre }}</p>
+                <p [class.hot]="game.rating >= 8" class="ratingText">{{ game.rating }} / 10</p>
+                <p class="priceText">{{ game.price | currency:'RUB':'symbol-narrow' }}</p>
+            </div>
+
+            <div class="actions">
+                <button class="btnDetails" (click)="openModal(game)">Подробнее</button>
+                <button class="btnBuy" [ngClass]="{ bought: isPurchasedAlready(game.id) }" [disabled]="isPurchasedAlready(game.id)" (click)="buyGame.emit(game)">
+                    {{ isPurchasedAlready(game.id) ? 'Уже приобретено' : 'Купить эту игру' }}
+                </button>
+                <button *ngIf="role === UserRole.Moderator" class="btnEdit" (click)="startEdit(game)">Редактировать</button>
+                <button *ngIf="role === UserRole.Moderator" class="btnDelete" (click)="deleteGame.emit(game.id)">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="role === UserRole.Moderator" class="addGameCard" (click)="startEdit()">
+        <img src="games/no-cover.png" alt="Добавка игры" class="addGameIcon">
+        <span class="addSign">+</span>
+        <p>Добавить игру</p>
+    </div>
+</div>
+
+<div *ngIf="showModal" @modalAnims (click)="closeModal()" class="modalOverlay">
+    <div class="modalContent" (click)="$event.stopPropagation()">
+        <button class="closeBtn" (click)="closeModal()">Х</button>
+
+        <div *ngIf="!isEditing && selectedGame" class="viewSection">
+            <h2>{{ selectedGame.title }}</h2>
+            <img [src]="selectedGame.image || 'games/no-cover.png'" [alt]="selectedGame.title || 'Без обложки'" loading="lazy" class="viewImage">
+            <p><b>Год выхода:</b> {{ selectedGame.published_at }}</p>
+            <p><b>Жанр:</b> {{ selectedGame.genre }}</p>
+            <p><b>Рейтинг:</b> {{ selectedGame.rating }}</p>
+            <p><b>Цена:</b> {{ selectedGame.price }} ₽</p>
+            <p><b>Разработчик:</b> {{ selectedGame.developer }}</p>
+            <p><b>Компания:</b> {{ selectedGame.companyName }}</p>
+            <p><b>Системные требования:</b> {{ selectedGame.systemRequirements }}</p>
+            <p><b>Локализация:</b> {{ selectedGame.localization }}</p>
+        </div>
+
+        <form *ngIf="isEditing" [formGroup]="gameForm" (ngSubmit)="onSave()" class="gameFormEdit" @gameEditAnim>
+            <label>Название *</label>
+            <input formControlName="title">
+            <small class="hint" *ngIf="gameForm.get('title')?.touched && gameForm.get('title')?.hasError('required')">
+                Вы должны придумать хоть какое-то название!
+            </small>
+
+            <div class="image-wrapper">
+                <img [src]="'games/no-cover.png'" alt="Шаблон обложки" class="imageUploader">
+                <label for="imageInput" class="uploadImgBtn">Обложка игры (Добавить/Редактировать)</label>
+                <input type="file" id="imageInput" accept=".webp, .png, .jpg, .jpeg" (change)="imageEdit($event)" hidden>
+            </div>
+
+            <label>Год выхода</label>
+            <input type="date" formControlName="published_at">
+
+            <label>Жанр *</label>
+            <input formControlName="genre">
+            <small class="hint" *ngIf="gameForm.get('genre')?.touched && gameForm.get('genre')?.hasError('required')">
+                Укажите жанр
+            </small>
+
+            <label>Рейтинг (0-10) *</label>
+            <input type="number" min="0" formControlName="rating">
+            <small class="hint" *ngIf="gameForm.get('rating')?.touched && gameForm.get('rating')?.hasError('required')">
+                Укажите вашу пользовательскую оценку
+            </small>
+            <small class="hint warning" *ngIf="gameForm.get('rating')?.touched && gameForm.get('rating')?.hasError('max')">
+                Рейтинг только в диапазоне 10-балльной шкалы!
+            </small>
+
+            <label>Цена (₽) *</label>
+            <input type="number" formControlName="price">
+            <small class="hint" *ngIf="gameForm.get('price')?.touched && gameForm.get('price')?.hasError('required')">
+                Укажите любую цену
+            </small>
+            <small class="hint warning" *ngIf="gameForm.get('price')?.touched && gameForm.get('price')?.hasError('min')">
+                Цена не может быть отрицательной!
+            </small>
+
+            <label>Системные требования</label>
+            <input formControlName="systemRequirements">
+
+            <label>Разработчик</label>
+            <input formControlName="developer">
+
+            <label>Компания</label>
+            <input formControlName="companyName">
+
+            <label>Локализация</label>
+            <input formControlName="localization">
+
+            <div class="modalActions">
+                <button type="submit" class="btnSave">Сохранить игру</button>
+                <button type="button" class="btnCancel" (click)="closeModal()">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="simplePaginator">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="btnPreviousPage" [ngClass]="{ first: currentPage === 1 }">Назад</button>
+
+    <ng-container *ngFor="let p of [].constructor(totalPages); let i = index">
+        <button (click)="goToPage(i + 1)" [class.active]="currentPage === i + 1" class="btnPageNum">{{ i + 1 }}</button>
+    </ng-container>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="btnNextPage" [ngClass]="{ last: currentPage === totalPages }">Вперед</button>
+</div>

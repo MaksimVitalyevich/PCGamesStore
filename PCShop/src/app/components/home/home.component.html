@@ -1,0 +1,17 @@
+<div class="homeContainer">
+    <h2 class="homeTitle">Каталог ПК игр</h2>
+    <ng-container *ngIf="isLoading; else loaded">
+        <div class="loader">
+            <div class="spinner-wrapper">
+                <img src="icons/spinner-icon-var-one.png" alt="Spinner_icon" class="spinner">
+            </div>
+            <p>Контент загружается, пожалуйста подождите...</p>
+        </div>
+    </ng-container>
+
+    <ng-template #loaded>
+        <app-game-grid [games]="games" [role]="role" [getStars]="getStars.bind(this)" 
+    [isPurchasedAlready]="isPurchasedAlready.bind(this)" (buyGame)="buyGame($event)" (addNew)="addNewGame($event)" 
+    (editGame)="editGame($event)" (deleteGame)="deleteGame($event)"></app-game-grid>
+    </ng-template>
+</div>

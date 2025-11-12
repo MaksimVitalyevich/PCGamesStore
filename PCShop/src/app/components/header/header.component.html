@@ -1,0 +1,43 @@
+<header class="mainUpBlock" [@brightnessAnim]="elemHover_header ? 'hover' : 'normal'" (mouseenter)="elemHover_header = true" (mouseleave)="elemHover_header = false"
+[ngClass]="{ 'hover-purple': elemHover_header, 'normal': !elemHover_header }" (mouseenter)="elemHover_header = true" (mouseleave)="elemHover_header = false" @headerSlideIn>
+    <div class="logo" routerLink="/">
+        <figure>
+            <img src="icons/logo.png" alt="Logo">
+        </figure>
+        <h1>ParoVoz - Аналог НАШЕГО Steam!</h1>
+    </div>
+
+    <div class="searcharea">
+        <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" placeholder="Поиск игр по названию...">
+    </div>
+
+    <nav class="navMenu">
+        <a routerLink="/" routerLinkActive="active">Главная</a>
+        <a routerLink="/cart" routerLinkActive="active" (click)="goToCart()" class="cartarea">
+            Корзина <img src="icons/cart-icon.png" alt="Cart">
+            <span *ngIf="cartCount > 0" class="cart">({{ cartCount }})</span>
+        </a>
+        <button routerLink="/purchases">Список покупок</button>
+        <ng-container *ngIf="!user">
+            <button (click)="goToAuth()" class="userStatus">Войти</button>
+        </ng-container>
+
+        <ng-container *ngIf="user">
+            <button (click)="goToProfile()" class="userStatus">Личный Кабинет</button>
+            <button (click)="logout()">Выйти</button>
+        </ng-container>
+
+        <a routerLink="/about" routerLinkActive="active" (click)="gotoAbout()">Справочник...</a>
+    </nav>
+</header>
+
+<aside class="rightPanel" [@brightnessAnim]="elemHover_sidebar ? 'hover' : 'normal'" (mouseenter)="elemHover_sidebar = true" (mouseleave)="elemHover_sidebar = false"
+[ngClass]="{ 'hover-purple': elemHover_sidebar, 'normal': !elemHover_sidebar }" (mouseenter)="elemHover_sidebar = true" (mouseleave)="elemHover_sidebar = false" @sidebarSlideIn>
+    <h3>Топ игр текущей недели</h3>
+    <ul>
+        <li *ngFor="let game of topGames">
+            <span>{{ game.title }}</span>
+            <span class="topprice">{{ game.price }} ₽</span>
+        </li>
+    </ul>
+</aside>

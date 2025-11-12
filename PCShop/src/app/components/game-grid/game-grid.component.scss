@@ -1,0 +1,486 @@
+.btnFilterActions {
+  display: flex;
+  position: relative;
+  bottom: 20px;
+  justify-content: flex-end;
+  gap: 0.75rem;
+
+  button {
+    background: linear-gradient(135deg, var(--color-neon-green), var(--color-neon-purple));
+    border: none;
+    color: var(--text-light);
+    border-radius: 8px;
+    padding: 0.5rem 0.7rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px var(--accent-lightpurple);
+    }
+  }
+}
+
+.gamesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 0.6rem;
+    justify-items: stretch;
+    align-items: start;
+
+    .gameCard {
+      box-sizing: border-box;
+      max-width: 360px;
+      background: linear-gradient(145deg, var(--accent-darkpurple), var(--color-neon-teal));
+      color: var(--text-main);
+      border: 3px solid var(--border-tab);
+      border-radius: 16px;
+      box-shadow: 0 2px 15px var(--color-shadow);
+      overflow: hidden;
+      padding: 0;
+      margin: 0 auto;
+      transition: 0.3s;
+      animation: slideUp 0.3s ease;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+  
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(0, 255, 100, 0.7);
+      }
+
+      .gameCardFrame {
+        box-sizing: border-box;
+        border: 1.5px solid var(--accent-darkpurple);
+        border-radius: 16px;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0.5rem;
+        box-shadow: 0 2px 15px var(--color-neon-purple) inset;
+
+        &:hover {
+          box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+
+        .gameImage {
+          width: 100%;
+          height: 180px;
+          aspect-ratio: 16/9;
+          object-fit: cover;
+          border-radius: 10px;
+          margin-bottom: 0.8rem;
+        }
+  
+        .gameInfo {
+          text-align: center;
+  
+          h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-turquoise);
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 6px var(--color-shadow);
+  
+            &.hot {
+              color: var(--accent-lightred);
+              text-shadow: 0 0 5px var(--accent-hot-variant-one), 0 0 10px var(--accent-hot-variant-two);
+            }
+          }
+          span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-neon-yellow);
+            letter-spacing: 0.6px;
+            text-shadow: 0 0 5px var(--color-neon-yellow);
+  
+            &.top {
+              color: var(--color-spacedust-variant-one);
+              text-shadow: 0 0 7px var(--accent-lightred);
+            }
+          }
+          .genreText {
+            font-size: 0.95rem;
+            color: var(--accent-turquoise);
+          }
+          .ratingText {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--color-neon-orange);
+            text-shadow: 0 0 4px rgba(255, 125, 0, 0.8);
+  
+            &.hot {
+              color: var(--accent-lightred);
+              text-shadow: 0 0 5px var(--accent-hot-variant-one), 0 0 10px var(--accent-hot-variant-two);
+            }
+          }
+          .priceText {
+            font-weight: bold;
+            color: var(--accent-lightred);
+            text-shadow: 0 0 4px var(--accent-darkred);
+          }
+        }
+  
+        .actions {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-top: 1rem;
+      
+          button {
+            background-image: linear-gradient(135deg, var(--accent-turquoise), var(--accent-lightred));
+            color: white;
+            padding: 10px 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.25s;
+      
+            &:hover {
+              box-shadow: 0 0 12px var(--accent-hot-variant-one), 0 0 18px var(--accent-hot-variant-two);
+            }
+      
+            &.btnDetails {
+              color: var(--text-dark);
+            }
+            &.btnEdit {
+              background-image: none;
+              background-color: var(--color-neon-purple);
+              color: var(--color-bg-light);
+  
+              &:hover {
+                box-shadow: 0 0 12px var(--accent-lightpurple);
+              }
+            }
+            &.btnBuy {
+              background-image: linear-gradient(135deg, var(--color-spacedust-variant-one), var(--color-spacedust-variant-two));
+              color: var(--color-neon-yellow);
+            }
+            &.bought {
+              background-image: none;
+              background-color: var(--color-bg-light);
+              color: var(--color-spacedust-variant-two);
+  
+              &:hover {
+                box-shadow: 0 0 12px var(--color-muted);
+              }
+            }
+            &.btnDelete {
+              background-image: none;
+              background-color: crimson;
+              color: var(--color-spacedust-variant-one);
+            }
+          }
+        }
+      }
+    }
+
+    .addGameCard {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: repeating-linear-gradient(45deg, var(--color-spacevoid-variant-two), var(--accent-darkpurple));
+      border: 2px dashed darkgreen;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 280px;
+      color: darkgreen;
+      cursor: pointer;
+      height: 220px;
+      transition: 0.3s;
+  
+      &:hover {
+        background: var(--color-neon-pink);
+        transform: scale(1.03);
+      }
+
+      .addGameIcon {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 0.4rem;
+      }
+  
+      .addSign {
+        font-size: 2.5rem;
+        font-weight: bold;
+      }
+    }
+  }
+
+  /* Модалка */
+  .modalOverlay {
+    position: fixed;
+    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--accent-darkpurple);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(6px);
+    animation: fadeIn 0.3s ease forwards;
+
+    .modalContent {
+      background: linear-gradient(145deg, var(--color-spacevoid-variant-two), var(--accent-darkpurple), rgba(0, 40, 25, 0.9));
+      padding: 1.5rem;
+      border: 2px solid var(--color-neon-green);
+      border-radius: 16px;
+      box-shadow: 0 0 12px rgba(0, 255, 150, 0.5), 0 0 25px rgba(150, 0, 255, 0.4);
+      width: 600px;
+      max-height: 90%;
+      color: var(--accent-darkalice);
+      overflow-y: auto;
+      position: relative;
+      animation: slideUp 0.35s ease forwards, neonBreath 4.5s ease-in-out infinite;
+
+      .closeBtn {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        background: none;
+        border: none;
+        font-size: 1.6rem;
+        color: var(--accent-lightred);
+        cursor: pointer;
+        transition: color 0.25s, transform 0.25s;
+  
+        &:hover {
+          color: var(--color-spacedust-variant-one);
+          transform: scale(1.2);
+        }
+      }
+
+      .viewSection {
+        display: inline-block;
+        justify-content: space-between;
+        align-items: left;
+        border-bottom: 2px solid var(--border-section);
+        padding-bottom: 0.3rem;
+        margin-bottom: 0.9rem;
+    
+        h2 {
+          text-align: center;
+          font-size: 1.4rem;
+          color: var(--accent-turquoise);
+          text-shadow: 0 0 6px var(--color-neon-teal);
+        }
+        .viewImage {
+          position: absolute;
+          display: flex;
+          width: 200px;
+          height: 200px;
+          object-fit: cover;
+          overflow: auto;
+          border-radius: 5px;
+          margin-bottom: 0.4rem;
+        }
+        p {
+          color: var(--color-neon-pink);
+          position: relative;
+          right: -210px;
+          text-align: justify;
+          max-width: 350px;
+
+          b {
+            color: var(--color-neon-purple);
+          }
+        }
+      }
+
+      .gameFormEdit {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        gap: 0.9rem;
+        padding: 0.8rem 0;
+        color: var(--accent-turquoise);
+
+        .image-wrapper {
+          width: 100%;
+          height: 300px;
+          margin: 0.5rem;
+
+          .imageUploader {
+            width: 100%;
+            height: 100%;
+            border-radius: 5%;
+            object-fit: cover;
+            border: 2px solid var(--accent-turquoise);
+            box-shadow: 0 0 4px var(--accent-darkalice);
+          }
+        }
+
+        label {
+          display: block;
+          width: 100%;
+          color: var(--accent-turquoise);
+          font-weight: 600;
+          margin-bottom: 0.3rem;
+
+          &.uploadImgBtn {
+            position: relative;
+            bottom: 22px;
+            right: 5px;
+            background-color: var(--color-spacevoid-variant-one);
+            color: rgba(153, 255, 0, 0.5);
+            padding: 3px 6px;
+            border-radius: 9px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.2s;
+
+            &:hover {
+              background-color: rgba(89, 255, 0, 0.5);
+            }
+          }
+        }
+
+        input {
+          width: 100%;
+          background-color: var(--color-shadow);
+          border: 2px solid var(--color-neon-purple);
+          border-radius: 8px;
+          color: var(--accent-darkalice);
+          padding: 0.5rem 0.6rem;
+          font-weight: 500;
+          transition: 0.25s;
+          outline: none;
+
+          &:focus {
+            border-color: var(--color-neon-green);
+            box-shadow: 0 0 8px rgba(0, 255, 100, 0.5);
+          }
+        }
+
+        .hint {
+          margin: 0;
+          font-weight: 600;
+          color: var(--color-neon-orange);
+          line-height: 0.9;
+
+          &.warning {
+            color: var(--accent-lightred);
+          }
+        }
+
+        .modalActions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 0.8rem;
+          margin-top: 1.2rem;
+
+          button {
+            padding: 0.5rem 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.25s;
+          }
+    
+          .btnSave { 
+            background: linear-gradient(135deg, var(--color-neon-green), var(--color-neon-purple)); 
+            color: white;
+            text-shadow: 0 0 6px var(--accent-darkalice);
+            
+            &:hover {
+              box-shadow: 0 0 10px var(--accent-green);
+              transform: scale(1.05);
+            }
+          }
+
+          .btnCancel { 
+            background: crimson; 
+            color: white;
+    
+            &:hover {
+              box-shadow: 0 0 10px crimson;
+              transform: scale(1.05);
+            }
+          }
+        }
+      }
+    }
+}
+
+.simplePaginator {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+
+  .btnPreviousPage, .btnNextPage {
+    background-image: linear-gradient(135deg, var(--color-neon-green), var(--color-neon-pink));
+    border: 2px solid var(--color-neon-purple);
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 8px var(--color-neon-green), 0 0 12px var(--color-neon-pink) inset;
+
+    &:hover:not(:disabled) {
+      transform: scale(1.06);
+      box-shadow: 0 0 12px var(--color-neon-green), 0 0 16px var(--color-neon-pink) inset, 0 0 20px var(--color-neon-purple);
+    }
+    &.first, &.last {
+      background-image: none;
+      background-color: var(--color-bg-light);
+      color: var(--color-spacedust-variant-two);
+      box-shadow: 0 0 12px var(--color-spacedust-variant-one);
+    }
+  }
+  .btnPageNum {
+    background-image: linear-gradient(90deg, var(--color-neon-teal), var(--accent-darkalice));
+    border: 2px solid var(--accent-turquoise);
+    border-radius: 50%;
+    color: black;
+    font-weight: bold;
+    padding: 0.6rem 0.9rem;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 8px var(--color-neon-teal), 0 0 12px var(--accent-darkalice) inset;
+
+    &:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 12px var(--color-neon-teal), 0 0 16px var(--accent-darkalice) inset, 0 0 20px var(--accent-turquoise);
+    }
+    &.active {
+      background-image: linear-gradient(90deg, var(--color-neon-orange), var(--color-neon-yellow));
+      border-color: var(--color-neon-orange);
+      box-shadow: 0 0 12px var(--color-neon-orange), 0 0 16px var(--color-neon-yellow) inset;
+    }
+  }
+}
+
+.modalContent::-webkit-scrollbar {
+  width: 10px;
+}
+.modalContent::-webkit-scrollbar-track {
+  background: rgba(20, 10, 35, 0.4);
+  border-radius: 8px;
+  box-shadow: inset 0 0 6px rgba(0, 255, 150, 0.2);
+}
+.modalContent::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--color-neon-green), var(--color-neon-purple));
+  border: 1px solid var(--border-tab);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 255, 150, 0.5);
+  animation: neonBreath 4.5ss ease-in-out infinite, fadeIn 0.3s ease forwards;
+  transition: 0.3s;
+
+  &:hover {
+    background: linear-gradient(180deg, var(--accent-turquoise), var(--accent-lightred));
+    box-shadow: 0 0 18px rgba(255, 0, 255, 0.7);
+  }
+}

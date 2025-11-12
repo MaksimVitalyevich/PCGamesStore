@@ -1,0 +1,104 @@
+@use '../../../styles.scss' as filtartion;
+
+.filtersPanel {
+  position: fixed;
+  margin: 0;
+  top: 20px;
+  right: 20px;
+  margin-left: 555px;
+  width: 500px;
+  padding: 20px;
+  background-color: var(--color-spacevoid-variant-one);
+  border: 2px solid var(--border-tab);
+  border-radius: 15px;
+  box-shadow: 0 0 20px var(--border-tab), 0 0 40px var(--color-bg-dark) inset;
+  color: var(--accent-turquoise);
+  font-family: var(--font-accent);
+  animation: fadeIn 0.3s ease, slideUp 0.3s ease, neonBreath 2s infinite;
+  z-index: 1000;
+
+  .btnFilterClose {
+      width: 50px;
+      padding: 4px;
+      margin: 0;
+      background-image: linear-gradient(90deg, var(--accent-lightred), var(--color-danger));
+      box-shadow: 0 0 12px var(--accent-lightred), 0 0 14px var(--color-danger);
+      animation: none;
+
+      &:hover {
+          box-shadow: 0 0 16px var(--accent-lightred), 0 0 18px var(--color-danger);
+          color: var(--text-dark);
+        }
+    }
+
+    h4 {
+      text-align: center;
+      margin: 7px auto;
+      font-size: 1.01rem;
+      font-weight: bold;
+      color: var(--accent-darkalice);
+      text-shadow: 0 0 8px (--accent-darkalice);
+    }
+
+    span {
+      display: flex;
+      flex-direction: row;
+      margin: 0 6px;
+      color: var(--color-neon-green);
+
+      input[type="range"] {
+          width: auto;
+          accent-color: var(--accent-turquoise);
+          margin-bottom: 5px;
+          margin-left: 25px;
+        }
+    
+      input[type="checkbox"] {
+          accent-color: var(--accent-darkalice);
+          box-shadow: 0 0 2px var(--accent-darkalice);
+        }
+    }
+
+    div {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 2.5px;
+      background-color: transparent;
+      border: none;
+      border-radius: 5px;
+
+      .genresList {
+          background-color: none;
+          letter-spacing: 0.3px;
+          padding: 0;
+          margin: 0 2.5px;
+          border-radius: 0;
+        }
+
+        label {
+          color: var(--color-neon-green);
+          letter-spacing: 0.4px;
+          font-size: 0.94rem;
+          margin: 0 5px;
+          text-shadow: 0 0 9px var(--color-neon-green);
+        }
+    }
+
+    button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      background-image: linear-gradient(135deg, var(--color-neon-green), var(--color-neon-purple));
+      color: var(--text-light);
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      animation: neonBreath 2s infinite;
+      transition: 0.2s;
+
+      &:hover {
+          transform: translateY(-2px);
+        }
+    }
+}

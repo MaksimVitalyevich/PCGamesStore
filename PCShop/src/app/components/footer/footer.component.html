@@ -1,0 +1,14 @@
+<footer class="mainDownBlock" [ngClass]="{ 'hover-purple': elemHover, 'normal': !elemHover}" (mouseenter)="elemHover = true" (mouseleave)="elemHover = false"
+[@brightnessAnim]="elemHover ? 'hover' : 'normal'" (mouseenter)="elemHover = true" (mouseleave)="elemHover = false">
+    <p>Курсовой проект Онлайн-Магазин ПК игр. Учебный проект на <b>Angular CLI + PHP + MySQL.</b></p>
+    <p>Разработчик: <b>Козлов Максим Витальевич</b>. &copy; Права сохранены, 2025</p>
+    <p>GitHub автора: <a href="https://github.com/MaksimVitalyevich" target="_blank" class="footerlink">MaksimVitalyevich</a></p>
+    <div class="copyrightBanner">
+        <p>
+            Этот сайт — учебный проект. Обложки игр и бренды — собственность их авторов.<br>
+            Мы не продаём их, не копируем, просто показываем красиво (и даже слишком).<br>  
+            Если вы правообладатель — напишите, и контент исчезнет быстрее, чем загрузится уровень.<br>
+            Все используется ИСКЛЮЧИТЕЛЬНО в учебных, тестируемых целях! Серьезно.
+        </p>
+    </div>
+</footer>

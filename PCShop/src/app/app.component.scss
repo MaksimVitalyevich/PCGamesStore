@@ -1,0 +1,10 @@
+/* ========================== Основная область сайта (host) ===================================== */
+.routerMain, .shopAppBody {
+    padding: 1.5rem;
+    padding-top: 5px;
+    padding-right: 55px;
+    min-height: calc(100vh - 80px); // footer НЕ будет налезать
+    background-color: var(--color-bg);
+    color: var(--text-light);
+    box-sizing: border-box;
+}

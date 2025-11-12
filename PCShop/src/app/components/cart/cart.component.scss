@@ -1,0 +1,216 @@
+.cartField {
+    background-image: linear-gradient(120deg, var(--color-bg-dark), var(--color-bg-dullgreen));
+    color: var(--text-dark);
+    font-family: var(--font-accent-variant-two);
+    padding: 2rem;
+
+    .cartTitle {
+      color: var(--color-neon-purple);
+      font-size: 2rem;
+      font-weight: bold;
+      text-shadow: 0 0 6px rgba(230, 0, 230, 0.6);
+      letter-spacing: 0.55px;
+      margin-bottom: 1.4rem;
+    }
+
+    .emptyCartText {
+      width: 25%;
+      background: repeating-linear-gradient(-110deg, var(--color-neon-purple), var(--accent-lightred));
+      color: var(--accent-darkred);
+      border: 2.2px solid var(--accent-darkred);
+      border-radius: 7px;
+      box-shadow: 0 4px 8px var(--accent-lightred);
+      justify-content: space-between;
+      font-size: 1.2rem;
+      font-weight: 400;
+      padding: 0.42rem;
+      transition: 0.3s;
+
+      &:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 12px var(--accent-lightred);
+      }
+    }
+
+    .ownedGamesField {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: start;
+
+      .ownedGamesCard {
+        width: 320px;
+        background: linear-gradient(135deg, var(--color-neon-purple), rgba(95, 30, 0, 0.9));
+        color: var(--text-main);
+        border: 1px solid var(--border-section);
+        border-radius: 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 0 0 10px var(--accent-darkpurple);
+        padding: 1rem;
+        transition: 0.3s;
+        animation: fadeIn 0.4s ease, slideUp 0.4s ease;
+
+        &:hover {
+          transform: scale(1.03);
+          box-shadow: 0 0 18px rgba(138, 0, 255, 0.4);
+        }
+
+        .ownedGameInfo {
+          letter-spacing: 0.2px;
+          font-weight: bold;
+          padding: 0.25rem;
+
+          h3 {
+            font-size: 1.4rem;
+            margin: 0;
+            color: var(--accent-turquoise);
+            text-shadow: 0 0 8px var(--color-neon-green);
+          }
+
+          .gameTitle {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-darkalice);
+            letter-spacing: 0.5px;
+            margin-top: 0.6rem;
+            margin-bottom: 0.4rem;
+          }
+    
+          .gamePriceText {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: var(--accent-red);
+          }
+        }
+
+        .btnGameDeletion {
+          background-image: linear-gradient(75deg, var(--accent-lightred), var(--accent-darkred));
+          color: white;
+          align-self: flex-end;
+          margin-top: 1rem;
+          padding: 10px 20px;
+          font-weight: bold;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: 0.25s;
+
+          &:hover {
+            color: var(--text-dark);
+            box-shadow: 0 0 10px var(--color-spacedust-variant-one), 0 0 20px rgba(230, 30, 30, 0.4);
+            transform: scale(1.02);
+          }
+        }
+      }
+
+      .cartBalanceField {
+        grid-column: 1 / -1;
+        width: 80%;
+        background: repeating-linear-gradient(120deg, var(--color-neon-purple), rgba(95, 30, 0, 0.9));
+        border: 2.4px solid var(--border-section);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px var(--accent-lightpurple);
+        justify-content: space-around;
+        padding: 1.5rem;
+        transition: 0.3s;
+
+        &:hover {
+          transform: scale(1.03);
+          box-shadow: 0 0 20px rgba(220, 0, 220, 0.7);
+        }
+
+        .balanceText {
+          text-align: right;
+          font-size: 1.2rem;
+          font-weight: 600;
+          color: var(--accent-darkalice);
+          letter-spacing: 0.5px;
+          margin-top: 1rem;
+          margin-bottom: 0.7rem;
+        }
+
+        .btnPaymentLink {
+          background-image: linear-gradient(90deg, var(--color-neon-green), var(--color-neon-purple));
+          color: var(--text-light);
+          display: inline-block;
+          margin-left: 80%;
+          margin-top: 0.4rem;
+          padding: 10px 20px;
+          font-weight: bold;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: 0.25s;
+
+          &:hover {
+            color: var(--text-dark);
+            box-shadow: 0 0 10px var(--color-neon-green), 0 0 20px var(--color-neon-purple);
+          }
+        }
+
+        .cartActions {
+          background-color: var(--accent-lightpurple);
+          margin-top: 1.5rem;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          padding: 0.8rem 1.2rem;
+          border-top: 1px solid var(--color-neon-purple);
+          border-radius: 12px;
+          box-shadow: 0 0 8px rgba(0, 255, 150, 0.15), inset 0 0 8px rgba(120, 0, 200, 0.2);
+          backdrop-filter: blur(6px);
+
+          .btnUpdateCart {
+            background-image: linear-gradient(90deg, var(--color-neon-green), var(--color-neon-purple));
+            color: var(--text-light);
+            display: flex;
+            margin-right: 1rem;
+            padding: 10px 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.25s;
+
+            &:hover {
+              color: var(--text-dark);
+              box-shadow: 0 0 10px var(--color-neon-green), 0 0 20px var(--color-neon-purple);
+            }
+          }
+    
+          .btnClearCart {
+            background: linear-gradient(135deg, rgba(255, 40, 40, 0.85), var(--accent-darkpink));
+            color: var(--text-light);
+            border: none;
+            border-radius: 10px;
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s;
+    
+            &:hover {
+              background: linear-gradient(135deg, var(--color-spacedust-variant-one), var(--color-neon-pink));
+              box-shadow: 0 0 12px var(--accent-darkpink);
+              transform: scale(1.05);
+            }
+            &:active {
+              transform: scale(0.97);
+              box-shadow: 0 0 6px var(--accent-darkpink) inset;
+            }
+          }
+        }
+      }
+  }
+}
+
+@media (max-width: 768px) {
+  .ownedGamesField {
+    justify-content: center;
+  }
+  .ownedGamesCard {
+    width: 100%;
+    max-width: 330px;
+  }
+}

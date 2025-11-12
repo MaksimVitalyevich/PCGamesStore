@@ -1,0 +1,168 @@
+/* ==============================================================
+    Общий файл для оформления служебно-подобных страниц
+    Характерен в применении к компонентам, соблюдающим формальность!
+    Пример использования Auth-Form, Profile, Payment, и т. д.
+   ============================================================== */
+
+/* Базовые элементы (Body) */
+body {
+  background-color: var(--accent-formal-light);
+  font-family: var(--font-formal-main);
+  color: var(--accent-formal-dark);
+  margin: 0;
+  padding: 0;
+}
+
+/* Сервисные кнопки */
+@mixin btnPrimary {
+  background-color: var(--color-blue);
+  color: var(--accent-formal-light);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  &:hover {
+    background-color: var(--color-lightblue);
+    box-shadow: 0 0 10px var(--accent-bookcover-blue);
+  }
+}
+@mixin btnSuccess {
+  background-color: var(--color-lime);
+  color: var(--accent-formal-light);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  &:hover {
+    background-color: var(--accent-bookcover-green);
+    box-shadow: 0 0 10px var(--accent-formal-darkgreen);
+  }
+}
+@mixin btnDanger {
+  background-color: var(--color-danger);
+  color: var(--accent-formal-light);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  &:hover {
+    background-color: var(--color-red);
+    box-shadow: 0 0 10px var(--accent-bookcover-red);
+  }
+}
+@mixin btnSecondary {
+  background-color: var(--accent-secondary);
+  color: var(--accent-formal-darkgray);
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  &:hover {
+    background-color: var(--accent-formal-gray);
+  }
+}
+
+/* Общие контейнеры форм */
+%formContainer {
+  background: var(--accent-formal-light);
+  box-shadow: 0 0 25px var(--color-shadow);
+  border-radius: 14px;
+  padding: 2rem 2.5rem;
+  width: 400px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  %label {
+    font-weight: 600;
+    color: #333;
+  }
+
+  %input, %select {
+    padding: 0.6rem 0.9rem;
+    border: 1.8px solid #bfc5d2;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.25s ease;
+
+    &:focus {
+      border-color: var(--color-blue);
+      box-shadow: 0 0 6px var(--accent-bookcover-blue);
+    }
+    &::placeholder {
+      color: var(--muted-text);
+    }
+  }
+}
+
+/* Текст предупреждения */
+%warningText {
+  color: var(--color-orange);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+/* Глобальная структура всех сервисных страниц */
+%servicePage {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--accent-formal-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Глобальная структура вкладок всем сервисным страницам */
+%serviceBlock {
+  background: linear-gradient(180deg, rgba(231, 231, 250, 0.95), rgba(218, 215, 220, 0.85));
+  border: 2px solid var(--border-section);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 0 20px var(--border-shadow);
+  margin: 3rem auto;
+  width: 90%;
+  max-width: 900px;
+  text-align: left;
+
+  h2, h3 {
+    color: var(--color-blue);
+  }
+
+  p {
+    color: var(--accent-formal-dark);
+    line-height: 1.5;
+  }
+
+  li {
+    color: var(--accent-formal-dark);
+  }
+
+  %button {
+    background: linear-gradient(135deg, var(--accent-formal-light), var(--accent-formal-dark));
+    color: var(--color-orange);
+    border: none;
+    border-radius: 10px;
+    padding: 0.7rem 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 12px var(--color-muted);
+    }
+  }
+}
