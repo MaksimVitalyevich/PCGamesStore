@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "code": "STARTER",
+    "discount": 10,
+    "description": "Базовый бонус новым пользователям",
+    "is_active": true,
+    "created_at": "2025-10-01T00:00:00Z",
+    "expires_at": "2026-10-01T00:00:00Z",
+    "max_uses": 3,
+    "used_count": 0
+  },
+  {
+    "id": 2,
+    "code": "WINTER",
+    "discount": 15,
+    "description": "Зимние акции на 15%",
+    "is_active": true,
+    "created_at": "2025-11-01T01:00:00Z",
+    "expires_at": "2026-12-01T00:00:00Z",
+    "max_uses": 5,
+    "used_count": 0
+  },
+  {
+    "id": 3,
+    "code": "PREMGAMER",
+    "discount": 50,
+    "description": "Ограниченная акция для PREMIUM пользователей",
+    "is_active": true,
+    "created_at": "2025-10-10T04:00:00Z",
+    "expires_at": null,
+    "max_uses": 1,
+    "used_count": 0
+  },
+  {
+    "id": 4,
+    "code": "COOL20",
+    "discount": 20,
+    "description": "Для крутых пользователей на 20%",
+    "is_active": true,
+    "created_at": "2025-09-20T20:00:00Z",
+    "expires_at": "2026-09-20T20:00:00Z",
+    "max_uses": 4,
+    "used_count": 0
+  },
+  {
+    "id": 5,
+    "code": "EXPIREDTEST",
+    "discount": 5,
+    "description": "Истекший тестовый промокод",
+    "is_active": false,
+    "created_at": "2025-06-06T00:00:00Z",
+    "expires_at": "2025-09-05T00:00:00Z",
+    "max_uses": 2,
+    "used_count": 1
+  },
+  {
+    "id": 6,
+    "code": "NEONVIBE",
+    "discount": 30,
+    "description": "Акция в 30% на все!",
+    "is_active": true,
+    "created_at": "2025-10-25T10:00:00Z",
+    "expires_at": "2026-06-28T23:00:00Z",
+    "max_uses": 10,
+    "used_count": 0
+  },
+  {
+    "id": 7,
+    "code": "FUTURE900",
+    "discount": 25,
+    "description": "Хайповая акция на 25%",
+    "is_active": true,
+    "created_at": "2025-09-27T15:00:00Z",
+    "expires_at": null,
+    "max_uses": 1,
+    "used_count": 0
+  },
+  {
+    "id": 8,
+    "code": "PRENEW26",
+    "discount": 40,
+    "description": "Предновогодняя акция 40%",
+    "is_active": true,
+    "created_at": "2025-11-03T18:00:00Z",
+    "expires_at": "2026-03-15T12:00:00Z",
+    "max_uses": 10,
+    "used_count": 0
+  },
+  {
+    "id": 9,
+    "code": "TURBO500",
+    "discount": 55,
+    "description": "Премиальная одноразовая скидка на 55%",
+    "is_active": true,
+    "created_at": "2025-11-02T00:00:00Z",
+    "expires_at": null,
+    "max_uses": 1,
+    "used_count": 0
+  },
+  {
+    "id": 10,
+    "code": "ENJOYERPLUS",
+    "discount": 17,
+    "description": "Простая скидка на все в 17%",
+    "is_active": true,
+    "created_at": "2025-10-17T17:30:00Z",
+    "expires_at": "2026-04-04T04:00:00Z",
+    "max_uses": 8,
+    "used_count": 0
+  },
+  {
+    "id": 11,
+    "code": "RETRO80",
+    "discount": 22,
+    "description": "Ваша обожаемая ностальгия за 22%",
+    "is_active": true,
+    "created_at": "2025-08-30T19:50:00Z",
+    "expires_at": "2026-07-10T07:00:00Z",
+    "max_uses": 7,
+    "used_count": 0
+  },
+  {
+    "id": 12,
+    "code": "SHOPPING100",
+    "discount": 10,
+    "description": "Простая акция на 10%",
+    "is_active": true,
+    "created_at": "2025-10-12T12:30:00Z",
+    "expires_at": "2026-11-01T11:00:00Z",
+    "max_uses": 9,
+    "used_count": 0
+  },
+  {
+    "id": 13,
+    "code": "SWAG28",
+    "discount": 28,
+    "description": "Крутая акция на 28%",
+    "is_active": true,
+    "created_at": "2025-09-09T13:30:00Z",
+    "expires_at": "2026-01-09T00:00:00Z",
+    "max_uses": 6,
+    "used_count": 0
+  },
+  {
+    "id": 14,
+    "code": "ADVANCEDPACK",
+    "discount": 45,
+    "description": "Для заядлых любителей, одноразовая акция на 45%",
+    "is_active": true,
+    "created_at": "2025-11-01T20:00:00Z",
+    "expires_at": null,
+    "max_uses": 1,
+    "used_count": 0
+  },
+  {
+    "id": 15,
+    "code": "MAKS98",
+    "discount": 60,
+    "description": "Топовая скидка для PREMIUM покупок по 60%",
+    "is_active": true,
+    "created_at": "2025-11-04T11:40:00Z",
+    "expires_at": null,
+    "max_uses": 1,
+    "used_count": 0
+  },
+  {
+    "id": 16,
+    "code": "NOSTALGER",
+    "discount": 24,
+    "description": "Ностальгическая акция всем желающим!",
+    "is_active": true,
+    "created_at": "2025-11-03T14:50:00Z",
+    "expires_at": null,
+    "max_uses": 1,
+    "used_count": 0
+  },
+  {
+    "id": 17,
+    "code": "FIRST30",
+    "discount": 30,
+    "description": "30% всем новым пользователям",
+    "is_active": true,
+    "created_at": "2025-11-04T16:00:00Z",
+    "expires_at": null,
+    "max_uses": 1,
+    "used_count": 0
+  },
+  {
+    "id": 18,
+    "code": "PREM40",
+    "discount": 40,
+    "description": "Для PREMIUM пользователей по 40%",
+    "is_active": true,
+    "created_at": "2025-10-27T21:30:00Z",
+    "expires_at": "2026-05-10T10:00:00Z",
+    "max_uses": 5,
+    "used_count": 0
+  },
+  {
+    "id": 19,
+    "code": "ENJOYER50",
+    "discount": 50,
+    "description": "Для игроманов на все по 50%",
+    "is_active": true,
+    "created_at": "2025-10-01T18:00:00Z",
+    "expires_at": "2026-08-25T19:00:00Z",
+    "max_uses": 3,
+    "used_count": 0
+  },
+  {
+    "id": 20,
+    "code": "SYNTH22",
+    "discount": 22,
+    "description": "Осинтетичные скидки на 22%",
+    "is_active": true,
+    "created_at": "2025-11-05T11:50:00Z",
+    "expires_at": "2026-12-07T07:00:00Z",
+    "max_uses": 8,
+    "used_count": 0
+  }
+]

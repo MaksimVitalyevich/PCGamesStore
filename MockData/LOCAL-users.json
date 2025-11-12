@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "username": "MaksimVitalyevich",
+        "password": "Vt31m12",
+        "email": "Maksim@ya.ru",
+        "phone": "89005552842",
+        "balance": "100000",
+        "created_at": "05.10.2025",
+        "role": "Moderator"
+    },
+    {
+        "id": 2,
+        "username": "test-user",
+        "password": "22Mr35T6",
+        "email": "user@gamehub.ru",
+        "phone": "81116601515",
+        "balance": "5000",
+        "created_at": "20.10.2025",
+        "role": "User"
+    },
+    {
+        "id": 3,
+        "username": "premium-user",
+        "password": "28OP78u5",
+        "email": "premVIP@gamehub.ru",
+        "phone": "89092281647",
+        "balance": "10000",
+        "created_at": "20.10.2025",
+        "role": "Premium"
+    }
+]
