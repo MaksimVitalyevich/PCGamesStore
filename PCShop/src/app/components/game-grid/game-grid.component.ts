@@ -50,7 +50,13 @@ export class GameGridComponent extends Unsubscriber implements OnInit, AfterView
 
   ngAfterViewInit() { this.initTilt(); }
 
-  get filteredGames(): Game[] { return (this.games || []).filter(game => this.filterService.applyFilters(game)); }
+  get filteredGames(): Game[] {
+    try {
+      return (this.games || []).filter(game => this.filterService.applyFilters(game));
+    } catch {
+      return this.games || [];
+    }
+  }
 
   get pagedGames(): Game[] {
     const start = (this.currentPage - 1) * this.pageSize;

@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Game } from '../models/game.model';
+import { CartItem } from '../models/cart.model';
+import { PurchaseItem } from '../models/purchase.model';
 
 @Injectable({
   providedIn: 'root'
@@ -8,33 +9,38 @@ import { Game } from '../models/game.model';
 export class PurchaseService {
   private purchasedIdsSource = new BehaviorSubject<number[]>([]);
   purchasedIds$ = this.purchasedIdsSource.asObservable();
-  private purchasesSource = new BehaviorSubject<Game[]>([]);
+  private purchasesSource = new BehaviorSubject<PurchaseItem[]>([]);
   purchases$ = this.purchasesSource.asObservable();
 
   /** Готовая оформленная покупка игры */
-  purchaseCompleted = new EventEmitter<Game[]>();
+  purchaseCompleted = new EventEmitter<PurchaseItem[]>();
 
-  setPurchasedIds(ids: number[]) { this.purchasedIdsSource.next(ids); }
   addPurchasedIds(id: number) { this.purchasedIdsSource.next([...this.purchasedIdsSource.getValue(), id]); }
 
   /** Получение списка купленных игр */
-  getPurchasedGames(): Game[] { return this.purchasesSource.value; }
+  getPurchasedGames(): PurchaseItem[] { return this.purchasesSource.value; }
 
   /** Помечает игру купленной (после действия самой покупки) */
-  addPurchase(game: Game): void {
-    if (!this.getPurchasedGames().some(g => g.id === game.id)) {
-      const updated = [...this.getPurchasedGames(), game];
+  addMultiplePurchases(items: CartItem[]): void {
+    const existing = this.purchasesSource.value;
+
+    const newPurchases: PurchaseItem[] = items.map(item => ({
+      id: item.id++,
+      user_id: item.user_id,
+      game_id: item.game_id,
+      title: item.title,
+      genre: item.genre || '',
+      price: item.price,
+      purchase_date: new Date()
+    }));
+
+    const unique = newPurchases.filter(p => !existing.some(e => e.game_id === p.game_id));
+    if (unique.length) {
+      const updated = [...existing, ...unique];
       this.purchasesSource.next(updated);
-      this.purchaseCompleted.emit(updated);
     }
   }
-  addMultiplePurchases(games: Game[]): void { 
-    const unique = games.filter(g => !this.getPurchasedGames().some(c => c.id === g.id));
-    if (unique.length > 0) {
-      const updated = [...this.getPurchasedGames(), ...unique];
-      this.purchasesSource.next(updated);
-    }
-  }
+
   /** Сброс покупки (если пользователь передумал ее покупать) */
   removePurchase(gameID: number): void { 
     const updated = this.getPurchasedGames().filter(p => p.id !== gameID);

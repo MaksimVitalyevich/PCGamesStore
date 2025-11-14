@@ -2,7 +2,6 @@ export interface Game {
     id: number;
     title: string;
     published_at?: Date;
-    purchaseDate?: Date;
     short?: string;
     genre: string;
     rating: number;

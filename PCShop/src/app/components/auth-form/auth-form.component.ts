@@ -117,7 +117,9 @@ export class AuthFormComponent extends Unsubscriber implements OnInit, OnDestroy
     if (this.mode === LoginMethod.Login) {
       const credentials = { username, password };
       this.userService.login(credentials).subscribe(user => {
-        if (user) this.router.navigate(['/']);
+        if (user) {
+          setTimeout(() => this.router.navigate(['/']));
+        }
         else this.errMessage = "Данные введены неверно!";
       });
     } else {

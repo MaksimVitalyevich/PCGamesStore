@@ -11,7 +11,6 @@ import { PurchaseService } from '../../services/purchase.service';
 import { UserService } from '../../services/user.service';
 import { UserRole } from '../../models/enumerators.model';
 import { GameGridComponent } from '../game-grid/game-grid.component';
-import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-home',

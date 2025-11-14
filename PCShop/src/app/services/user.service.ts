@@ -20,7 +20,7 @@ export class UserService extends BaseApiService<User> {
 
   constructor(
     http: HttpClient,
-    private balanceService: BalanceService, 
+    private balanceService: BalanceService,
     private purchaseService: PurchaseService
   ) {
     super(http, "http://localhost:3000/PHPApp/api/users.php");
@@ -79,7 +79,13 @@ export class UserService extends BaseApiService<User> {
 
     return this.http.post<{ success: boolean; user?: User}>(`${this.USER_API}?action=login`, credentials).pipe(map(res => 
       (res.success ? res.user ?? null : null)
-    ), tap(user => this.userSource.next(user)));
+    ), tap(user => {
+      if (user) {
+        this.userSource.next(user);
+        this.roleSource.next(user?.role);
+        this.balanceService.setBalance(user.balance);
+      }
+    }));
   }
 
   /** Быстрый логин (выполняется по имени пользователя) */
@@ -115,5 +121,10 @@ export class UserService extends BaseApiService<User> {
   }
 
   /** Выход из системы */
-  logout(): void { this.userSource.next(null); }
+  logout(): void { 
+    this.userSource.next(null);
+    this.roleSource.next(null);
+    this.balanceService.setBalance(0);
+    this.purchaseService.clearPurchases();
+  }
 }

@@ -1,10 +1,11 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Unsubscriber } from '../../unsubscriber-helper';
 import { RatingService } from '../../services/rating.service';
 import { PurchaseService } from '../../services/purchase.service';
 import { FiltrationService } from '../../services/filtration.service';
+import { PurchaseItem } from '../../models/purchase.model';
 import { Game } from '../../models/game.model';
 import { GameFiltersComponent } from '../game-filters/game-filters.component';
 import { purchaseFieldAnim, gameCardAnim } from '../../app.animations';
@@ -19,7 +20,7 @@ declare var VanillaTilt: any;
   animations: [purchaseFieldAnim, gameCardAnim]
 })
 export class PurchaseListComponent extends Unsubscriber implements OnInit, AfterViewInit, OnDestroy {
-  purchases: Game[] = [];
+  purchases: PurchaseItem[] = [];
   currentPage = 1;
   pageSize = 6;
   showFilters = false;
@@ -36,13 +37,6 @@ export class PurchaseListComponent extends Unsubscriber implements OnInit, After
     this.purchaseService.purchases$.pipe(takeUntil(this.destroy$)).subscribe(list => { 
       this.purchases = list;
       
-      this.purchases.forEach(purchase => {
-        this.ratingService.getRating$(purchase.title).pipe(take(1)).subscribe(rating => {
-          if (rating === 0) {
-            this.ratingService.setRating(purchase.title, purchase.rating);
-          }
-        });
-      });
       this.currentPage = 1;
       setTimeout(() => this.isLoading = false, 1000);
     });
@@ -56,8 +50,8 @@ export class PurchaseListComponent extends Unsubscriber implements OnInit, After
   closeFiltersModal() { this.showFilters = false; }
   resetAllFilters() { this.filterService.resetFilters(); }
 
-  get filteredPurchases(): Game[] { return this.purchases.filter(game => this.filterService.applyFilters(game)); }
-  get pagedPurchases(): Game[] { 
+  get filteredPurchases(): PurchaseItem[] { return this.purchases.filter(p => this.filterService.applyFilters(p)); }
+  get pagedPurchases(): PurchaseItem[] { 
     const start = (this.currentPage - 1) * this.totalPages;
     setTimeout(() => this.initTilt(), 100);
     return this.filteredPurchases.slice(start, start + this.pageSize);
@@ -69,7 +63,7 @@ export class PurchaseListComponent extends Unsubscriber implements OnInit, After
     setTimeout(() => this.initTilt(), 100);
   }
 
-  trackById(index: number, purchased_item: Game) { return purchased_item.id }
+  trackById(index: number, purchased_item: PurchaseItem) { return purchased_item.id }
   nextPage() {
     if (this.currentPage < this.totalPages) this.currentPage++;
     setTimeout(() => this.initTilt(), 100);
@@ -78,8 +72,6 @@ export class PurchaseListComponent extends Unsubscriber implements OnInit, After
     if (this.currentPage > 1) this.currentPage--;
     setTimeout(() => this.initTilt(), 0);
   }
-
-  getStars(gameTitle: string) { return this.ratingService.getStars$(gameTitle); }
 
   ngAfterViewInit() { this.initTilt(); }
 

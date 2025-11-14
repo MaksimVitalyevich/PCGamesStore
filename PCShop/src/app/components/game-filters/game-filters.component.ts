@@ -17,6 +17,8 @@ export class GameFiltersComponent {
   priceRange = [0, 3000]
   ratingRange = [0, 10];
   selectedGenre: string = '';
+  purchaseDate: string = '';
+  promoUsed: boolean | null = null;
   isClosed = false;
 
   genres = ['Action', 'FPS', 'RPG', 'Sci-Fi', 'Racing', 'Horror', 'Shooter', 'Fighting', 'Adventure', 'Puzzle', 'Open World', 'Sandbox', 'Simulatior'];
@@ -27,7 +29,9 @@ export class GameFiltersComponent {
     const filters = {
       price: this.priceRange,
       rating: this.ratingRange,
-      genres: this.selectedGenre
+      genres: this.selectedGenre,
+      purchase_date: this.purchaseDate,
+      promo_used: this.promoUsed
     };
     this.filterService.updateFilters(filters);
     this.onClose();

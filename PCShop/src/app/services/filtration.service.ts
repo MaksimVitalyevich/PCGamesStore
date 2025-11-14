@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Game } from '../models/game.model';
+import { PurchaseItem } from '../models/purchase.model';
 import { GameService } from './game.service';
 
 @Injectable({
@@ -18,23 +19,35 @@ export class FiltrationService {
   }
 
   /** Проверка одной игры на соответствие фильтрам */
-  applyFilters(game: Game): boolean {
+  applyFilters(item: Game | PurchaseItem): boolean {
     const filters = this.filterToggleSource.value;
-    const price0 = Number(filters.price?.[0] ?? -Infinity);
-    const price1 = Number(filters.price?.[1] ?? Infinity);
-    const rating0 = Number(filters.rating?.[0] ?? -Infinity);
-    const rating1 = Number(filters.rating?.[1] ?? Infinity);
-    const genre = (filters.genres || '').toString().trim().toLowerCase();
 
-    const gPrice = Number(game.price);
-    const gRating = Number(game.rating);
-    const gGenre = (game.genre || '').toLowerCase();
+    if ('price' in item && 'rating' in item && 'genre' in item) {
+      const price0 = filters.price[0];
+      const price1 = filters.price[1];
+      const rating0 = filters.rating[0];
+      const rating1 = filters.rating[1];
+      const genre = (filters.genres || '').toString().trim().toLowerCase();
 
-    const priceMatch = gPrice >= price0 && gPrice <= price1;
-    const ratingMatch = gRating >= rating0 && gRating <= rating1;
-    const genreMatch = !genre || gGenre.includes(genre);
+      const priceMatch = item.price >= price0 && item.price <= price1;
+      const ratingMatch = item.rating >= rating0 && item.rating <= rating1;
+      const genreMatch = !genre || (item.genre || '').includes(genre);
 
-    return priceMatch && ratingMatch && genreMatch;
+      return priceMatch && ratingMatch && genreMatch;
+    }
+
+    if ('purchase_date' in item && 'promo_used' in item) {
+      const dateFrom = filters.dateFrom ? new Date(filters.dateFrom) : new Date(-8640000000000000);
+      const dateTo = filters.dateTo ? new Date(filters.dateTo) : new Date(8640000000000000);
+      const promoUsed = filters.promoUsed ?? null;
+
+      const dateMatch = item.purchase_date >= dateFrom && item.purchase_date <= dateTo;
+      const promoMatch = promoUsed === null || item.promo_used === promoUsed;
+
+      return dateMatch && promoMatch;
+    }
+
+    return true; // ни один из соответствующих типов выше
   }
 
   /** Сброс фильтрации поиска */

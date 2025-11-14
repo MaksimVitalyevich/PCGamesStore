@@ -21,5 +21,19 @@
         </div>
     </div>
 
+    <div>
+        <label>Дата покупки:</label>
+        <input type="date" [(ngModel)]="purchaseDate">
+    </div>
+
+    <div>
+        <label>Использованный промокод:</label>
+        <select [(ngModel)]="promoUsed">
+            <option [ngValue]="null">Неизвестно</option>
+            <option [ngValue]="true">Да</option>
+            <option [ngValue]="false">Нет</option>
+        </select>
+    </div>
+
     <button (click)="applyFilters()">Применить</button>
 </div>

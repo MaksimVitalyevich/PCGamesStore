@@ -1,5 +1,5 @@
-import { Game } from "./game.model";
 import { Theme, UserRole } from "./enumerators.model";
+import { PurchaseItem } from "./purchase.model";
 
 export interface User {
     id: number;
@@ -10,7 +10,7 @@ export interface User {
     email?: string;
     phone: number;
     balance: number;
-    purchases: Game[];
+    purchases: PurchaseItem[];
     theme?: Theme;
     avatarURL?: string;
     role: UserRole;

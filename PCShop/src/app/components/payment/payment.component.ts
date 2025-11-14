@@ -25,13 +25,11 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
   cartItems: CartItem[] = [];
   message = "";
   isLoading = false;
-  isPaying = false;
 
   totalAmount = 0;
   discount = 0;
   finalAmount = 0;
   balance = 0;
-  progress = 0;
 
   constructor(
     private fb: FormBuilder, 
@@ -68,19 +66,13 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
 
     this.paymentForm.get('method')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(method => {
       const cardFields = ['cardNumber', 'expiry', 'cvc'];
-      if (method === PayMethod.Card) {
-        cardFields.forEach(f => this.paymentForm.get(f)?.setValidators(Validators.required));
-      } else {
-        cardFields.forEach(f => this.paymentForm.get(f)?.clearValidators());
-      }
+      if (method === PayMethod.Card) cardFields.forEach(f => this.paymentForm.get(f)?.setValidators(Validators.required));
+      else cardFields.forEach(f => this.paymentForm.get(f)?.clearValidators());
       cardFields.forEach(f => this.paymentForm.get(f)?.updateValueAndValidity());
     });
   }
 
-  cancelPayment() {
-    this.isLoading = false;
-    this.router.navigate(['/cart']);
-  }
+  cancelPayment() { this.router.navigate(['/cart']); }
 
   applyPromo(code: string) {
     this.paymentService.checkPromoCode(code).subscribe(result => {
@@ -96,9 +88,7 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
     this.updateFinalAmount();
   }
 
-  calculateTotal(items: CartItem[]) {
-    return items.reduce((acc, item) => acc + (item.price || 0), 0);
-  }
+  calculateTotal(items: CartItem[]) { return items.reduce((acc, item) => acc + (item.price || 0), 0); }
   updateFinalAmount() { this.finalAmount = this.totalAmount - (this.totalAmount * this.discount / 100); }
 
   onSubmit() {
@@ -113,62 +103,46 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
       this.message = "Ошибка: Пользователь не найден!";
       return;
     }
+    
     this.totalAmount = this.calculateTotal(this.cartItems);
-    if (this.balance < this.finalAmount) {
+    this.balance = user.balance;
+    if (this.balance < this.totalAmount) {
       this.message = "У вас недостаточно средств на счету!";
       return;
     }
     
-    this.isPaying = true;
     this.isLoading = true;
     this.message = "Выполняется обработка платежа...";
 
-    this.paymentService.simulatePayment(this.paymentForm.value, this.totalAmount).pipe(takeUntil(this.destroy$), 
-      switchMap(simResult => {
-        if (!simResult.success) {
-          this.message = "Сбой при симуляции оплаты!";
-          this.isPaying = false;
-          this.isLoading = false;
-          return EMPTY;
-        }
+    this.paymentService.simulatePayment(this.paymentForm.value, this.totalAmount).pipe(takeUntil(this.destroy$), switchMap(simResult => {
+      if (!simResult.success) {
+        this.message = "Сбой при симуляции оплаты!";
+        this.isLoading = false;
+        return EMPTY;
+      }
 
-        // Уменьшаем баланс
-        this.balanceService.decrease(this.totalAmount);
+      // Уменьшаем баланс
+      this.balanceService.decrease(this.totalAmount);
 
         // Отправляем реальный платеж на сервер
-        return this.paymentService.pay(user.id).pipe(tap(payResult => {
-            if (!payResult.success) {
-              this.message = "Сбой при оплате на сервере!";
-              throw new Error(payResult.message || "Ошибка платежа");
-            }
-          })
-        );
-      })
-    ).subscribe({ next: () => {
-        // После успешного платежа
-        this.cartService.clearCart(user.id); // очищаем корзину
-        this.purchaseService.addMultiplePurchases(this.cartItems.map(i => ({
-          id: i.game_id,
-          title: i.title || '',
-          price: i.price || 0
-        }) as any));
-        
+      return this.paymentService.pay(user.id).pipe(tap(payResult => {
+          if (!payResult.success) { throw new Error(payResult.message || "Ошибка платежа на сервере"); } }));
+    })
+  ).subscribe({ next: () => {
+        // Обновляем покупки
+        this.purchaseService.addMultiplePurchases(this.cartItems);
+
+        // Очищаем корзину
+        this.cartService.clearCart(user.id);
+
+        // Сбрасываем UI
         this.totalAmount = 0;
-        this.progress = 100;
         this.message = "Оплата прошла успешно! Перенаправление...";
-  
+
+        // Плавный редирект
         setTimeout(() => this.router.navigate(['/purchases']), 2000);
       },
-      error: (err) => {
-        console.error(err);
-        this.isLoading = false;
-        this.isPaying = false;
-        this.message = err.message || "Произошла ошибка при оплате!";
-      },
-      complete: () => {
-        this.isLoading = false;
-        this.isPaying = false;
-      }
+      error: err => { this.message = err.message || "Произошла ошибка при оплате!"; }
     });
   }
 

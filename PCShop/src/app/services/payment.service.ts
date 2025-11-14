@@ -4,14 +4,13 @@ import { Observable, of, map, tap } from 'rxjs';
 import { catchError, delay } from 'rxjs/operators';
 import { CartService } from './cart.service';
 import { BaseApiService } from './base-api.service';
-import { PaymentResponse } from '../models/paymentResponse.model';
 
 @Injectable({ providedIn: 'root' })
-export class PaymentService extends BaseApiService<PaymentResponse> {
+export class PaymentService extends BaseApiService<any> {
   private readonly PAYMENT_API = "http://localhost:3000/PHPApp/api/payment.php";
   private readonly PROMO_API = "http://localhost:3000/PHPApp/api/promocodes.php";
 
-  constructor(http: HttpClient, private cart: CartService) { super(http); }
+  constructor(http: HttpClient, private cart: CartService) { super(http, "http://localhost:3000/PHPApp/api/payment.php"); }
 
   pay(userId: number): Observable<any> {
     return this.http.post<{ success: boolean; message?: string }>(`${this.PAYMENT_API}?action=pay`, { user_id: userId }).pipe(tap(res => {
@@ -21,14 +20,14 @@ export class PaymentService extends BaseApiService<PaymentResponse> {
     }))
   }
 
-  checkPromoCode(code: string): Observable<PaymentResponse> {
+  checkPromoCode(code: string): Observable<any> {
     return this.http.post<any>(`${this.PROMO_API}?action=check`, { code }).pipe(map(res =>
       res.success ? { success: true, message: 'Промокод активен', discountUsed: true } : { success: false, message: res.error || 'Промокод недействителен'}
     ), catchError(() => of({ success: false, message: 'Ошибка соединения с сервером'})));
   }
 
   /** Симуляция успешной оплаты */
-  simulatePayment(data: any, total: number): Observable<PaymentResponse> {
+  simulatePayment(data: any, total: number): Observable<any> {
     let discount = 0;
     if (data.method === 'promo' && data.promoCode) {
       return this.checkPromoCode(data.promoCode).pipe(map(result => {

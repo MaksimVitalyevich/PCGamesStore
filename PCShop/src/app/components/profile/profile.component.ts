@@ -8,7 +8,7 @@ import { BalanceService } from '../../services/balance.service';
 import { PurchaseService } from '../../services/purchase.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Game } from '../../models/game.model';
+import { PurchaseItem } from '../../models/purchase.model';
 import { User } from '../../models/user.model';
 
 @Component({
@@ -21,7 +21,7 @@ import { User } from '../../models/user.model';
 export class ProfileComponent extends Unsubscriber implements OnInit, OnDestroy {
   profileForm!: FormGroup;
   user!: User;
-  usergames: Game[] = [];
+  usergames: PurchaseItem[] = [];
 
   private static changedPhonePattern = /^\+7[\s(]*\d{3}[\s)]*\d{3}[\s-]?\d{2}[\s-]?\d{2}$/
   private static changedPasswordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/
