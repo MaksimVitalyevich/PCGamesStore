@@ -9,9 +9,7 @@
     $data = json_decode(file_get_contents("php://input"), true);
     $users = [];
 
-    if (in_array($action, ['login', 'register']) && !$data) {
-        jsonError('Нет нужных данных', 400);
-    }
+    if (in_array($action, ['login', 'register']) && !$data) jsonError('Нет нужных данных', 400);
 
     switch ($action) {
         case 'getUsers':
@@ -70,25 +68,18 @@
 
                 foreach($users as $u) {
                     if ($u['username'] === $data['username'] && $u['password'] === $data['password']) {
-                        if (!isset($u['role']) || empty($u['role'])) {
-                            $u['role'] = 'user';
-                        }
-                        if (!isset($u['balance']) || !is_numeric($u['balance'])) {
-                            $u['balance'] = getDefaultBalance($u['role']);
-                        }
-                        $users = $u;
+                        if (!isset($u['role']) || empty($u['role'])) $u['role'] = 'user';
+                        if (!isset($u['balance']) || !is_numeric($u['balance'])) $u['balance'] = getDefaultBalance($u['role']);
+                        $user = $u;
                         break;
                     }
                 }
 
-                if ($user) {
-                    jsonResponse(['success' => true, 'message' => 'Успешный вход выполнен!', 'user' => $user]);
-                } else {
-                    jsonError('Неверное имя пользователя или пароль', 401);
-                }
+                if ($user) jsonResponse(['success' => true, 'message' => 'Успешный вход выполнен!', 'user' => $user]);
+                else jsonError('Неверное имя пользователя или пароль', 401);
 
             } else {
-                safeQuery($pdo, "SELECT * FROM users WHERE username = ?", [$data['username']]);
+                $stmt = safeQuery($pdo, "SELECT * FROM users WHERE username = ?", [$data['username']]);
                 $user = $stmt->fetch();
                 
                 // Проверка соответствия паролей

@@ -9,9 +9,7 @@
     $data = json_decode(file_get_contents("php://input"), true);
     $games = [];
 
-    if (in_array($action, ['add', 'update', 'delete', 'buy']) && !$data) {
-        jsonError('Нет нужных данных', 400);
-    }
+    if (in_array($action, ['addGame', 'updateGame', 'deleteGame', 'buy']) && !$data) jsonError('Нет нужных данных', 400);
 
     switch ($action) {
         case 'getGames':
@@ -23,8 +21,9 @@
                 jsonResponse(['success' => true, 'source' => 'db', 'games' => $stmt->fetchAll(PDO::FETCH_ASSOC)]);
             }
             break;
-        case 'add':
-            requireFields($data, ['title', 'genre', 'rating', 'price']);
+        case 'addGame':
+
+            if (isset($data['data'])) $data = $data['data'];
 
             if (is_array($pdo)) {
                 $games = $pdo;
@@ -53,8 +52,9 @@
                 jsonResponse(['success' => true, 'message' => 'Игра добавлена', 'id' => $pdo->lastInsertId()]);
             }
             break;
-        case 'update':
-            requireFields($data, ['title', 'genre', 'rating', 'price']);
+        case 'updateGame':
+
+            if (isset($data['data'])) $data = $data['data'];
 
             if (is_array($pdo)) {
                 $games = $pdo;
@@ -74,7 +74,6 @@
                 } else {
                     jsonError('Игра с указанным ID - не найдена!', 404);
                 }
-
             } else {
                 safeQuery($pdo, "UPDATE games SET title = ?, published_at = ?, genre = ?, rating = ?, system_requirements = ?, price = ?, image = ?, developer = ?, company_name = ?, localization = ? WHERE id = ?", 
                 [
@@ -92,7 +91,7 @@
                 jsonResponse(['success' => true, 'message' => 'Игра обновлена']);
             }
             break;
-        case 'delete':
+        case 'deleteGame':
             requireFields($data, ['id']);
 
             if (is_array($pdo)) {
@@ -113,17 +112,13 @@
             $userId = $data['user_id'];
             $gameId = $data['game_id'];
 
-            if (!$userId || !$gameId) {
-                jsonResponse(['success' => false, 'error' => 'Нет данных (ID) пользователя и покупаемой игры!'], 404);
-                break;
-            }
+            if (!$userId || !$gameId) jsonError('Нет данных (ID) пользователя и покупаемой игры!', 404);
 
             if ($pdo instanceof PDO) {
                 $checkExisting = safeQuery($pdo, "SELECT id FROM cart WHERE user_id = ? AND game_id = ?", [$userId, $gameId]);
                 // Проверка, что существует такая игра
                 if ($checkExisting->fetch()) {
                     jsonError('Игра уже есть в корзине', 409);
-                    break;
                 }
 
                 safeQuery($pdo, "INSERT INTO cart (user_id, game_id) VALUES (?, ?)", [$userId, $gameId]);
@@ -137,10 +132,7 @@
             $cart = json_decode(file_get_contents($cartPath), true);
 
             $exists = array_filter($cart, fn($c) => $c['user_id'] == $data['user_id'] && $c['game_id'] == $data['game_id']);
-            if ($exists) {
-                jsonError('Игра уже есть в корзине', 409);
-                break;
-            }
+            if ($exists) jsonError('Игра уже есть в корзине', 409);
 
             $newId = empty($cart) ? 1 : max(array_column($cart, 'id')) + 1;
             $game = array_values(array_filter($games, fn($g) => $g['id'] == $gameId))[0];
