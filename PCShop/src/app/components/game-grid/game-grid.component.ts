@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 import { Unsubscriber } from '../../unsubscriber-helper';
@@ -16,6 +16,7 @@ declare var VanillaTilt: any;
   imports: [CommonModule, ReactiveFormsModule, GameFiltersComponent],
   templateUrl: './game-grid.component.html',
   styleUrl: './game-grid.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [modalAnims, gameCardAnim, gameEditAnim]
 })
 export class GameGridComponent extends Unsubscriber implements OnInit, AfterViewInit, OnDestroy {

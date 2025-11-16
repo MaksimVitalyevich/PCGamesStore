@@ -24,6 +24,7 @@ export class UserInfoComponent extends Unsubscriber implements OnInit, OnDestroy
   constructor(private userService: UserService, private balanceService: BalanceService) { super(); }
 
   ngOnInit() {
+    this.userService.user$.pipe(takeUntil(this.destroy$)).subscribe(user => this.currentUserId = user ? user.id : 0);
     this.userService.role$.pipe(takeUntil(this.destroy$)).subscribe(role => this.currentRole = role );
     this.balanceService.balance$.pipe(takeUntil(this.destroy$)).subscribe(balance => this.balance = balance);
   }

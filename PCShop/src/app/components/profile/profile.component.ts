@@ -5,7 +5,6 @@ import { Unsubscriber } from '../../unsubscriber-helper';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { BalanceService } from '../../services/balance.service';
-import { PurchaseService } from '../../services/purchase.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { PurchaseItem } from '../../models/purchase.model';
@@ -30,7 +29,6 @@ export class ProfileComponent extends Unsubscriber implements OnInit, OnDestroy 
     private fb: FormBuilder, 
     private userService: UserService, 
     private balanceService: BalanceService,
-    private purchaseService: PurchaseService,
     private domSanitizer: DomSanitizer,
     private router: Router
   ) { super(); }
@@ -54,7 +52,6 @@ export class ProfileComponent extends Unsubscriber implements OnInit, OnDestroy 
   });
 
   this.balanceService.balance$.pipe(takeUntil(this.destroy$)).subscribe(() => {}); // для реактивного обновления в непрерывном состоянии
-  this.purchaseService.purchases$.pipe(takeUntil(this.destroy$)).subscribe(purchases => this.usergames = purchases);
 }
 
   /** Выбор фото (аватар) пользователя */

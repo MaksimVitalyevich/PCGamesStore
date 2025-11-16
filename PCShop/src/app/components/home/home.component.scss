@@ -4,12 +4,45 @@
   font-family: var(--font-accent-variant-one);
   padding: 2rem;
 
+  .heroContainer {
+    background-image: radial-gradient(var(--color-neon-teal), var(--color-neon-green), var(--color-neon-purple), var(--color-bg-dullgreen));
+    border: 1px solid var(--border-tab);
+    box-shadow: 0 2px 4px rgba(0, 80, 5, 0.5);
+    font-family: var(--font-main);
+    padding: 0.4rem;
+
+    h1 {
+      color: var(--text-light);
+      text-shadow: 0 0 12px var(--text-light);
+      text-align: center;
+      font-size: 2rem;
+      margin: 0;
+      letter-spacing: 0.2px;
+    }
+    p {
+      color: var(--text-dark);
+      text-shadow: 0 0 4px var(--text-dark);
+      text-align: right;
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+  }
+
   .homeTitle {
     color: var(--accent-turquoise);
     font-size: 2.2rem;
     font-weight: bold;
     text-shadow: 0 0 6px var(--color-neon-teal);
     letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+  }
+
+  .promosTitle {
+    color: var(--color-neon-yellow);
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-shadow: 0 0 6px var(--color-neon-orange);
+    letter-spacing: 0.4px;
     margin-bottom: 1.5rem;
   }
 

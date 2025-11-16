@@ -1,53 +1,60 @@
-<app-game-filters *ngIf="showFilters" (closed)="closeFiltersModal()"></app-game-filters>
+<section>
+    <ng-container *ngIf="!isLoading; else loadingTemp">
+        <app-game-filters *ngIf="showFilters" (closed)="closeFiltersModal()"></app-game-filters>
 
-<div class="purchaseField">
-    <h2 class="purchaseTitle">Ваши купленные игры</h2>
-    <div class="btnFilterActions">
-        <button (click)="toggleFilters(purchases)">Продвинутый поиск</button>
-        <button (click)="resetAllFilters()">Сбросить</button>
-    </div>
-
-    <ng-container *ngIf="isLoading; else loaded">
-        <div class="loader">
-            <div class="spinner-wrapper">
-                <img src="icons/spinner-icon-var-two.png" alt="Spinner_icon_2" class="spinner">
+        <div class="purchaseField">
+            <h2 class="purchaseTitle">Ваши купленные игры</h2>
+            <div class="btnFilterActions">
+                <button (click)="toggleFilters(purchases)">Продвинутый поиск</button>
+                <button (click)="resetAllFilters()">Сбросить</button>
             </div>
-            <p>Загружается список покупок...</p>
-        </div>
-    </ng-container>
-
-    <ng-template #empty>
-        <div class="emptyPurchaseText" @purchaseFieldAnim>
-            Нету купленных игр...
-        </div>
-    </ng-template>
-
-    <ng-template #loaded>
-        <ng-container *ngIf="filteredPurchases.length; else empty">
-            <div class="purchasedGameField" @purchaseFieldAnim>
-                <div *ngFor="let purchase of pagedPurchases; trackBy: trackById" class="purchasedGameCard" [@gameCardAnim]="hoveredCard === purchase ? 'hover' : 'normal'" (mouseenter)="hoveredCard = purchase" (mouseleave)="hoveredCard = null"
-                data-tilt data-tilt-max="10" data-tilt-speed="500">
-                    <div class="purchasedGameCardFrame">
         
-                        <div class="purchaseGameInfo">
-                            <h3>{{ purchase.title }}</h3>
-                            <p class="purchaseGenre">{{ purchase.genre }}</p>
-                            <p class="purchasePrice">{{ purchase.price | number:'1.0-0' }} ₽</p>
-                            <p class="purchaseDate">Дата покупки: {{ purchase.purchase_date | date:'shortDate' }}</p>
+            <ng-container *ngIf="isLoading; else loaded">
+                
+            </ng-container>
+        
+            <ng-template #empty>
+                <div class="emptyPurchaseText" @purchaseFieldAnim>
+                    Нету купленных игр...
+                </div>
+            </ng-template>
+        
+            <ng-template #loaded>
+                <ng-container *ngIf="filteredPurchases.length; else empty">
+                    <div class="purchasedGameField" @purchaseFieldAnim>
+                        <div *ngFor="let purchase of pagedPurchases; trackBy: trackById" class="purchasedGameCard" [@gameCardAnim]="hoveredCard === purchase ? 'hover' : 'normal'" (mouseenter)="hoveredCard = purchase" (mouseleave)="hoveredCard = null">
+                            <div class="purchasedGameCardFrame">
+                
+                                <div class="purchaseGameInfo">
+                                    <h3>{{ purchase.title }}</h3>
+                                    <p class="purchaseGenre">{{ purchase.genre }}</p>
+                                    <p class="purchasePrice">{{ purchase.price | number:'1.0-0' }} ₽</p>
+                                    <p class="purchaseDate">Дата покупки: {{ purchase.purchase_date | date:'shortDate' }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </ng-container>
+            </ng-template>
+        
+            <div class="purchasePaginator" *ngIf="totalPages > 1">
+                <button (click)="prevPage()" [disabled]="currentPage === 1" [ngClass]="{ first: currentPage === 1 }" class="btnPreviousPage">Назад</button>
+        
+                <ng-container *ngFor="let p of [].constructor(totalPages); let i = index">
+                    <button (click)="goToPage(i + 1)" [class.active]="currentPage === i + 1" class="btnPageNum">{{ i + 1 }}</button>
+                </ng-container>
+        
+                <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="btnNextPage" [ngClass]="{ last: currentPage === totalPages }">Вперед</button>
             </div>
-        </ng-container>
-    </ng-template>
+        </div>
+    </ng-container>
+</section>
 
-    <div class="purchasePaginator" *ngIf="totalPages > 1">
-        <button (click)="prevPage()" [disabled]="currentPage === 1" [ngClass]="{ first: currentPage === 1 }" class="btnPreviousPage">Назад</button>
-
-        <ng-container *ngFor="let p of [].constructor(totalPages); let i = index">
-            <button (click)="goToPage(i + 1)" [class.active]="currentPage === i + 1" class="btnPageNum">{{ i + 1 }}</button>
-        </ng-container>
-
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="btnNextPage" [ngClass]="{ last: currentPage === totalPages }">Вперед</button>
+<ng-template #loadingTemp>
+    <div class="loader">
+        <div class="spinner-wrapper">
+            <img src="icons/spinner-icon-var-two.png" alt="Spinner_icon_2" class="spinner">
+        </div>
+        <p>Загружается список покупок...</p>
     </div>
-</div>
+</ng-template>

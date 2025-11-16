@@ -1,0 +1,124 @@
+<div class="promocodesField">
+    <button *ngIf="role === UserRole.Moderator" (click)="promoCodeEdit()" class="btnAddPromo">+ Добавить промокод
+        <div class="addPromoLine"></div>
+    </button>
+
+    <ng-template #editForm>
+        <form [formGroup]="promoCodeForm" (ngSubmit)="onSave()" class="promoEditForm">
+            <div class="code-row">
+                <label>Код</label>
+                <input type="text" formControlName="code" placeholder="EX100ACT">
+                <small class="hint" *ngIf="promoCodeForm.get('code')?.touched && promoCodeForm.get('code')?.hasError('required')">
+                    Укажите любое кодовое имя
+                </small>
+                <small class="hint warning" *ngIf="promoCodeForm.get('code')?.touched && promoCodeForm.get('code')?.hasError('minLength')">
+                    Промокод НЕ может быть менее 3 символов!
+                </small>
+                <small class="hint warning" *ngIf="promoCodeForm.get('code')?.touched && promoCodeForm.get('code')?.hasError('pattern')">
+                    Допускаются только заглавные буквы И цифры (без пробелов)! Формат "EX100ACT"
+                </small>
+            </div>
+            <div class="code-row">
+                <label>Скидка</label>
+                <input type="number" formControlName="discount">
+                <small class="hint" *ngIf="promoCodeForm.get('discount')?.touched && promoCodeForm.get('discount')?.hasError('required')">
+                    Укажите предлагаемую скидку
+                </small>
+                <small class="hint warning" *ngIf="promoCodeForm.get('discount')?.touched && promoCodeForm.get('discount')?.hasError('min')">
+                    Скидка НЕ может быть отрицательным ИЛИ быть равным 0!
+                </small>
+                <small class="hint warning" *ngIf="promoCodeForm.get('discount')?.touched && promoCodeForm.get('discount')?.hasError('max')">
+                    Допустимое макс. значение скидки 100%!
+                </small>
+            </div>
+            <div class="code-row">
+                <label>Описание</label>
+                <input type="text" formControlName="description">
+            </div>
+            <div class="code-row">
+                <label>Пометить как "Активный"</label>
+                <input type="checkbox" formControlName="is_active">
+                <small class="hint warning" *ngIf="promoCodeForm.get('is_active')?.touched && promoCodeForm.get('is_active')?.hasError('requiredTrue')">
+                    Промокод ОБЯЗАН быть действительным!
+                </small>
+            </div>
+            <div class="code-row">
+                <label>Был создан:</label>
+                <input type="date" formControlName="created_at">
+                <small class="hint" *ngIf="promoCodeForm.get('created_at')?.touched && promoCodeForm.get('created_at')?.hasError('required')">
+                    Нужно указать дату, когда был создан промокод
+                </small>
+            </div>
+            <div class="code-row">
+                <label>Срок действия:</label>
+                <input type="date" formControlName="expires_at">
+            </div>
+            <div class="code-row">
+                <label>Макс. количество использовании</label>
+                <input type="number" min="1" formControlName="max_uses">
+                <small class="hint" *ngIf="promoCodeForm.get('max_uses')?.touched && promoCodeForm.get('max_uses')?.hasError('required')">
+                    Укажите значение для максимального использования
+                </small>
+                <small class="hint warning" *ngIf="promoCodeForm.get('max_uses')?.touched && promoCodeForm.get('max_uses')?.hasError('min')">
+                    Отрицательные значения И 0 - НЕ допускаются!
+                </small>
+                <small class="hint warning" *ngIf="promoCodeForm.get('max_uses')?.touched && promoCodeForm.get('max_uses')?.hasError('max')">
+                    Допустимый максимум для использований - 10!
+                </small>
+            </div>
+            <div class="code-row">
+                <label>Только для новых пользователей</label>
+                <input type="checkbox" formControlName="is_new_user_only">
+            </div>
+
+            <div class="edit-actions">
+                <button type="submit" class="btnSave">Сохранить</button>
+                <button type="button" (click)="cancelEdit()" class="btnCancel">Отмена</button>
+            </div>
+        </form>
+    </ng-template>
+
+    <div class="promosList">
+        <div class="promoCardItem" *ngIf="isEditing && !selectedPromoCode">
+            <ng-container *ngTemplateOutlet="editForm"></ng-container>
+        </div>
+
+        <div class="promoCardItem" *ngFor="let promo of promocodes; trackBy: trackById">
+            <ng-container *ngIf="!(isEditing && selectedPromoCode?.id === promo.id); else editForm">
+                <div class="promoCardFrame">
+                    <div class="promosHeader">
+                        <h3 [class.top]="promo.discount >= 50">{{ promo.code }}</h3>
+                        <span class="badge" [class.active]="promo.is_active" [class.inactive]="!promo.is_active">
+                            {{ promo.is_active ? 'Активен' : 'Неактивен' }}
+                        </span>
+                        <p *ngIf="selectedPromoCode" class="codeResult">{{ applyResult }}</p>
+                    </div>
+    
+                    <p class="promoDesc">{{ promo.description || 'Без описания' }}</p>
+    
+                    <div class="promoInfo">
+                        <section>Скидка: <b class="discountHighlight" [class.top]="promo.discount >= 50">{{ promo.discount }}</b></section>
+                        <section>Использовано: <b>{{ promo.used_count }}</b> из <b class="limits">{{ promo.max_uses }}</b></section>
+                        <section>Создан: <b>{{ promo.created_at | date:'dd.MM.yyyy' }}</b></section>
+                        <section *ngIf="promo.expires_at">Истекает: <b class="expiration">{{ promo.expires_at | date:'dd.MM.yyyy' }}</b></section>
+                    </div>
+    
+                    <div class="promoActionsField">
+                        <button (click)="onCheck(promo.code)">Проверить</button>
+                        <button *ngIf="role === UserRole.User || role === UserRole.PremiumUser" [disabled]="!promo.is_active" 
+                        [ngClass]="{ unavailable: !promo.is_active }" (click)="onApply(promo)">Использовать</button>
+    
+                        <div *ngIf="role === UserRole.Moderator" class="moderatorActions">
+                            <button (click)="promoCodeEdit(promo)" class="edit">Редактировать</button>
+                            <button (click)="onReactivate(promo.code)" [disabled]="promo.is_active">Переактивировать</button>
+                            <button (click)="onDeactivate(promo.code)" [disabled]="promo.is_active" class="discharge" 
+                            [ngClass]="{ charge: !promo.is_active }">Деактивировать</button>
+                            <button (click)="onResetUse(promo.code)" [disabled]="promo.used_count === 0">
+                                Сбросить счетчик использовании
+                            </button>
+                        </div>
+                    </div>
+                </div>
+        </ng-container>
+    </div>
+</div>

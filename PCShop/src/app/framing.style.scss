@@ -109,7 +109,7 @@
       .cart {
         position: relative;
         top: -25px;
-        left: -12px;
+        left: -10px;
         color: var(--color-neon-yellow);
         text-shadow: 0 0 10px var(--color-neon-pink);
       }
@@ -120,6 +120,27 @@
         height: 28px;
         border-radius: 9px;
         box-shadow: 0 0 8px var(--accent-darkpurple);
+      }
+    }
+
+    .purchasearea {
+      position: relative;
+      top: 12px;
+
+      .purchase {
+        position: relative;
+        top: -25px;
+        left: 8px;
+        color: var(--color-neon-orange);
+        text-shadow: 0 0 10px var(--color-neon-green);
+      }
+      img {
+        position: relative;
+        left: 36px;
+        width: 48px;
+        height: 28px;
+        border-radius: 9px;
+        box-shadow: 0 0 8px var(--color-shadow);
       }
     }
 

@@ -7,11 +7,12 @@ import { UserRole } from '../models/enumerators.model';
 import { User } from '../models/user.model';
 import { BalanceService } from './balance.service';
 import { PurchaseService } from './purchase.service';
+import { environment } from '../urls-environment';
 
 @Injectable({ providedIn: 'root' })
 
 export class UserService extends BaseApiService<User> {
-  private readonly USER_API = "http://localhost:3000/PHPApp/api/users.php";
+  private readonly USER_API = environment.api.users;
 
   private userSource = new BehaviorSubject<User | null>(null);
   user$ = this.userSource.asObservable();
@@ -23,7 +24,7 @@ export class UserService extends BaseApiService<User> {
     private balanceService: BalanceService,
     private purchaseService: PurchaseService
   ) {
-    super(http, "http://localhost:3000/PHPApp/api/users.php");
+    super(http, environment.api.users);
     this.purchaseService.purchaseCompleted.subscribe((purchases) => {
       if (!this.user) return;
       this.user.purchases = purchases;
@@ -93,13 +94,18 @@ export class UserService extends BaseApiService<User> {
     return this.getUsers().pipe(map(users => users.find(u => u.username.toLowerCase() === username.toLowerCase()) ?? null),
     tap(user => {
       if (user) {
+        const allUsers: User[] = JSON.parse(localStorage.getItem('users') || '[]');
         const normalizedRole = (user.role as string)?.toLowerCase() as UserRole;
         const normalizedUser = { ...user, role: normalizedRole };
+        const idx = allUsers.findIndex(u => u.id === normalizedUser.id);
+
+        if (idx >= 0) allUsers[idx] = normalizedUser;
+        else allUsers.push(normalizedUser);
 
         this.userSource.next(normalizedUser);
         this.roleSource.next(normalizedRole);
         this.balanceService.setBalance(normalizedUser.balance);
-        localStorage.setItem('user', JSON.stringify(normalizedUser));
+        localStorage.setItem('users', JSON.stringify(allUsers));
       }
     }));
   }

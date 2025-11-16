@@ -13,21 +13,22 @@
 
     <nav class="navMenu">
         <a routerLink="/" routerLinkActive="active">Главная</a>
-        <a routerLink="/cart" routerLinkActive="active" (click)="goToCart()" class="cartarea">
-            Корзина <img src="icons/cart-icon.png" alt="Cart">
+        <a routerLink="/cart" routerLinkActive="active" class="cartarea">Корзина <img src="icons/cart-icon.png" alt="Cart">
             <span *ngIf="cartCount > 0" class="cart">({{ cartCount }})</span>
         </a>
-        <button routerLink="/purchases">Список покупок</button>
+        <a routerLink="/purchases" routerLinkActive="active" class="purchasearea">Список покупок <img src="icons/purchase-icon.png" alt="Purchase">
+            <span *ngIf="purchasesCount > 0" class="purchase">({{ purchasesCount }})</span>
+        </a>
         <ng-container *ngIf="!user">
-            <button (click)="goToAuth()" class="userStatus">Войти</button>
+            <button routerLink="/auth" class="userStatus">Войти</button>
         </ng-container>
 
         <ng-container *ngIf="user">
-            <button (click)="goToProfile()" class="userStatus">Личный Кабинет</button>
+            <button routerLink="/profile" class="userStatus">Личный Кабинет</button>
             <button (click)="logout()">Выйти</button>
         </ng-container>
 
-        <a routerLink="/about" routerLinkActive="active" (click)="gotoAbout()">Справочник...</a>
+        <button routerLink="/about" routerLinkActive="active">Справочник...</button>
     </nav>
 </header>
 

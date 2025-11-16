@@ -126,21 +126,37 @@
         .promoCodeCredentials {
           padding: 0.25rem 0;
 
-          input {
-              border: 2px dashed rgba(64, 64, 64, 0.8);
-              color: var(--color-orange);
-              font-weight: 600;
-              font-size: 0.95rem;
-              width: 55%;
+          h4 {
+            color: var(--accent-formal-darkgreen);
+            font-size: 1.1rem;
+            font-weight: bold;
+            letter-spacing: 0.3px;
+            margin-bottom: 5px;
+          }
 
-              &:focus {
-                  border-color: var(--color-orange);
-                  box-shadow: 0 0 10px var(--color-orange);
-                }
-              &::placeholder {
-                  color: var(--accent-pergament);
-                }
+          .promoResult {
+            padding: 0.4rem 0.6rem;
+            margin: 0;
+            border: 2px dashed rgba(64, 64, 64, 0.8);
+            box-shadow: 0 0 10px var(--color-shadow);
+            color: var(--color-orange);
+            font-weight: 600;
+            font-size: 0.95rem;
+            width: 55%;
+          }
+
+          .btnPromoCancel {
+            @include service.btnDanger;
+            align-self: flex-end;
+            min-width: 180px;
+            font-weight: 700;
+
+            &:hover {
+              background-color: var(--color-red);
+              transform: scale(1.02);
+              box-shadow: 0 0 10px rgba(128, 0, 0, 0.3);
             }
+          }
         }
 
         .agreementTitle {

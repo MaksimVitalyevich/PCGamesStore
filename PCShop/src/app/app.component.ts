@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { CartService } from './services/cart.service';
+import { PurchaseService } from './services/purchase.service';
 import { RouterOutlet } from '@angular/router';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 
@@ -15,9 +16,13 @@ import { UserInfoComponent } from './components/user-info/user-info.component';
 export class AppComponent {
   title = 'Онлайн магазин ПК игр';
   cartCount = 0;
+  purchasesCount = 0;
   user: any = null;
 
-  constructor(private cartService: CartService) { localStorage.clear(); }
+  constructor(private cartService: CartService, private purchaseService: PurchaseService) { localStorage.clear(); }
 
-  ngOnInit() { this.cartService.data$.subscribe(c => this.cartCount = c.length); }
+  ngOnInit() { 
+    this.cartService.data$.subscribe(c => this.cartCount = c.length);
+    this.purchaseService.purchases$.subscribe(p => this.purchasesCount = p.length);
+  }
 }

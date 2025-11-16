@@ -1,43 +1,48 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, map, tap } from 'rxjs';
-import { catchError, delay } from 'rxjs/operators';
+import { Observable, lastValueFrom, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { CartService } from './cart.service';
 import { BaseApiService } from './base-api.service';
+import { BalanceService } from './balance.service';
+import { PurchaseService } from './purchase.service';
+import { environment } from '../urls-environment';
+import { CartItem } from '../models/cart.model';
+import { PurchaseItem } from '../models/purchase.model';
+import { cartToPurchase } from '../purchase-converter';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentService extends BaseApiService<any> {
-  private readonly PAYMENT_API = "http://localhost:3000/PHPApp/api/payment.php";
-  private readonly PROMO_API = "http://localhost:3000/PHPApp/api/promocodes.php";
+  private readonly PAYMENT_API = environment.api.payment;
 
-  constructor(http: HttpClient, private cart: CartService) { super(http, "http://localhost:3000/PHPApp/api/payment.php"); }
+  constructor(
+    http: HttpClient, 
+    private cartService: CartService,
+    private balanceService: BalanceService, 
+    private purchaseService: PurchaseService
+  ) { super(http, environment.api.payment); }
 
   pay(userId: number): Observable<any> {
-    return this.http.post<{ success: boolean; message?: string }>(`${this.PAYMENT_API}?action=pay`, { user_id: userId }).pipe(tap(res => {
-      if (res.success) {
-        this.cart.refreshCart(userId);
-      }
-    }))
-  }
-
-  checkPromoCode(code: string): Observable<any> {
-    return this.http.post<any>(`${this.PROMO_API}?action=check`, { code }).pipe(map(res =>
-      res.success ? { success: true, message: 'Промокод активен', discountUsed: true } : { success: false, message: res.error || 'Промокод недействителен'}
-    ), catchError(() => of({ success: false, message: 'Ошибка соединения с сервером'})));
+    return this.http.post<{ success: boolean; message?: string }>(`${this.PAYMENT_API}?action=pay`, { user_id: userId });
   }
 
   /** Симуляция успешной оплаты */
-  simulatePayment(data: any, total: number): Observable<any> {
-    let discount = 0;
-    if (data.method === 'promo' && data.promoCode) {
-      return this.checkPromoCode(data.promoCode).pipe(map(result => {
-        if (result.success) discount = result.discount ?? 0;
-        const final = total - total * (discount / 100);
-        return { success: true, message: `Оплата успешна! Списано: ${final.toFixed(2)} ₽`, finalAmount: final, discountUsed: !!discount };
-      }), delay(800));
-    }
+  processPayment(userId: number, total: number, cartItems: CartItem[]): Observable<any> {
+    if (total <= 0) return of({ success: false, message: 'Неверная сумма платежа!' });
 
-    return of({ success: true, message: `Оплата прошла успешно! Итог: ${total.toFixed(2)} ₽`}).pipe(delay(800));
+    this.balanceService.decrease(total);
+
+    return this.pay(userId).pipe(tap(payRes => {
+      if (!payRes.success) throw new Error(payRes.message || 'Ошибка оплаты на сервере');
+    }), switchMap(async () => {
+      const purchases: PurchaseItem[] = cartItems.map(cartToPurchase);
+
+      await Promise.all(purchases.map(p => lastValueFrom(this.purchaseService.addPurchase(userId, p))));
+      await lastValueFrom(this.cartService.clearCart(userId));
+    }), map(() => ({
+      success: true,
+      message: 'Оплата прошла успешно!'
+    })), catchError(() => of({ success: false, message: 'Ошибка в процессе оплаты!' })));
   }
 
   /** Проверка корректности карты (локальная) */

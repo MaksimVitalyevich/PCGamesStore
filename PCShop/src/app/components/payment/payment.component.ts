@@ -1,17 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EMPTY  } from 'rxjs';
-import { takeUntil, switchMap, tap } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Unsubscriber } from '../../unsubscriber-helper';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PromocodeService } from '../../services/promocode.service';
 import { PaymentService } from '../../services/payment.service';
-import { PurchaseService } from '../../services/purchase.service';
 import { CartService } from '../../services/cart.service';
+import { PurchaseService } from '../../services/purchase.service';
 import { UserService } from '../../services/user.service';
 import { BalanceService } from '../../services/balance.service';
 import { PayMethod } from '../../models/enumerators.model';
+import { Promocode } from '../../models/promocode.model';
 import { Router } from '@angular/router';
 import { CartItem } from '../../models/cart.model';
+import { PurchaseItem } from '../../models/purchase.model';
+import { cartToPurchase } from '../../purchase-converter';
 
 @Component({
   selector: 'app-payment',
@@ -23,20 +27,21 @@ import { CartItem } from '../../models/cart.model';
 export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy {
   paymentForm!: FormGroup;
   cartItems: CartItem[] = [];
+  activePromo: Promocode | null = null;
   message = "";
   isLoading = false;
 
   totalAmount = 0;
   discount = 0;
-  finalAmount = 0;
   balance = 0;
 
   constructor(
     private fb: FormBuilder, 
-    private paymentService: PaymentService, 
+    private paymentService: PaymentService,
+    private promocodeService: PromocodeService, 
     private cartService: CartService,
-    private userService: UserService,
     private purchaseService: PurchaseService,
+    private userService: UserService,
     private balanceService: BalanceService, 
     private router: Router
   ) { super(); }
@@ -47,7 +52,6 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
       cardNumber: [''],
       expiry: [''],
       cvc: [''],
-      promoCode: [''],
       agreement: [false, Validators.requiredTrue]
     });
 
@@ -57,12 +61,8 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
       this.updateFinalAmount();
     });
 
-    this.balanceService.balance$.pipe(takeUntil(this.destroy$)).subscribe(b => this.balance === b)
-
-    this.paymentForm.get('promoCode')?.valueChanges.subscribe(code => {
-      if (code && code.length >= 4) this.applyPromo(code);
-      else this.resetPromo();
-    });
+    this.balanceService.balance$.pipe(takeUntil(this.destroy$)).subscribe(b => this.balance === b);
+    this.promocodeService.selectedPromo$.pipe(takeUntil(this.destroy$)).subscribe(p => this.activePromo = p);
 
     this.paymentForm.get('method')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(method => {
       const cardFields = ['cardNumber', 'expiry', 'cvc'];
@@ -75,7 +75,7 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
   cancelPayment() { this.router.navigate(['/cart']); }
 
   applyPromo(code: string) {
-    this.paymentService.checkPromoCode(code).subscribe(result => {
+    this.promocodeService.checkCode(code).subscribe(result => {
       this.discount = result.discountUsed ? result.discount ?? 0 : 0;
       this.message = result.message;
       this.updateFinalAmount();
@@ -84,14 +84,17 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
 
   resetPromo() {
     this.discount = 0;
-    this.message = "";
+    this.activePromo = null;
     this.updateFinalAmount();
   }
 
   calculateTotal(items: CartItem[]) { return items.reduce((acc, item) => acc + (item.price || 0), 0); }
-  updateFinalAmount() { this.finalAmount = this.totalAmount - (this.totalAmount * this.discount / 100); }
+  updateFinalAmount() { 
+    const base = this.calculateTotal(this.cartItems);
+    return this.activePromo ? base * (1 - this.activePromo.discount / 100) : base;
+  }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.paymentForm.invalid) {
       this.message = "Пожалуйста, Проверьте корректность введённых данных и подтвердите согласие!";
       this.paymentForm.markAllAsTouched();
@@ -111,39 +114,26 @@ export class PaymentComponent extends Unsubscriber implements OnInit, OnDestroy 
       return;
     }
     
-    this.isLoading = true;
     this.message = "Выполняется обработка платежа...";
+    setTimeout(() => this.isLoading = true, 1000);
 
-    this.paymentService.simulatePayment(this.paymentForm.value, this.totalAmount).pipe(takeUntil(this.destroy$), switchMap(simResult => {
-      if (!simResult.success) {
-        this.message = "Сбой при симуляции оплаты!";
-        this.isLoading = false;
-        return EMPTY;
-      }
+    try {
+      const result = await lastValueFrom(this.paymentService.processPayment(user.id, this.totalAmount, this.cartItems));
+      this.isLoading = false;
+      this.message = result.message;
 
-      // Уменьшаем баланс
-      this.balanceService.decrease(this.totalAmount);
-
-        // Отправляем реальный платеж на сервер
-      return this.paymentService.pay(user.id).pipe(tap(payResult => {
-          if (!payResult.success) { throw new Error(payResult.message || "Ошибка платежа на сервере"); } }));
-    })
-  ).subscribe({ next: () => {
-        // Обновляем покупки
-        this.purchaseService.addMultiplePurchases(this.cartItems);
-
-        // Очищаем корзину
-        this.cartService.clearCart(user.id);
-
-        // Сбрасываем UI
-        this.totalAmount = 0;
-        this.message = "Оплата прошла успешно! Перенаправление...";
-
-        // Плавный редирект
-        setTimeout(() => this.router.navigate(['/purchases']), 2000);
-      },
-      error: err => { this.message = err.message || "Произошла ошибка при оплате!"; }
-    });
+      if (result.success) {
+        setTimeout(() => this.router.navigate(['/purchases']), 1500);
+        if (this.activePromo) {
+          await lastValueFrom(this.promocodeService.applyCode(user.id, this.activePromo.code));
+          this.promocodeService.clearPromo();
+        }
+      } 
+    } catch (err) {
+      this.isLoading = false;
+      this.message = "Ошибка при оплате или добавлении покупок!";
+      console.error(err);
+    }
   }
 
   ngOnDestroy() { this.subClean(); }

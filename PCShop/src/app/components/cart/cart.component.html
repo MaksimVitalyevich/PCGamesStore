@@ -4,7 +4,7 @@
     <div *ngIf="items.length === 0" class="emptyCartText">Корзина пуста</div>
 
     <div *ngIf="items.length > 0" class="ownedGamesField">
-        <div *ngFor="let item of items" class="ownedGamesCard">
+        <div *ngFor="let item of items; trackBy: trackById" class="ownedGamesCard">
             <div class="ownedGameInfo">
                 <h3>Приобретенный товар:</h3>
                 <div class="gameTitle">{{ item.title }}</div>
@@ -12,12 +12,14 @@
                     {{ item.price }} ₽ × {{ 1 }}
                 </div>
             </div>
-            <button (click)="remove(item.id, item.id)" class="btnGameDeletion">Удалить</button>
+            <button (click)="remove(item.id)" class="btnGameDeletion">Удалить</button>
         </div>
 
         <div class="cartBalanceField">
             <div class="balanceText">Итого: {{ total }} ₽</div>
-            <button class="btnPaymentLink" (click)="gotoPayment()">Перейти к оплате</button>
+            <button class="btnPaymentLink" (click)="gotoPayment()">
+                {{ isLoading ? 'Переход...' : 'Перейти к оплате' }}
+            </button>
 
             <div class="cartActions">
                 <button class="btnUpdateCart" (click)="refresh()">Обновить корзину</button>

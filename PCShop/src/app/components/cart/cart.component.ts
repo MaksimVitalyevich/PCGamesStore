@@ -31,7 +31,6 @@ export class CartComponent extends Unsubscriber implements OnInit, OnDestroy {
       this.cartService.data$,
       this.userService.user$
     ]).pipe(takeUntil(this.destroy$)).subscribe(([items, user]) => {
-      console.log('CartComponent получает:', { items, user });
       if (user) {
         this.items = items.filter(i => i.user_id === user.id);
         this.total = this.items.reduce((sum, item) => sum + (item.price ?? 0), 0);
@@ -44,26 +43,18 @@ export class CartComponent extends Unsubscriber implements OnInit, OnDestroy {
 
     // При старте подгрузится актуальная корзина
     this.userService.user$.pipe(takeUntil(this.destroy$)).subscribe(user => {
-      if (user) this.cartService.refreshCart(user.id);
+      if (user) this.cartService.getByUser(user.id).subscribe();
     });
     this.purchaseService.purchasedIds$.subscribe(ids => this.purchasedIds = ids);
   }
 
-  remove(itemID: number, gameID: number) { 
+  trackById(index: number, item: CartItem) { return item.id; }
+
+  remove(itemID: number) { 
     const user = this.userService.user;
-    if (user) {
-      this.cartService.removefromCart(itemID, user.id).subscribe({
-        next: res => {
-          if (res.success) {
-            this.purchasedIds = this.purchasedIds.filter(id => id !== gameID);
-            this.items = this.items.filter(i => i.id !== itemID);
-            this.total = this.items.reduce((sum, i) => sum + (i.price ?? 0), 0);
-          } else {
-            alert(res.message || 'Ошибка при удалении');
-          }
-        }, error: err => console.error('Ошибка удаления:', err)
-      });
-    }
+    if (!user) return;
+
+    this.cartService.removefromCart(itemID, user.id).subscribe();
   }
   refresh() { 
     this.userService.user$.subscribe(user => {
@@ -82,7 +73,8 @@ export class CartComponent extends Unsubscriber implements OnInit, OnDestroy {
       alert('Ваша корзина пустая!');
       return;
     }
-    setTimeout(() => this.router.navigate(['/payment']), 400);
+    this.isLoading = true;
+    setTimeout(() => this.router.navigate(['/payment']), 800);
   }
 
   ngOnDestroy() { this.subClean(); }

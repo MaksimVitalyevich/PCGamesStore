@@ -20,7 +20,7 @@ export class AboutInfoComponent extends Unsubscriber implements OnInit, OnDestro
   role: UserRole | null = null;
   UserRole = UserRole;
   UserName: string | undefined = '';
-  changeLogVersion: string = '1.3.2';
+  changeLogVersion: string = '1.4.3';
   isChangelogMode = false;
   elemHover = false;
 

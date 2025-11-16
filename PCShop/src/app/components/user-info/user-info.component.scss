@@ -19,6 +19,18 @@
     box-shadow: 0 4px 12px var(--color-shadow);
   }
 
+  .IdDisplay {
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 1px 0;
+    color: var(--color-neon-purple);
+
+    .idHighlight {
+      text-shadow: 0 0 10px var(--accent-lightpurple);
+      font-weight: 600;
+    }
+  }
+
   .roleDisplay, .balanceDisplay {
     margin: 2px 0;
 

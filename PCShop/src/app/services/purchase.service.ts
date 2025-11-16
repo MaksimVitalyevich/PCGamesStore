@@ -1,24 +1,70 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { BaseApiService } from './base-api.service';
 import { CartItem } from '../models/cart.model';
 import { PurchaseItem } from '../models/purchase.model';
+import { environment } from '../urls-environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PurchaseService {
+export class PurchaseService extends BaseApiService<PurchaseItem> {
+  private readonly PURCHASE_API = environment.api.purchases;
   private purchasedIdsSource = new BehaviorSubject<number[]>([]);
   purchasedIds$ = this.purchasedIdsSource.asObservable();
   private purchasesSource = new BehaviorSubject<PurchaseItem[]>([]);
   purchases$ = this.purchasesSource.asObservable();
+
+  constructor(http: HttpClient) { super(http, environment.api.purchases) }
 
   /** Готовая оформленная покупка игры */
   purchaseCompleted = new EventEmitter<PurchaseItem[]>();
 
   addPurchasedIds(id: number) { this.purchasedIdsSource.next([...this.purchasedIdsSource.getValue(), id]); }
 
-  /** Получение списка купленных игр */
-  getPurchasedGames(): PurchaseItem[] { return this.purchasesSource.value; }
+  getPurchases(userId: number): Observable<PurchaseItem[]> {
+    return this.http.get<{ success: boolean; purchases: PurchaseItem[] }>(`${this.PURCHASE_API}?action=getPurchases&user_id=${userId}`).pipe(map(res =>
+      res.success ? res.purchases : []), tap(pList => {
+        this.purchasesSource.next(pList);
+        this.purchasedIdsSource.next(pList.map(p => p.game_id));
+    }));
+  }
+
+  addPurchase(userId: number, purchase: PurchaseItem): Observable<any> {
+    const payLoad = {
+      user_id: userId,
+      game_id: purchase.game_id,
+      title: purchase.title,
+      price: purchase.price,
+      purchase_date: purchase.purchase_date.toISOString()
+    };
+
+    return this.http.post<{ success: boolean; message?: string; purchase: PurchaseItem }>(`${this.PURCHASE_API}?action=addPurchase`, payLoad).pipe(tap(res => {
+      if (res.success && res.purchase) {
+        const current = this.purchasesSource.value;
+        this.purchasesSource.next([...current, res.purchase]);
+
+        const ids = [...this.purchasedIdsSource.value, res.purchase.game_id];
+        this.purchasedIdsSource.next(ids);
+
+        this.purchaseCompleted.emit([res.purchase]);
+      }
+    }))
+  }
+
+  checkPurchase(userId: number, gameId: number): Observable<any> {
+    return this.http.post<{ success: boolean; message?: string }>(`${this.PURCHASE_API}?action=checkPurchase`, { user_id: userId, game_id: gameId }).pipe(map(res => ({
+      success: res.success,
+      message: res.message
+    })));
+  }
+
+  ownedGames(userId: number): Observable<PurchaseItem[]> {
+    return this.http.get<{ success: boolean; purchases: PurchaseItem[] }>(`${this.PURCHASE_API}?action=owned&user_id=${userId}`).pipe(map(res => 
+      res.success ? res.purchases : []));
+  }
 
   /** Помечает игру купленной (после действия самой покупки) */
   addMultiplePurchases(items: CartItem[]): void {
@@ -41,13 +87,8 @@ export class PurchaseService {
     }
   }
 
-  /** Сброс покупки (если пользователь передумал ее покупать) */
-  removePurchase(gameID: number): void { 
-    const updated = this.getPurchasedGames().filter(p => p.id !== gameID);
-    this.purchasesSource.next(updated);
+  clearPurchases(): void { 
+    this.purchasesSource.next([]);
+    this.purchasedIdsSource.next([]);
   }
-
-  /** Проверка купленности самой игры */
-  hasPurchased(gameID: number): boolean { return this.getPurchasedGames().some((g) => g.id === gameID); }
-  clearPurchases(): void { this.purchasesSource.next([]); }
 }

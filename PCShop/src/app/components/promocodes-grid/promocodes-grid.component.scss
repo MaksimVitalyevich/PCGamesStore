@@ -1,0 +1,330 @@
+.promocodesField {
+    font-family: var(--font-accent-variant-two);
+
+    .btnAddPromo {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 0.42rem;
+        margin-bottom: 0.6rem;
+        text-align: center;
+        font-size: large;
+        font-weight: bold;
+        letter-spacing: 0.6px;
+        justify-content: center;
+        background-image: repeating-linear-gradient(60deg, var(--color-neon-purple), var(--color-neon-teal));
+        border: 2.5px dashed goldenrod;
+        border-radius: 14px;
+        width: 240px;
+        color: darkblue;
+        cursor: pointer;
+        height: 120px;
+        transition: 0.25s;
+
+        &:hover {
+            background-image: var(--color-bg-light);
+            color: rgb(33, 33, 190);
+            box-shadow: 0 5px 10px rgba(228, 242, 0, 0.7);
+            transform: scale(1.01);
+        }
+
+        .addPromoLine {
+            position: relative;
+            top: -55px;
+            margin: 0;
+            padding-bottom: 0.25rem;
+            background-color: rgba(10, 10, 10, 0.9);
+            border-radius: 7px;
+            height: 10px;
+            width: 100%;
+        }
+    }
+
+    .promosList {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 0.6rem;
+        align-items: start;
+
+        .promoCardItem {
+            box-sizing: border-box;
+            max-width: 100%;
+            background-image: linear-gradient(135deg, var(--color-neon-yellow), var(--color-neon-green));
+            color: var(--color-neon-pink);
+            border: 2.5px dashed var(--color-neon-orange);
+            border-radius: 14px;
+            box-shadow: 0 1px 11px rgba(205, 215, 9, 0.7), 0 3px 14px rgba(205, 81, 15, 0.7);
+            overflow: hidden;
+            padding: 0;
+            margin: 0 auto;
+            transition: 0.3s;
+            animation: slideUp 0.25s ease;
+
+            &:hover {
+                transform: scale(1.01);
+                box-shadow: 0 2px 13px var(--color-neon-yellow), 0 4px 16px var(--color-neon-orange);
+            }
+
+            .promoCardFrame {
+                box-sizing: border-box;
+                border: 1px solid var(--accent-turquoise);
+                border-radius: 14px;
+                width: 100%;
+                min-height: 340px;
+                margin: 0;
+                padding: 0.25rem;
+                box-shadow: 0 1px 10px var(--accent-turquoise);
+
+                &:hover {
+                    box-shadow: 0 0 15px rgba(38, 216, 59, 0.8);
+                }
+
+                .promosHeader {
+                    display: flex;
+                    flex-direction: row;
+                    margin: 0;
+                    padding: 0;
+                    background-color: var(--color-bg-dark);
+                    border-radius: 8px;
+                    font-weight: bold;
+                    align-items: center;
+                    gap: 0.75rem;
+
+                    h3 {
+                        color: var(--color-neon-green);
+                        margin: 0 2px;
+                        font-size: 1.2rem;
+                        font-weight: 800;
+                        letter-spacing: 0.25px;
+                        text-shadow: 0 0 3px var(--text-light);
+
+                        &.top {
+                            color: gold;
+                            text-shadow: 0 0 3px var(--accent-lightpurple);
+                        }
+                    }
+                    .badge {
+                        font-size: 1rem;
+                        font-weight: 600;
+
+                        &.active {
+                            color: var(--accent-lightred);
+                            text-shadow: 0 0 3px var(--accent-lightred);
+                        }
+                        &.inactive {
+                            color: darkgrey;
+                            text-shadow: 0 0 3px var(--color-bg-light);
+                        }
+                    }
+                }
+                .promoDesc {
+                    color: var(--accent-darkalice);
+                    margin: 7px 0;
+                    font-family: var(--font-accent-extra);
+                    font-size: 1.1rem;
+                    text-shadow: 0 0 6px var(--accent-darkalice);
+                }
+                .promoInfo {
+                    flex-direction: column;
+
+                    section {
+                        color: rgba(41, 12, 170, 0.9);
+                        margin-bottom: 0.2rem;
+                        font-size: 1.1rem;
+
+                        b {
+                            font-family: var(--font-accent-variant-one);
+                            font-weight: bold;
+                            color: var(--color-bg-dullgreen);
+                            text-shadow: 0 0 4px var(--border-tab);
+
+                            &.discountHighlight {
+                                color: rgba(244, 65, 6, 0.7);
+                                text-shadow: 0 0 4px rgba(244, 65, 6, 0.7);
+
+                                &.top {
+                                    color: rgba(220, 18, 58, 0.7);
+                                    text-shadow: 0 0 4px rgba(220, 18, 58, 0.7);
+                                }
+                            }
+                            &.limits {
+                                color: var(--accent-darkred);
+                                text-shadow: 0 0 4px var(--accent-darkred);
+                            }
+                            &.expiration {
+                                color: brown;
+                                text-shadow: 0 0 4px var(--accent-darkred);
+                            }
+                        }
+                    }
+                }
+                .promoActionsField {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 0.25rem;
+                    margin-top: 0.9rem;
+
+                    button {
+                        background-image: linear-gradient(90deg, var(--color-spacevoid-variant-two), var(--color-spacedust-variant-two));
+                        color: white;
+                        width: 100%;
+                        height: 40px;
+                        padding: 9px 18px;
+                        font-size: 0.7rem;
+                        font-weight: bold;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: 0.25s;
+
+                        &:hover {
+                            box-shadow: 0 0 8px var(--color-spacevoid-variant-two), 0 0 16px var(--color-spacedust-variant-two);
+                        }
+
+                        &.unavailable {
+                            background-image: none;
+                            background-color: var(--color-bg-light);
+                            color: var(--accent-lightred);
+
+                            &:hover {
+                                box-shadow: 0 0 8px var(--color-bg-light);
+                            }
+                        }
+                    }
+                    .moderatorActions {
+                        position: relative;
+                        top: -13px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.25rem;
+                        margin-top: 0.8rem;
+
+                        button {
+                            background-image: linear-gradient(90deg, var(--accent-darkred), var(--accent-darkpurple));
+                            width: 100%;
+                            height: 40px;
+
+                            &:hover {
+                                box-shadow: 0 0 8px var(--accent-lightred), 0 0 16px var(--accent-lightpurple);
+                            }
+
+                            &.edit {
+                                background-image: none;
+                                background-color: var(--color-neon-purple);
+
+                                &:hover {
+                                    box-shadow: 0 0 8px var(--accent-lightpurple);
+                                }
+                            }
+                            &.discharge {
+                                background-image: none;
+                                background-color: crimson;
+                                color: coral;
+
+                                &:hover {
+                                    box-shadow: 0 0 8px crimson;
+                                }
+                            }
+                            &.charge {
+                                background-image: none;
+                                background-color: limegreen;
+                                color: darkgreen;
+
+                                &:hover {
+                                    box-shadow: 0 0 8px limegreen;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .promoEditForm {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        gap: 0.7rem;
+        padding: 0.7rem 0;
+        color: white;
+
+        .code-row {
+            padding: 0.4rem 0.6rem;
+            margin: 0;
+            border: 2px dashed rgba(245, 96, 3, 0.7);
+            border-radius: 12px;
+            box-shadow: 0 0 9px var(--color-neon-orange);
+
+            label {
+                display: block;
+                width: 100%;
+                font-weight: 700;
+                margin-bottom: 0.28rem;
+            }
+            input {
+                width: 90%;
+                background-color: var(--text-dark);
+                border: 2px solid var(color-neon-green);
+                border-radius: 7px;
+                color: var(--color-neon-purple);
+                padding: 0.4rem 0.6rem;
+                font-weight: 500;
+                transition: 0.25s;
+                outline: none;
+
+                &:focus {
+                    border-color: var(--color-neon-yellow);
+                    box-shadow: var(--color-neon-orange);
+                }
+            }
+            .hint {
+                margin: 0;
+                font-weight: 600;
+                color: blue;
+                line-height: 0.5;
+
+                &.warning {
+                    color: red;
+                }
+            }
+        }
+        .edit-actions {
+            display: flex;
+            justify-content: flex-start;
+            gap: 0.8rem;
+            margin-top: 1rem;
+
+            button {
+                margin-left: 0.2rem;
+                padding: 0.4rem 1rem;
+                font-weight: bold;
+                border: none;
+                border-radius: 11px;
+                cursor: pointer;
+                transition: 0.3s;
+
+                &.btnSave {
+                    background-image: linear-gradient(135deg, var(--color-neon-green), var(--accent-darkalice));
+                    color: white;
+                    text-shadow: 0 0 5px var(--color-neon-green);
+
+                    &:hover {
+                        box-shadow: 0 0 9px var(--color-neon-green);
+                        transform: scale(1.02);
+                    }
+                }
+                &.btnCancel {
+                    background-image: none;
+                    background-color: crimson;
+                    color: white;
+
+                    &:hover {
+                        box-shadow: 0 0 9px crimson;
+                        transform: scale(1.04);
+                    }
+                }
+            }
+        }
+    }
+}

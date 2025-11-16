@@ -1,17 +1,32 @@
 <div class="homeContainer">
-    <h2 class="homeTitle">Каталог ПК игр</h2>
-    <ng-container *ngIf="isLoading; else loaded">
-        <div class="loader">
-            <div class="spinner-wrapper">
-                <img src="icons/spinner-icon-var-one.png" alt="Spinner_icon" class="spinner">
-            </div>
-            <p>Контент загружается, пожалуйста подождите...</p>
-        </div>
-    </ng-container>
+    <section class="heroContainer">
+        <h1>Добро пожаловать в GameStore {{ user?.username }}!</h1>
+        <p>Лучшие игры - в один клик и вперед!</p>
+    </section>
 
-    <ng-template #loaded>
-        <app-game-grid [games]="games" [role]="role" [getStars]="getStars.bind(this)" 
-    [isPurchasedAlready]="isPurchasedAlready.bind(this)" (buyGame)="buyGame($event)" (addNew)="addNewGame($event)" 
-    (editGame)="editGame($event)" (deleteGame)="deleteGame($event)"></app-game-grid>
-    </ng-template>
+    <section>
+        <ng-container *ngIf="!isLoading; else loadingTemp">
+            <h2 class="homeTitle">Каталог ПК игр</h2>
+            <app-game-grid [games]="games" [role]="role" [getStars]="getStars.bind(this)" 
+        [isPurchasedAlready]="isPurchasedAlready.bind(this)" (buyGame)="buyGame($event)" (addNew)="addNewGame($event)" 
+        (editGame)="editGame($event)" (deleteGame)="removeGame($event)"></app-game-grid>
+        </ng-container>
+    </section>
+
+    <section>
+        <ng-container *ngIf="!isLoading; else loadingTemp">
+            <h2 class="promosTitle">Промокоды</h2>
+            <app-promocodes-grid [promocodes]="promocodes" [role]="role" (addPromo)="addPromocode($event)" 
+            (editPromo)="editPromocode($event)"></app-promocodes-grid>
+        </ng-container>
+    </section>
 </div>
+
+<ng-template #loadingTemp>
+    <div class="loader">
+        <div class="spinner-wrapper">
+            <img src="icons/spinner-icon-var-one.png" alt="Spinner_icon" class="spinner">
+        </div>
+        <p>Контент загружается, пожалуйста подождите...</p>
+    </div>
+</ng-template>

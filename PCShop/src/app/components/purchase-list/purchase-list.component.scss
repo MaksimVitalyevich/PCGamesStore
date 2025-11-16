@@ -29,37 +29,6 @@
     }
   }
 
-  .loader {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 5px;
-
-    .spinner-wrapper {
-      position: relative;
-      width: 150px;
-      height: 150px;
-
-      .spinner {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        object-fit: fill;
-        border: 2px dashed var(--color-neon-yellow);
-        color: var(--color-neon-yellow);
-        box-shadow: 0 0 8px rgba(210, 100, 21, 0.85);
-        text-shadow: 0 0 9px var(--color-neon-yellow);
-      }
-    }
-
-    p {
-      color: rgba(255, 123, 0, 0.9);
-      text-align: center;
-      font-size: 1.4rem;
-      font-weight: 700;
-    }
-  }
-
   .purchaseTitle {
     color: var(--color-neon-orange);
     font-size: 2rem;
@@ -121,15 +90,6 @@
         }
       }
 
-      .purchaseImage {
-        width: 100%;
-        height: 180px;
-        aspect-ratio: 16/9;
-        object-fit: cover;
-        border-radius: 10px;
-        margin-bottom: 0.8rem;
-      }
-
       .purchaseGameInfo {
         text-align: center;
 
@@ -140,39 +100,12 @@
           letter-spacing: 0.4px;
           text-shadow: 0 0 6px var(--text-dark);
           margin-bottom: 0.3rem;
-
-          &.hot {
-            color: var(--color-neon-yellow);
-            text-shadow: 0 0 5px var(--color-neon-orange), 0 0 10px var(--accent-hot-variant-one);
-          }
-        }
-        span {
-          font-size: 1.3rem;
-          font-weight: 700;
-          color: var(--color-neon-yellow);
-          letter-spacing: 0.6px;
-          text-shadow: 0 0 5px var(--color-neon-yellow);
-
-          &.top {
-            color: var(--accent-neon-orange);
-            text-shadow: 0 0 7px var(--accent-lightred);
-          }
         }
 
         .purchaseGenre {
           color: var(--accent-turquoise);
           font-size: 0.9rem;
           margin-bottom: 0.4rem;
-        }
-        .purchaseRating {
-          color: var(--color-neon-orange);
-          font-weight: bold;
-          text-shadow: 0 0 4px rgba(255, 125, 0, 0.8);
-
-          &.hot {
-            color: var(--accent-lightred);
-            text-shadow: 0 0 5px var(--accent-hot-variant-one), 0 0 10px var(--accent-hot-variant-two);
-          }
         }
         .purchasePrice {
           color: var(--color-neon-green);
@@ -237,5 +170,36 @@
         box-shadow: 0 0 12px var(--color-neon-purple), 0 0 16px var(--color-neon-teal) inset;
       }
     }
+  }
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 5px;
+
+  .spinner-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+
+    .spinner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: fill;
+      border: 2px dashed var(--color-neon-yellow);
+      color: var(--color-neon-yellow);
+      box-shadow: 0 0 8px rgba(210, 100, 21, 0.85);
+      text-shadow: 0 0 9px var(--color-neon-yellow);
+    }
+  }
+
+  p {
+    color: rgba(255, 123, 0, 0.9);
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
   }
 }

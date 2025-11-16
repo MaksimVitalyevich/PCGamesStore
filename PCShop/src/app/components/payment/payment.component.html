@@ -13,7 +13,7 @@
         <p class="totalSumText">
             Итоговая сумма заказа составляет: <b>{{ totalAmount }} ₽</b><br>
             <span *ngIf="discount > 0" class="discountText">
-                Применена скидка {{ discount }}% -> <b>{{ finalAmount.toFixed(2) }} ₽</b>
+                Применена скидка {{ discount }}% -> <b>{{ totalAmount.toFixed(2) }} ₽</b>
             </span>
         </p>
 
@@ -34,9 +34,10 @@
             </div>
         </div>
 
-        <div class="promoCodeCredentials">
-            <label>Промокод</label>
-            <input formControlName="promoCode" maxLength="10" placeholder="Введите промокод...">
+        <div *ngIf="activePromo" class="promoCodeCredentials">
+            <h4>Выбран промокод</h4>
+            <div class="promoResult">{{ activePromo.code }} - скидка {{ activePromo.discount }}%</div>
+            <button (click)="resetPromo()" class="btnPromoCancel">Отменить</button>
         </div>
 
         <div>
